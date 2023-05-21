@@ -8,6 +8,8 @@ import { AiOutlineFlag,
          AiOutlineTeam,
          AiOutlineFileAdd,
          AiOutlineBook } from 'react-icons/ai';
+
+import {BiLogOut} from "react-icons/bi"
 export default function SideBar({isOpen}) {
 
   const navItems = [
@@ -46,14 +48,22 @@ export default function SideBar({isOpen}) {
         alignItems={"center"}
         backgroundColor={"white"}
         padding={"15px"}
-        gap={"15px"}
+        justifyContent={"space-between"}
         transform={ isOpen ? "translateX(-100%)" : "translateX(0px)"}
         transition={"all 0.5s"}
         
         >
+        <Flex
+          direction={"column"}
+          width={"100%"}
+          gap={"15px"} 
+        >
+
         {
           items.map( ({icon, msg, active}, i) => <SideItem icon={icon} funcion={seleccion} active={active} msg={msg} index={i}/> ) 
         }
+        </Flex>
+        <SideItem icon={BiLogOut} msg={"Cerrar Sesión"}></SideItem>
         </Flex>
     </>
   )
