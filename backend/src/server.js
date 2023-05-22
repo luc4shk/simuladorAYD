@@ -3,6 +3,10 @@ const {logger, logEvents} = require('./middlewares/logger');
 const {errorHandler} = require('./middlewares/errorHandler');
 const sequelize = require('./database/db');
 
+// Importamos las tablas a crear
+const Rol = require('./models/Rol');
+const Usuario = require('./models/Usuario');
+
 // Importar Rutas de la API
 
 // Inicializar el contexto principal
@@ -39,7 +43,7 @@ app.use(errorHandler);
 
 
 // Corremos el servidor
-sequelize.authenticate().then(() => {
+sequelize.sync({force: true}).then(() => {
     console.log('Connected to ufps_pro');
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }).catch((err) => {
