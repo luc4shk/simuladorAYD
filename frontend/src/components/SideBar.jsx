@@ -41,16 +41,18 @@ export default function SideBar({isOpen}) {
   return (
     <>
         <Flex 
+        boxSizing='border-box'
         direction={"column"}
-        position={"fixed"}
-        width={"200px"}
-        minHeight={"100%"}
+        position={"absolute"}
+        w={"200px"}
+        h={"100%"}
         alignItems={"center"}
         backgroundColor={"white"}
         padding={"15px"}
         justifyContent={"space-between"}
         transform={ isOpen ? "translateX(-100%)" : "translateX(0px)"}
         transition={"all 0.5s"}
+        overflow={"hidden"}
         
         >
         <Flex
