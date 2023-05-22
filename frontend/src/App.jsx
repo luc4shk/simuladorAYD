@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
 import SideBar from './components/SideBar'
 import NavBar from './components/NavBar'
 import Page from './components/container/Page'
+import Login from './components/forms/Login'
 
 function App() {
   
@@ -11,8 +11,9 @@ function App() {
   const change = () => setOpen(!open)
   return (
    <>
-   <SideBar isOpen={open}/>
-   <Page changeOpen={change} isOpen={open}/>
+   <Login/>
+   {/* <SideBar isOpen={open}/>
+   <Page changeOpen={change} isOpen={open}/> */}
    </> 
   )
 }

@@ -6,16 +6,14 @@ import { RiEdit2Fill } from "react-icons/ri";
 export default function Page({ changeOpen, isOpen }) {
   return (
     <Flex
-      // h={"100%"}
-      // w={isOpen ? "100%" : "calc(100vw - 200px)"}
-      w={"100%"}
-      h={"100%"}
+      w={isOpen ? "100%" : "calc(100% - 200px)"}
+      minHeight={"100vh"}
       left={isOpen ? "0px" : "200px"}
-      position={"fixed"}
+      position={"relative"}
       transition={"all 0.5s"}
       flexDir={"column"}
       bgColor={"secundario.100"}
-    >
+      >
       <NavBar
         changeOpen={changeOpen}
         msg={"Página Principal"}
@@ -35,8 +33,8 @@ export default function Page({ changeOpen, isOpen }) {
           borderRadius={"8px"}
           bgColor={"white"}
           w={[300, 400, 500]}
-          maxHeight={"90vh"}
-          overflowY={"auto"}
+          maxHeight={"900px"}
+          overflow={"hidden"}
           css={{
             "&::-webkit-scrollbar": {
               width: "0px",
