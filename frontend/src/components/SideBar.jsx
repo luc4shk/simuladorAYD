@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Flex, Box} from "@chakra-ui/react"
+import {Flex, Box, useMediaQuery} from "@chakra-ui/react"
 import SideItem from './pure/SideItem'
 import { AiOutlineFlag,
          AiOutlineHome,
@@ -24,7 +24,7 @@ export default function SideBar({isOpen}) {
 
 
   const [items, setItems] = useState(navItems)
-
+ const [tamaño] = useMediaQuery("(min-width: 768px)");
   function seleccion(index){
     const newItems = [...items]
     newItems.map((item,i)=>{
@@ -44,7 +44,7 @@ export default function SideBar({isOpen}) {
         boxSizing='border-box'
         direction={"column"}
         position={"absolute"}
-        w={"200px"}
+        w={["70px","70px","200px"]}
         h={"100%"}
         alignItems={"center"}
         backgroundColor={"white"}
@@ -53,7 +53,6 @@ export default function SideBar({isOpen}) {
         transform={ isOpen ? "translateX(-100%)" : "translateX(0px)"}
         transition={"all 0.5s"}
         overflow={"hidden"}
-        
         >
         <Flex
           direction={"column"}
@@ -62,10 +61,10 @@ export default function SideBar({isOpen}) {
         >
 
         {
-          items.map( ({icon, msg, active}, i) => <SideItem icon={icon} funcion={seleccion} active={active} msg={msg} index={i}/> ) 
+          items.map( ({icon, msg, active}, i) => <SideItem key={i} icon={icon} funcion={seleccion}  active={active} msg={tamaño ? msg : ""} index={i}/> ) 
         }
         </Flex>
-        <SideItem icon={BiLogOut} msg={"Cerrar Sesión"}></SideItem>
+        <SideItem icon={BiLogOut} msg={tamaño ? "Cerrar Sesión" : ""}></SideItem>
         </Flex>
     </>
   )

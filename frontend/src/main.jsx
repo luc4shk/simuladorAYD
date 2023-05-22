@@ -18,6 +18,24 @@ const theme = extendTheme({
       100:"#f4f4f4"
     }
   },
+  styles: {
+    global: {
+      '::-webkit-scrollbar': {
+        width: '10px',
+      },
+      '::-webkit-scrollbar-thumb': {
+        background: '#cecece',
+        borderRadius: '8px',
+      },
+      '::-webkit-scrollbar-thumb:hover': {
+        background: 'gray.400',
+      },
+      '::-webkit-scrollbar-track': {
+        background: '#f0f0f0',
+        borderRadius: '8px',
+      },
+    },
+  },
 })
 
 

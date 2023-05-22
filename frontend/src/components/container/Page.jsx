@@ -6,9 +6,9 @@ import { RiEdit2Fill } from "react-icons/ri";
 export default function Page({ changeOpen, isOpen }) {
   return (
     <Flex
-      w={isOpen ? "100%" : "calc(100% - 200px)"}
+      w={isOpen ? "100%" : ["calc(100% - 70px)","calc(100% - 70px)","calc(100% - 200px)"]}
       minHeight={"100vh"}
-      left={isOpen ? "0px" : "200px"}
+      left={isOpen ? "0px" : ["70px","70px","200px"]}
       position={"relative"}
       transition={"all 0.5s"}
       flexDir={"column"}
@@ -32,49 +32,35 @@ export default function Page({ changeOpen, isOpen }) {
           p={"20px"}
           borderRadius={"8px"}
           bgColor={"white"}
-          w={[300, 400, 500]}
-          maxHeight={"900px"}
+          minW={[ "300px", "400px", "500px"]}
+          maxHeight={"auto"}
           overflow={"hidden"}
-          css={{
-            "&::-webkit-scrollbar": {
-              width: "0px",
-            },
-            "&::-webkit-scrollbar-track": {
-              width: "0px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              background: "#ddd",
-              borderRadius: "24px",
-            },
-          }}
+          
         >
-          <form
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              height: "100%",
-              gap: "20px",
-            }}
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            w={"100%"}
+            h={"100%"}
+            gap={"20px"}
             action=""
           >
-            <Box display="flex" justifyContent={"center"} w={"100%"}>
+            <Box display="flex" dir="row" position={"relative"} justifyContent={"center"} w={"100%"}>
               <Image
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=464&q=80"
-                width={"130px"}
-                height={"130px"}
+                width={[70, 100, 130]}
+                height={[70, 100, 130]}
                 borderRadius={"50%"}
                 objectFit={"cover"}
                 objectPosition={"center"}
               />
               <Button
-                position={"relative"}
-                minW={"30px"}
+                position={"absolute"}
+                minW={["21px","27px","30px"]}
                 padding={"0"}
-                height={"30px"}
-                // transform={"translate(40px,100px)"}
-                top={"100px"}
-                left={"-35px"}
+                height={["21px","27px","30px"]}
+                top={["50px","73px", "100px"]}
+                left={["145px","235px", "260px"]}
                 borderRadius={"50%"}
                 backgroundColor={"principal.100"}
                 _hover={"none"}
@@ -83,7 +69,7 @@ export default function Page({ changeOpen, isOpen }) {
                 <Icon color="white" as={RiEdit2Fill} />
               </Button>
             </Box>
-            <Flex w={"100%"} justifyContent={"space-between"}>
+            <Flex direction={["column", "row"]} w={"100%"} justifyContent={"space-between"}>
               <Box display={"flex"} flexDirection={"column"}>
                 <label htmlFor="nombre">Nombre</label>
                 <Input
@@ -91,6 +77,7 @@ export default function Page({ changeOpen, isOpen }) {
                   id="nombre"
                   name="nombre"
                   type="text"
+                  w={["100%","150px", "200px"]}
                   disabled
                 ></Input>
               </Box>
@@ -101,6 +88,7 @@ export default function Page({ changeOpen, isOpen }) {
                   id="nombre"
                   name="nombre"
                   type="text"
+                  w={["100%","150px", "200px"]}
                   disabled
                 ></Input>
               </Box>
@@ -112,6 +100,7 @@ export default function Page({ changeOpen, isOpen }) {
                 id="nombre"
                 name="nombre"
                 type="text"
+                w={"100%"}
                 disabled
               ></Input>
             </Flex>
@@ -122,11 +111,12 @@ export default function Page({ changeOpen, isOpen }) {
                 id="nombre"
                 name="nombre"
                 type="text"
+                w={"100%"}
                 disabled
               ></Input>
             </Flex>
 
-            <Flex w={"100%"} justifyContent={"space-between"}>
+            <Flex direction={["column","row"]} w={"100%"} justifyContent={"space-between"}>
               <Box display={"flex"} flexDirection={"column"}>
                 <label htmlFor="">Número de Documento</label>
                 <Input
@@ -134,6 +124,7 @@ export default function Page({ changeOpen, isOpen }) {
                   id="nombre"
                   name="nombre"
                   type="text"
+                  w={["100%","150px", "200px"]}
                   disabled
                 ></Input>
               </Box>
@@ -144,11 +135,12 @@ export default function Page({ changeOpen, isOpen }) {
                   id="nombre"
                   name="nombre"
                   type="text"
+                  w={["100%","150px", "200px"]}
                   disabled
                 ></Input>
               </Box>
             </Flex>
-            <Flex w={"100%"} justifyContent={"space-between"}>
+            <Flex  direction={["column","row"]}w={"100%"} justifyContent={"space-between"}>
               <Box display={"flex"} flexDirection={"column"}>
                 <label htmlFor="">Teléfono</label>
                 <Input
@@ -156,6 +148,7 @@ export default function Page({ changeOpen, isOpen }) {
                   id="nombre"
                   name="nombre"
                   type="text"
+                  w={["100%","150px", "200px"]}
                   disabled
                 ></Input>
               </Box>
@@ -166,19 +159,22 @@ export default function Page({ changeOpen, isOpen }) {
                   id="nombre"
                   name="nombre"
                   type="text"
+                  w={["100%","150px", "200px"]}
                   disabled
                 ></Input>
               </Box>
             </Flex>
-            <Flex justifyContent={"space-between"} py={"20px"}>
-              <Button bgColor={"principal.100"} textColor={"white"} w={"170px"}>
+            <Flex flexDirection={["column","row"]}
+              w={["100%","200xpx"]} gap={["8px", "0"]}
+            justifyContent={"space-between"}>
+              <Button bgColor={"principal.100"} textColor={"white"} w={["100%","170px"]}>
                 Editar Información
               </Button>
-              <Button bgColor={"principal.100"} textColor={"white"} w={"170px"}>
+              <Button bgColor={"principal.100"} textColor={"white"} w={["100%","170px"]}>
                 Cambiar Contraseña
               </Button>
             </Flex>
-          </form>
+          </Box>
         </Box>
       </Flex>
     </Flex>

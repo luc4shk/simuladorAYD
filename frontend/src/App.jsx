@@ -12,8 +12,8 @@ function App() {
   return (
    <>
    <Login/>
-   {/* <SideBar isOpen={open}/>
-   <Page changeOpen={change} isOpen={open}/> */}
+   <SideBar isOpen={open}/>
+   <Page changeOpen={change} isOpen={open}/>
    </> 
   )
 }
