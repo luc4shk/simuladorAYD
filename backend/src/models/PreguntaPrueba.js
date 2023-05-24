@@ -1,15 +1,23 @@
 const {DataTypes} = require('sequelize');
 
-//Importamos el objeto de conexión
+// Impotamos el objeto de conexión
 const sequelize = require('../database/db');
 
 
 // Creamos el esquema del modelo
-const PruebaCompetencia = sequelize.define('prueba_competencia', {
+const PreguntaPrueba = sequelize.define('pregunta_prueba', {
     id: {
         type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
+    },
+    preguntaId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'preguntas',
+            key: 'id'
+        }
     },
     pruebaId: {
         type: DataTypes.INTEGER,
@@ -18,16 +26,11 @@ const PruebaCompetencia = sequelize.define('prueba_competencia', {
             model: 'pruebas',
             key: 'id'
         }
-    },
-    competenciaId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'competencias',
-            key: 'id'
-        }
     }
+}, {
+    timestamps: false
 });
 
-// Exportamos el modelo
-module.exports = PruebaCompetencia;
+
+// Exportamos el modelo 
+module.exports = PreguntaPrueba;

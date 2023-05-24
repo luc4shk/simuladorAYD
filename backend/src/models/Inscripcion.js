@@ -13,36 +13,42 @@ const Inscripcion = sequelize.define('inscripciones', {
     },
     fecha_inscripcion: {
         type: DataTypes.DATE,
+        allowNull: false,
         validate: {
+            notEmpty:{
+                msg: "La fecha de inscripcion no puede estar vacia"
+            },
             isDate: {
                 msg: "Favor ingresar un formato de fecha valido"
             }
         }
     },
-    estudiante_id: {
+    usuarioId: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
             model: 'usuarios',
             key: 'id'
-        },
-        allowNull: false
+        }
     },
-    convocatoria_id: {
+    convocatoriaId: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
             model: 'convocatorias',
             key: 'id'
         },
-        allowNull: false
     },
-    resultado_id: {
+    resultadoId: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
             model: 'resultados',
             key: 'id'
-        },
-        allowNull: false
+        }
     },
+}, {
+    timestamps: false
 });
 
 

@@ -15,9 +15,12 @@ const Convocatoria = sequelize.define('convocatorias', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
+            notEmpty: {
+                msg: 'El nombre de la competencia no puede ser vacio'
+            },
             len:{
-                args: [10, 35],
-                msg: "El nombre solo ha de contener entre 10 y 35 caracteres"
+                args: [10, 55],
+                msg: "El nombre de la competencia solo ha de contener minimo 10 caracteres"
             }
         }
     },
@@ -25,18 +28,53 @@ const Convocatoria = sequelize.define('convocatorias', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
+            notEmpty: {
+                msg: "La descripcion de la competencia no puede ser vacia"
+            },
             len:{
-                args: [10, 35],
-                msg: "El nombre solo ha de contener entre 10 y 35 caracteres"
+                args: [20, 200],
+                msg: "La descripción de la competencia ha de tener un minimo de 20 caracteres"
             }
         }
     },
-    fecha_inicio: {},
-    fecha_fin: {},
-    estado: {},
-    prueba_id: {}
+    fecha_inicio: {
+        type: DataTypes.DATE,
+        validate: {
+            notEmpty: {
+                msg: "La fecha de inicio de la convocatoria no puede ser vacia"
+            },
+            isDate: {
+                msg: "Favor ingresar un formato de fecha valido"
+            }
+        }
+    },
+    fecha_fin: {
+        type: DataTypes.DATE,
+        validate: {
+            notEmpty: {
+                msg: "La fecha de finalizacion de la convocatoria no puede ser vacia"
+            },
+            isDate: {
+                msg: "Favor ingresar un formato de fecha valido"
+            }
+        }
+    },
+    estado: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+    pruebaId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'pruebas',
+            key: 'id'
+        }
+    }
+}, {
+    timestamps: false
 });
 
 
 // Exportamos el modelo de inscripciones
-module.exports = Inscripcion;
+module.exports = Convocatoria;

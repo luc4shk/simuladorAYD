@@ -16,6 +16,9 @@ const User = sequelize.define('usuarios', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
+            notEmpty:{
+                msg: "El nombre no puede ser vacio"
+            },
             len:{
                 args: [5, 25],
                 msg: "El nombre solo ha de contener entre 5 y 25 caracteres"
@@ -26,6 +29,9 @@ const User = sequelize.define('usuarios', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
+            notEmpty:{
+                msg: "El apellido no puede ser vacio"
+            },
             len:{
                 args: [5, 35],
                 msg: "El apellido solo ha de contener entre 5 y 35 caracteres"
@@ -33,13 +39,16 @@ const User = sequelize.define('usuarios', {
         }
     },
     codigo: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: {
             name: 'users_code',
             msg: "El código propocionado ya existe"
         },
         validate:{
+            notEmpty:{
+                msg: "El código no puede ser vacio"
+            },
             isNumeric: {
                 msg: "El código solo ha de contener números"
             },
@@ -57,6 +66,9 @@ const User = sequelize.define('usuarios', {
             msg: "El email proporcionado ya ha sido registrado"
         },
         validate:{
+            notEmpty:{
+                msg: "El email no puede ser vacio"
+            },
             isEmail: {
                 args: true,
                 msg: "El correo debe corresponder con una dirección válida"
@@ -67,6 +79,9 @@ const User = sequelize.define('usuarios', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
+            notEmpty:{
+                msg: "La contraseña no puede ser vacia"
+            },
             len: {
                 args: [10, 65],
                 msg: "La contraseña debe de tener 10 caracteres minimo"
@@ -82,6 +97,9 @@ const User = sequelize.define('usuarios', {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
+            notEmpty:{
+                msg: "El Telefono no puede ser vacio"
+            },
             isNumeric: {
                 msg: "El telefono solo ha de contener números"
             },
@@ -95,6 +113,9 @@ const User = sequelize.define('usuarios', {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
+            notEmpty:{
+                msg: "La direccion no puede ser vacia"
+            },
             len: {
                 args: [20, 60],
                 msg: "La dirección ha de tener entre 20 y 60 caracteres"
@@ -109,6 +130,9 @@ const User = sequelize.define('usuarios', {
             msg: "Document already registered"
         },
         validate: {
+            notEmpty:{
+                msg: "El documento no puede ser vacio"
+            },
             isNumeric: {
                 msg: "El documento solo ha de contener números"
             },
@@ -122,12 +146,16 @@ const User = sequelize.define('usuarios', {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
+            notEmpty:{
+                msg: "El celular no puede ser vacio"
+            },
             isNumeric: {
                 msg: "El celular solo ha de contener números"
             },
-            len: {
-                args: 10,
-                msg: "El celular solo puede contener 10 digitos"
+            customLength(value) {
+                if(value.toString().length !== 10){
+                    throw new Error('El celular solo puede contener 10 digitos');
+                }
             }
         }
     },
@@ -140,12 +168,19 @@ const User = sequelize.define('usuarios', {
         type: DataTypes.INTEGER,
         allowNull: true,
         validate: {
+            notEmpty:{
+                msg: "El semestre no puede ser vacio"
+            },
             isNumeric: {
                 msg: "El semestre solo ha de contener números"
             },
-            len: {
+            min: {
                 args: 1,
-                msg: "El semestre solo puede contener 1 digito"
+                msg: "El semestre debe ser mayor que 0"
+            },
+            max: {
+                args: 10,
+                msg: "El semestre debe ser menor o igual a 10"
             }
         }
     },
@@ -153,7 +188,7 @@ const User = sequelize.define('usuarios', {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
-    rol_id: {
+    rolId: {
         type: DataTypes.INTEGER,
         references: {
             model: 'roles',

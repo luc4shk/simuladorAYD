@@ -4,8 +4,7 @@ const {errorHandler} = require('./middlewares/errorHandler');
 const sequelize = require('./database/db');
 
 // Importamos las tablas a crear
-const Rol = require('./models/Rol');
-const Usuario = require('./models/Usuario');
+require('./database/associations');
 
 // Importar Rutas de la API
 

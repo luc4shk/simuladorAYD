@@ -14,24 +14,34 @@ const Resultado = sequelize.define('resultados', {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            isNumeric: {
-                msg: "El puntaje solo puede contener números"
+            notEmpty:{
+                msg: "El puntaje no puede ser vacio"
             },
-            len: {
-                args: [0, 100],
-                msg: "El puntaje debe estar en un rango de 0 a 100"
+            isNumeric: {
+                msg: "El puntaje solo puede ser un valor numerico"
+            },
+            min: {
+                args: 0,
+                msg: "El puntaje debe ser mayor o igual a 0"
+            },
+            max: {
+                args: 100,
+                msg: "El puntaje debe ser menor o igual a 100"
             }
         }
     },
     fecha_finalizacion: {
         type: DataTypes.DATE,
         validate: {
+            notEmpty:{
+                msg: "La fecha de finalización no puede ser vacia"
+            },
             isDate: {
                 msg : "Por favor ingrese un formato de fecha válido"
             }
         }
     },
-    categoria_id: {
+    categoriaId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -39,6 +49,8 @@ const Resultado = sequelize.define('resultados', {
             key: 'id'
         }
     }
+}, {
+    timestamps: false
 });
 
 //Exportsamos el modelo
