@@ -2,6 +2,9 @@ const express = require('express');
 const {logger, logEvents} = require('./middlewares/logger');
 const {errorHandler} = require('./middlewares/errorHandler');
 const sequelize = require('./database/db');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const corsOptions = require('./util/corsOptions');
 
 // Importamos las tablas a crear
 require('./database/associations');
@@ -17,7 +20,9 @@ const PORT = process.env.PORT || 3500;
 
 // Middlwares
 app.use(logger);
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 
 // Rutas
@@ -42,7 +47,7 @@ app.use(errorHandler);
 
 
 // Corremos el servidor
-sequelize.sync({force: true}).then(() => {
+sequelize.sync().then(() => {
     console.log('Connected to ufps_pro');
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }).catch((err) => {
