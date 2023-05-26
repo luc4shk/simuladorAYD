@@ -7,7 +7,7 @@ const {Router} = require('express');
 const router = Router();
 
 // Routes
-router.post('/signin');
+router.post('/login');
 
 router.get('/refresh');
 

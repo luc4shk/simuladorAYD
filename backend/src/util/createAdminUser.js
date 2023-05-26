@@ -1,6 +1,7 @@
 const Usuario = require('../models/Usuario');
 const Rol = require('../models/Rol');
 const sequelize = require('../database/db');
+const bcrypt = require('bcrypt');
 
 // Función encargada de crear el usuario administrador
 const createAdminUser = async () => {
@@ -9,10 +10,13 @@ const createAdminUser = async () => {
 
         await sequelize.transaction(async (t) => {
 
-            // Obtenemos el rol de administrador
+            // Obtenemos el rol de administrador 
             const adminRole = await Rol.findOne({
                 where: {nombre: 'Administrador'}
             });
+
+            const getSalt = await bcrypt.genSalt(11);
+            const hashed = await bcrypt.hash('Director1234', getSalt);
 
             // Creamos el usuario
             const user  = await Usuario.create({
@@ -20,7 +24,7 @@ const createAdminUser = async () => {
                 apellido: 'Oliveros',
                 codigo: '1156060',
                 email: 'fogattateam@gmail.com',
-                password: 'Director1234',
+                password: hashed,
                 tipo: 'director',
                 telefono: '5556575',
                 direccion: 'Mi hogar es Colombia carajo',
