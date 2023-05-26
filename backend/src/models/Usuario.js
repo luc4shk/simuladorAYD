@@ -188,13 +188,13 @@ const User = sequelize.define('usuarios', {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
-    rolId: {
+    rol_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
             model: 'roles',
             key: 'id'
-        },
-        allowNull: false
+        }
     }
 }, {
     timestamps: false

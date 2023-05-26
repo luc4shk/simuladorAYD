@@ -23,7 +23,7 @@ const Inscripcion = sequelize.define('inscripciones', {
             }
         }
     },
-    usuarioId: {
+    usuario_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -31,7 +31,7 @@ const Inscripcion = sequelize.define('inscripciones', {
             key: 'id'
         }
     },
-    convocatoriaId: {
+    convocatoria_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -39,7 +39,7 @@ const Inscripcion = sequelize.define('inscripciones', {
             key: 'id'
         },
     },
-    resultadoId: {
+    resultado_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

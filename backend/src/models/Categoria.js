@@ -41,8 +41,9 @@ const Categoria =sequelize.define('categorias', {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
-    competenciaId: {
+    competencia_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
             model: 'competencias',
             key: 'id'

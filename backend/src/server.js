@@ -10,6 +10,7 @@ const corsOptions = require('./util/corsOptions');
 require('./database/associations');
 
 // Importar Rutas de la API
+const authRoutes = require('./routes/auth.routes');
 
 // Inicializar el contexto principal
 const app = express();
@@ -26,7 +27,7 @@ app.use(cookieParser());
 
 
 // Rutas
-
+app.use('/auth', authRoutes);
 
 
 // En caso de acceder a una ruta no especificada

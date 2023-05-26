@@ -41,7 +41,7 @@ const ConfiguracionCategoria = sequelize.define('configuracion_categoria', {
             }
         }
     },
-    pruebaId: {
+    prueba_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -49,7 +49,7 @@ const ConfiguracionCategoria = sequelize.define('configuracion_categoria', {
             key: 'id'
         }
     },
-    categoriaId: {
+    categoria_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -57,6 +57,8 @@ const ConfiguracionCategoria = sequelize.define('configuracion_categoria', {
             key: 'id'
         }
     }
+}, {
+    timestamps: false
 });
 
 module.exports = ConfiguracionCategoria;

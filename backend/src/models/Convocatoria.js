@@ -63,7 +63,7 @@ const Convocatoria = sequelize.define('convocatorias', {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
-    pruebaId: {
+    prueba_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

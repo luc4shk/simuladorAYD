@@ -11,7 +11,7 @@ const PreguntaPrueba = sequelize.define('pregunta_prueba', {
         primaryKey: true,
         autoIncrement: true
     },
-    preguntaId: {
+    pregunta_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -19,7 +19,7 @@ const PreguntaPrueba = sequelize.define('pregunta_prueba', {
             key: 'id'
         }
     },
-    pruebaId: {
+    prueba_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

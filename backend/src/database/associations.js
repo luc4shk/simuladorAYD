@@ -13,49 +13,69 @@ const PruebaCompetencia = require('../models/PruebaCompetencia');
 const PreguntaPrueba = require('../models/PreguntaPrueba');
 
 // Definimos la relación Usuario - Rol
-Rol.hasMany(User);
-User.belongsTo(Rol);
+Rol.hasMany(User, {foreignKey: 'rol_id'});
+User.belongsTo(Rol, {
+    foreignKey: 'rol_id'
+});
 
 // Definimos la relación Usuario - Inscripcion
-User.hasMany(Inscripcion);
-Inscripcion.belongsTo(User);
+User.hasMany(Inscripcion, {foreignKey: 'usuario_id'});
+Inscripcion.belongsTo(User, {
+    foreignKey: 'usuario_id'
+});
 
 // Definimos la relación Convocatoria - Inscripcion
-Convocatoria.hasMany(Inscripcion);
-Inscripcion.belongsTo(Convocatoria);
+Convocatoria.hasMany(Inscripcion, {foreignKey: 'convocatoria_id'});
+Inscripcion.belongsTo(Convocatoria, {
+    foreignKey: 'convocatoria_id'
+});
 
 // Definimos la relación Resultado - Inscripcion
-Resultado.hasOne(Inscripcion);
-Inscripcion.belongsTo(Resultado);
+Resultado.hasOne(Inscripcion, {foreignKey: 'resultado_id'});
+Inscripcion.belongsTo(Resultado, {
+    foreignKey: 'resultado_id'
+});
 
 // Definimos la relación Prueba - Convocatoria
-Prueba.hasMany(Convocatoria);
-Convocatoria.belongsTo(Prueba);
+Prueba.hasMany(Convocatoria, {foreignKey: 'prueba_id'});
+Convocatoria.belongsTo(Prueba, {
+    foreignKey: 'prueba_id'
+});
 
 // Definimos la relación Categoria - Resultado
-Categoria.hasMany(Resultado);
-Resultado.belongsTo(Categoria);
+Categoria.hasMany(Resultado, {foreignKey: 'categoria_id'});
+Resultado.belongsTo(Categoria, {
+    foreignKey: 'categoria_id'
+});
 
 // Definimos la relación Categoria - Pregunta
-Categoria.hasMany(Pregunta);
-Pregunta.belongsTo(Categoria);
+Categoria.hasMany(Pregunta, {foreignKey: 'categoria_id'});
+Pregunta.belongsTo(Categoria, {
+    foreignKey: 'categoria_id'
+});
 
 // Definimos la relación Categoria - ConfiguracionCategoria
-Categoria.hasMany(ConfiguracionCategoria);
-ConfiguracionCategoria.belongsTo(Categoria);
+Categoria.hasMany(ConfiguracionCategoria, {foreignKey: 'categoria_id'});
+ConfiguracionCategoria.belongsTo(Categoria, {
+    foreignKey: 'categoria_id'
+});
 
 // Definimos la relación Prueba - ConfiguracionCategoria
-Prueba.hasMany(ConfiguracionCategoria);
-ConfiguracionCategoria.belongsTo(Prueba);
+Prueba.hasMany(ConfiguracionCategoria, {foreignKey: 'prueba_id'});
+ConfiguracionCategoria.belongsTo(Prueba, {
+    foreignKey: 'prueba_id'
+});
 
 // Definimos la relación Competencia - Categoria
-Competencia.hasMany(Categoria);
-Categoria.belongsTo(Competencia);
+Competencia.hasMany(Categoria, {foreignKey: 'competencia_id'});
+Categoria.belongsTo(Competencia, {
+    foreignKey: 'competencia_id'
+});
 
 // Definimos la relación Competencia - Prueba
-Competencia.belongsToMany(Prueba, {through: PruebaCompetencia});
-Prueba.belongsToMany(Competencia, {through: PruebaCompetencia});
+Competencia.belongsToMany(Prueba, {through: PruebaCompetencia, foreignKey: 'competencia_id'});
+Prueba.belongsToMany(Competencia, {through: PruebaCompetencia, foreignKey: 'prueba_id'});
 
 // Definimos la relación Prueba - Pregunta
-Prueba.belongsToMany(Pregunta, {through: PreguntaPrueba});
-Pregunta.belongsToMany(Prueba, {through: PreguntaPrueba});
+Prueba.belongsToMany(Pregunta, {through: PreguntaPrueba, foreignKey: 'prueba_id'});
+Pregunta.belongsToMany(Prueba, {through: PreguntaPrueba, foreignKey: 'pregunta_id'});

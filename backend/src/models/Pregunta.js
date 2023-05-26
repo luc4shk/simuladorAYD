@@ -66,7 +66,7 @@ const Pregunta = sequelize.define('preguntas', {
             }
         }
     },
-    categoriaId: {
+    categoria_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

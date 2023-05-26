@@ -41,7 +41,7 @@ const Resultado = sequelize.define('resultados', {
             }
         }
     },
-    categoriaId: {
+    categoria_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
