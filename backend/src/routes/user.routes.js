@@ -16,10 +16,6 @@ router.get('/students', async (req, res) => {
         res.status(500).json({message: error.message});
     }
 });
-// Routes 
-router.get('/students', (req, res) => {
-
-});
 
 router.get('/students/:id', async (req, res) => {
     try {
