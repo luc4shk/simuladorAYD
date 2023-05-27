@@ -4,7 +4,9 @@ const {Router} = require('express');
 const router = Router();
 
 // Routes 
-router.get('/students', (req, res) => {});
+router.get('/students', (req, res) => {
+
+});
 
 router.get('/students/:id', (req, res) => {});
 
