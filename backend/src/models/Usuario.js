@@ -151,11 +151,6 @@ const User = sequelize.define('usuarios', {
             },
             isNumeric: {
                 msg: "El celular solo ha de contener números"
-            },
-            customLength(value) {
-                if(value.toString().length !== 10){
-                    throw new Error('El celular solo puede contener 10 digitos');
-                }
             }
         }
     },
