@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const Usuario = require('../models/Usuario');
 
 const verifyJWT = (req, res, next) => {
 
@@ -23,6 +24,16 @@ const verifyJWT = (req, res, next) => {
                 return res.status(403).json({message: 'Accceso prohibido'});
             }
 
+            // Verificamos los datos del payload
+            const foundUser = Usuario.findOne({
+                where: {
+                    email: user.username
+                }
+            });
+
+            if(!foundUser) return res.status(401).json({ message: 'Acceso no autorizado' });
+
+            req.user = user;
             next();
 
         }

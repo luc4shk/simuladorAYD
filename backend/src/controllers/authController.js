@@ -19,17 +19,21 @@ const login = async (req, res) => {
         }
 
         // Verificamos la existencia del usuario
-        const userFound = await Usuario.findOne({email});
+        const userFound = await Usuario.findOne({
+            where: {
+                email
+            }
+        });
 
         if(!userFound || !userFound.estado){
-            return res.status(401).json({message: 'Acceso no autorizado'});
+            return res.status(401).json({message: 'Credenciales incorrectas'});
         }
 
         // Comprobamos la contraseña
         const match = await bcrypt.compare(password, userFound.password);
 
         if(!match){
-            return res.status(401).json({message: 'Acceso no autorizado'});
+            return res.status(401).json({message: 'Credenciales incorrectas'});
         }
 
         // Creamos el token de acceso
@@ -98,7 +102,9 @@ const refresh = async (req, res) => {
 
             // Verificamos los datos del payload
             const foundUser = Usuario.findOne({
-                email: user.username
+                where: {
+                    email: user.username
+                }
             });
 
             if(!foundUser) return res.status(401).json({ message: 'Acceso no autorizado' });

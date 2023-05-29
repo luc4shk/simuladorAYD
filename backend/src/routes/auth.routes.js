@@ -12,7 +12,7 @@ const router = Router();
 // Routes
 router.post('/login', authController.login);
 
-router.get('/refresh', verifyJWT, authController.refresh);
+router.get('/refresh', authController.refresh);
 
 router.post('/logout', verifyJWT, authController.logout);
 
