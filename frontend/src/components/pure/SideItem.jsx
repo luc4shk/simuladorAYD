@@ -1,23 +1,40 @@
-import { Button, Flex, Icon, Link, Select, Text } from '@chakra-ui/react'
-import React from 'react'
+import { Button, Flex, Icon, Select, Text } from '@chakra-ui/react'
+import { useLocation, Link} from 'wouter'
+import React, { useState, useEffect } from 'react'
 
-export default function SideItem({icon, msg, active, index, funcion}) {
-  return (
+export default function SideItem({icon, msg, active, index, tamanio, path}) {
+    
+     const [ruta, setRuta] = useState(path)
+     const [loc, setLoc] = useLocation()
+
+    return (
     <>
-    <Link
+    <Button
         onClick={()=>{
-            funcion(index)
+            setRuta(path)
         }}
+        as={Link} 
+        to={ruta !== undefined && ruta}
         w={'100%'}
         borderRadius={"8px"}
-        _hover={{backgroundColor: "#F4F4F4"}}
+        _hover={{
+            backgroundColor: "#F4F4F4",
+            textDecoration:"none"
+        }}
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        variant={'unstyled'}
+        fontWeight={"semibold"}
+        
     >
-        <Flex w={"100%"} gap={"15px"} p={"10px"}  justifyContent={'flex-start'} alignItems={"flex-start"}>
-            <Icon as={icon} color={active ? "principal.100" : null } fontSize="25px"/>
-            <Text>{msg}</Text>
+        <Flex  w={"100%"} gap={"15px"} p={"10px"}  justifyContent={tamanio ? 'flex-start' : 'center'} alignItems={"center"}>
+            <Icon as={icon} color={ loc==ruta ? "principal.100" : null } fontSize="25px"/>
+            {msg!="" ? <Text>{msg}</Text> : msg}
         </Flex>
     
-    </Link>
+    </Button>
     </>
     )
 }
+
