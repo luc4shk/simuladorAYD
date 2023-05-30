@@ -12,6 +12,9 @@ require('./database/associations');
 // Importar Rutas de la API
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
+//const preguntasRoutes = require('./routes/preguntas.routes');
+const competenciaRoutes = require('./routes/competencia.routes');
+const categoriaRoutes = require('./routes/categoria.routes');
 
 // Inicializar el contexto principal
 const app = express();
@@ -30,7 +33,9 @@ app.use(cookieParser());
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
-
+//app.use('/api/question', preguntasRoutes);
+app.use('/api/competencia', competenciaRoutes);
+app.use('/api/categoria', categoriaRoutes);
 
 // En caso de acceder a una ruta no especificada
 app.all('*', (req, res) => {
@@ -50,7 +55,7 @@ app.use(errorHandler);
 
 
 // Corremos el servidor
-sequelize.sync({force: true}).then(() => {
+sequelize.sync().then(() => {
     console.log('Connected to ufps_pro');
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }).catch((err) => {

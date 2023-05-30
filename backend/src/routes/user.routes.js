@@ -1,32 +1,18 @@
 const {Router} = require('express');
-const Usuario = require('../models/Usuario');
+
+// Middleware de verificación de token
+const verifyJWT = require('../middlewares/verifyJWT');
+
+// Importamos las funciones del controladro
+const userContoller = require('../controllers/userController');
 
 // Inicializamos el router
 const router = Router();
 
 // Routes
-router.get('/students', async (req, res) => {
-    try {
-        const students = await Usuario.findAll({
-            where: {tipo: 'estudiante'}
-        })
-        res.json(students);
+router.get('/students', verifyJWT, userContoller.getStudents);
 
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
-});
-
-router.get('/students/:id', async (req, res) => {
-    try {
-        const id = req.params.id;
-        const students = await Usuario.findByPk(id);
-        res.json(students);
-
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
-});
+router.get('/students/:id', verifyJWT, userContoller.getStudentById);
 
 // Importamos el router
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import {Flex, Box, useMediaQuery} from "@chakra-ui/react"
 import SideItem from './pure/SideItem'
 import { AiOutlineFlag,
@@ -10,33 +10,26 @@ import { AiOutlineFlag,
          AiOutlineBook } from 'react-icons/ai';
 
 import {BiLogOut} from "react-icons/bi"
+import { AppContext } from './context/AppProvider';
 export default function SideBar({isOpen}) {
 
+  const {open, change} = useContext(AppContext)
+  console.log(open)
+  console.log(change)
+
   const navItems = [
-    {icon:AiOutlineHome,msg:"Panel Principal",active:false},
-    {icon:AiOutlineFlag,msg:"Competencias",active:false},
-    {icon:AiOutlineAppstore,msg:"Categorías",active:false},
-    {icon:AiOutlineCalendar,msg:"Preguntas",active:false},
-    {icon:AiOutlineTeam,msg:"Estudiantes",active:false},
-    {icon:AiOutlineFileAdd,msg:"Prueba",active:false},
-    {icon:AiOutlineBook,msg:"Convocatoria",active:false},
+    {icon:AiOutlineHome,msg:"Panel Principal",active:false,path:"/"},
+    {icon:AiOutlineFlag,msg:"Competencias",active:false,path:"/competencias"},
+    {icon:AiOutlineAppstore,msg:"Categorías",active:false,path:"/categorias"},
+    {icon:AiOutlineCalendar,msg:"Preguntas",active:false,path:"/preguntas"},
+    {icon:AiOutlineTeam,msg:"Estudiantes",active:false,path:"/estudiantes"},
+    {icon:AiOutlineFileAdd,msg:"Pruebas",active:false,path:"/pruebas"},
+    {icon:AiOutlineBook,msg:"Convocatorias",active:false, path:"/convocatorias"},
   ]
-
-
+  
   const [items, setItems] = useState(navItems)
- const [tamaño] = useMediaQuery("(min-width: 768px)");
-  function seleccion(index){
-    const newItems = [...items]
-    newItems.map((item,i)=>{
-      if(i == index){
-        item.active = true;
-      }else{
-        item.active = false;
-      
-      }
-    })
-    setItems(newItems)
-  }
+ const [w] = useMediaQuery("(min-width: 768px)");
+ 
 
   return (
     <>
@@ -61,11 +54,13 @@ export default function SideBar({isOpen}) {
         >
 
         {
-          items.map( ({icon, msg, active}, i) => <SideItem key={i} icon={icon} funcion={seleccion}  active={active} msg={tamaño ? msg : ""} index={i}/> ) 
+          items.map( ({icon, msg, active, path}, i) => <SideItem key={i} path={path} icon={icon} active={active} msg={w ? msg : ""} tamanio={w} index={i}/> ) 
         }
         </Flex>
-        <SideItem icon={BiLogOut} msg={tamaño ? "Cerrar Sesión" : ""}></SideItem>
+        <SideItem icon={BiLogOut} msg={w ? "Cerrar Sesión" : ""}></SideItem>
         </Flex>
     </>
   )
 }
+
+
