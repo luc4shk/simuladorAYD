@@ -5,7 +5,7 @@ const verifyJWT = require('../middlewares/verifyJWT');
 
 // Importamos las funciones del controlador
 const userContoller = require('../controllers/userController');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 
 // Inicializamos el router
 const router = Router();
@@ -27,7 +27,7 @@ router.get('/director/:id', verifyJWT, userContoller.getDirectorById);
 
 router.put('/updateDirector/:id', verifyJWT, userContoller.updateDirector);
 
-router.put('/updatePhotoD/:id', fileUpload(), userContoller.updatePhotoD);
+router.put('/updatePhotoD/:id', userContoller.updatePhotoD);
 
 // Importamos el router
 module.exports = router;

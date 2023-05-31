@@ -2,7 +2,7 @@ const Categoria = require('../models/Categoria');
 const Competencia = require('../models/Competencia');
 
 // @desc Endpoint encargado de la obtención de todas las categorias activas
-// @route POST /api/categoria
+// @route GET /api/categeoira
 // @access solo Admin
 const getCategorias = async (req, res) => {
 
@@ -29,7 +29,7 @@ const getCategorias = async (req, res) => {
 
 
 // @desc Endpoint encargado de la obtención de una categoria por Id
-// @route POST /api/categoria/:id
+// @route GET /api/categoria/:id
 // @access solo Admin
 const getCategoriaById = async (req, res) => {
 
@@ -129,7 +129,7 @@ const createCategoria = async (req, res) => {
 
 
 // @desc Endpoint encargado de la actualización de una categoria dado su id 
-// @route POST /api/categoria/update/:id
+// @route PUT /api/categoria/update/:id
 // @access solo Admin
 const updateCategoria = async (req, res) => {
 

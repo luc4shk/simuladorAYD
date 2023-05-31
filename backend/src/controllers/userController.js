@@ -1,13 +1,19 @@
 const Usuario = require('../models/Usuario');
-const multer = require("multer");
+const multer = require('multer');
 
+// @desc Endpoint encargado de la obtención de todos los estudiantes activos
+// @route GET /api/user
+// @access solo Admin
 getStudents =  async (req, res) => {
 
     try {
 
         //Obtenemos los estudiantes
         const students = await Usuario.findAll({
-            where: {tipo: 'estudiante'}
+            where: {
+                tipo: 'estudiante', 
+                estado: true
+            }
         })
 
         // Respondemos al usuario
@@ -19,6 +25,10 @@ getStudents =  async (req, res) => {
     
 };
 
+
+// @desc Endpoint encargado de la obtención de un solo estudiante activo por su id
+// @route GET /api/user/:id
+// @access solo Admin
 getStudentById = async (req, res) => {
     
     try {
@@ -27,13 +37,13 @@ getStudentById = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexNum = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
 
-        if(!regexNum.test(id)){
+        if(!regexId.test(id)){
             return res.status(400).json({error: 'id no valido'});
         }
 
-        //Obtenemos el estudiante
+        //Obtenemos el estudiante y verificamos su existencia
         const student = await Usuario.findOne({
             where: {
                 id,
@@ -54,7 +64,11 @@ getStudentById = async (req, res) => {
 
 };
 
-updateStudentForS = async (req, res) => {
+
+// @desc Endpoint encargado de la actualización de los datos de contacto de un estudiante por el mismo a partir de su id
+// @route PUT /api/user/update/:id
+// @access solo Estudiante
+actualizarDatosEstudiante = async (req, res) => {
 
     try {
 
@@ -62,13 +76,13 @@ updateStudentForS = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexNum = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
 
-        if(!regexNum.test(id)){
+        if(!regexId.test(id)){
             return res.status(400).json({error: 'id no valido'});
         }
 
-        //Obtenemos el estudiante
+        //Obtenemos el estudiante y verificamos su existencia
         const student = await Usuario.findOne({
             where: {
                 id,
@@ -81,9 +95,10 @@ updateStudentForS = async (req, res) => {
         }
 
         // Obtenemos los datos a actualizar
-        const {nombre, apellido, password} = req.body;
+        const {nombre, apellido} = req.body;
 
-        const regexData = /^[a-zA-Z\s]*$/;
+        // Validamos los datos obtenidos
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/; // Validación de nombres y apellidos
 
         if(!regexData.test(nombre) || !regexData.test(apellido)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
@@ -92,8 +107,7 @@ updateStudentForS = async (req, res) => {
         //Actualizamos el estudiante
         student.update({
             nombre,
-            apellido,
-            password
+            apellido
         });
 
         //Respondemos a la petición
@@ -104,8 +118,12 @@ updateStudentForS = async (req, res) => {
     }
 }
 
+
 //Métodos para el Director
 
+// @desc Endpoint encargado de la creación de un nuevo estudiante
+// @route PUT /api/user/update/:id
+// @access solo Estudiante
 createStudent =  async (req, res) => {
 
     try {
@@ -310,7 +328,7 @@ updateDirector = async (req, res) => {
             }
         });
 
-        if(directorExist && directorExist.id!=director.id){
+        if(directorExist && directorExist.id !== director.id){
             res.status(400).json({error: "El codigo y documento de el director deben ser unicos"});
         }
 
@@ -357,18 +375,18 @@ updatePhotoD = async (req, res) => {
             return res.status(400).json({error: 'No se encuentra ningun director asociado con el id especificado'});
         }
 
-        //const file = req.files.archivo;
+        const fileName = req.files.file.name;
         
         // Configuración de almacenamiento de Multer
         const storage = multer.diskStorage({
 
             destination: (req, file, cb) => {
-                const ruta = './backend/src/multimedia/directors';
+                const ruta = './src/multimedia/directors';
                 cb(null, ruta);
             },
             filename: (req, file, cb) => {
                 const ext = file.originalname.split('.').pop();
-                const nombreArchivo = `${director.documento}${ext}`;
+                const nombreArchivo = `${director.documento}.${ext}`;
                 cb(null, nombreArchivo);
             },
             
@@ -382,9 +400,11 @@ updatePhotoD = async (req, res) => {
             if (err) {
                 return res.status(400).json(err.message);
             }
+
+            const ext = fileName.originalname.split('.').pop();
     
             // Obtenemos la ruta de la foto
-            const ruta = `./backend/src/multimedia/directors/${director.documento}.${ext}`;
+            const ruta = `./src/multimedia/directors/${director.documento}.${ext}`;
 
             // Actualizamos el director
             director.update({
