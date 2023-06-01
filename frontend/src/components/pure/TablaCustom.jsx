@@ -14,7 +14,7 @@ import {
 import { Link } from "wouter";
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
 
-export default function TablaCustom({ columns, items, path, msg }) {
+export default function TablaCustom({ columns, items, path, msg, showButton }) {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5;
 
@@ -30,6 +30,7 @@ export default function TablaCustom({ columns, items, path, msg }) {
 
   return (
     <div>
+      {showButton && (
       <Button
         as={Link}
         to={path}
@@ -45,6 +46,7 @@ export default function TablaCustom({ columns, items, path, msg }) {
         </Flex>
         {msg}
       </Button>
+    )}
       <Box mb="15px" mt="20px" p="20px" borderRadius="8px" bgColor="white">
         <Flex
           w={["200px", "350px", "510px", "700px"]}

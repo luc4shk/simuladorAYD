@@ -1,16 +1,9 @@
-import React from 'react'
-import TablaCustom from './TablaCustom';
-import { Center } from '@chakra-ui/react';
-import { RiEdit2Fill,RiDeleteBin2Fill } from "react-icons/ri";
+import React from "react";
+import TablaCustom from "./TablaCustom";
+import { Center } from "@chakra-ui/react";
+import { RiEdit2Fill, RiDeleteBin2Fill } from "react-icons/ri";
 export default function PruebaBody() {
-
-  const columns = [
-    "Nombre",
-    "Semestre",
-    "Competencias",
-    "Editar",
-    "Eliminar"
-  ];
+  const columns = ["Nombre", "Semestre", "Competencias", "Editar", "Eliminar"];
   const items = [
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -21,7 +14,7 @@ export default function PruebaBody() {
       </Center>,
       <Center>
         <RiDeleteBin2Fill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -32,7 +25,7 @@ export default function PruebaBody() {
       </Center>,
       <Center>
         <RiDeleteBin2Fill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -43,7 +36,7 @@ export default function PruebaBody() {
       </Center>,
       <Center>
         <RiDeleteBin2Fill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -54,7 +47,7 @@ export default function PruebaBody() {
       </Center>,
       <Center>
         <RiDeleteBin2Fill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -65,7 +58,7 @@ export default function PruebaBody() {
       </Center>,
       <Center>
         <RiDeleteBin2Fill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -76,7 +69,7 @@ export default function PruebaBody() {
       </Center>,
       <Center>
         <RiDeleteBin2Fill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -87,7 +80,7 @@ export default function PruebaBody() {
       </Center>,
       <Center>
         <RiDeleteBin2Fill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -98,11 +91,17 @@ export default function PruebaBody() {
       </Center>,
       <Center>
         <RiDeleteBin2Fill />
-      </Center>
+      </Center>,
     ],
   ];
 
   return (
-      <TablaCustom columns={columns} items={items} path={""} msg={"Agregar Prueba"} />
-  )
+    <TablaCustom
+      columns={columns}
+      items={items}
+      path={""}
+      msg={"Crear Prueba"}
+      showButton={true}
+    />
+  );
 }

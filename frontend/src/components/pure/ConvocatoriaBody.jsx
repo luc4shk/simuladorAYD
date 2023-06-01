@@ -1,18 +1,17 @@
-import React from 'react'
-import TablaCustom from './TablaCustom';
-import { Center } from '@chakra-ui/react';
-import { RiEdit2Fill,RiDeleteBin2Fill, RiEyeFill } from "react-icons/ri";
+import React from "react";
+import TablaCustom from "./TablaCustom";
+import { Center } from "@chakra-ui/react";
+import { RiEdit2Fill, RiDeleteBin2Fill, RiEyeFill } from "react-icons/ri";
 
 export default function ConvocatoriaBody() {
-
-   const columns = [
+  const columns = [
     "Nombre",
     "Estado",
     "Fecha de Inicio",
     "Fecha de Finalización",
     "Editar",
     "Estudiantes",
-    "Resultados"
+    "Resultados",
   ];
   const items = [
     [
@@ -28,22 +27,7 @@ export default function ConvocatoriaBody() {
       </Center>,
       <Center>
         <RiEyeFill />
-      </Center>
-    ],
-    [
-     "Prueba Estudiantes Quinto Semestre",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
       </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -58,7 +42,7 @@ export default function ConvocatoriaBody() {
       </Center>,
       <Center>
         <RiEyeFill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -73,7 +57,7 @@ export default function ConvocatoriaBody() {
       </Center>,
       <Center>
         <RiEyeFill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -88,7 +72,7 @@ export default function ConvocatoriaBody() {
       </Center>,
       <Center>
         <RiEyeFill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -103,7 +87,7 @@ export default function ConvocatoriaBody() {
       </Center>,
       <Center>
         <RiEyeFill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -118,7 +102,7 @@ export default function ConvocatoriaBody() {
       </Center>,
       <Center>
         <RiEyeFill />
-      </Center>
+      </Center>,
     ],
     [
       "Prueba Estudiantes Quinto Semestre",
@@ -133,12 +117,32 @@ export default function ConvocatoriaBody() {
       </Center>,
       <Center>
         <RiEyeFill />
-      </Center>
+      </Center>,
+    ],
+    [
+      "Prueba Estudiantes Quinto Semestre",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
     ],
   ];
 
-
   return (
-    <TablaCustom columns={columns} items={items} path={""} msg={"Agregar Convocatoria"} />
-  )
+    <TablaCustom
+      columns={columns}
+      items={items}
+      path={""}
+      msg={"Agregar Convocatoria"}
+      showButton={true}
+    />
+  );
 }

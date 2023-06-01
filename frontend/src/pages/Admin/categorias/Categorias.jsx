@@ -7,6 +7,6 @@ export default function Categorias() {
   const {change, open} = useContext(AppContext)
 
   return (
-    <Page changeOpen={change} isOpen={open} componente={<CategoriaBody/>} msg={"Categoria"}/>
+    <Page changeOpen={change} isOpen={open} componente={<CategoriaBody/>} msg={"Categorias"}/>
   )
 }

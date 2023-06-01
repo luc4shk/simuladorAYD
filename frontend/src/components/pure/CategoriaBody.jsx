@@ -86,6 +86,12 @@ export default function CategoriaBody() {
     ],
   ];
   return (
-    <TablaCustom columns={columns} items={items} path={"/formularioCategoria"} msg={"Agregar Categoria"} />
+    <TablaCustom
+      columns={columns}
+      items={items}
+      path={"/formularioCategoria"}
+      msg={"Agregar Categoria"}
+      showButton={true}
+    />
   );
 }

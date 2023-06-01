@@ -1,15 +1,15 @@
-import React from 'react'
-import TablaCustom from './TablaCustom';
-import { Center } from '@chakra-ui/react';
+import React from "react";
+import TablaCustom from "./TablaCustom";
+import { Center } from "@chakra-ui/react";
 import { RiEdit2Fill } from "react-icons/ri";
 export default function PreguntaBody() {
-   const columns = [
+  const columns = [
     "Enunciado",
     "Semestre",
     "Estado",
     "Tipo",
     "Categoria",
-    "Editar"
+    "Editar",
   ];
   const items = [
     [
@@ -23,7 +23,7 @@ export default function PreguntaBody() {
       </Center>,
     ],
     [
-     "¿Qué significa la palabra Software?",
+      "¿Qué significa la palabra Software?",
       "2",
       "Activo",
       "Simple", //aqui se deberia extraer de la entidad competencia!!!
@@ -94,6 +94,12 @@ export default function PreguntaBody() {
     ],
   ];
   return (
-      <TablaCustom columns={columns} items={items} path={""} msg={"Agregar Pregunta"} />
-    )
+    <TablaCustom
+      columns={columns}
+      items={items}
+      path={""}
+      msg={"Agregar Pregunta"}
+      showButton={true}
+    />
+  );
 }

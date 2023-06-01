@@ -33,6 +33,12 @@ export default function CompetenciaBody() {
   ];
 
   return (
-      <TablaCustom columns={columns} items={items} path={"/formularioCompetencia"} msg={"Agregar Competencia"} />
+    <TablaCustom
+      columns={columns}
+      items={items}
+      path={"/formularioCompetencia"}
+      msg={"Agregar Competencia"}
+      showButton={true}
+    />
   );
 }
