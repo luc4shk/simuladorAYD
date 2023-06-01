@@ -11,6 +11,7 @@ import Estudiantes from '../pages/Admin/estudiantes/Estudiantes'
 import Convocatorias from '../pages/Admin/convocatorias/Convocatorias'
 import AgregarCompetencia from "../pages/Admin/competencias/AgregarCompetencia"
 import AgregarCategoria from '../pages/Admin/categorias/AgregarCategoria'
+import SeleccionarTipoPregunta from '../pages/Admin/preguntas/SeleccionarTipoPregunta'
 export default function AppRouter() {
   return (
     <Router>
@@ -25,6 +26,7 @@ export default function AppRouter() {
           <Route path="/convocatorias" component={Convocatorias}/>
           <Route path="/formularioCompetencia" component={AgregarCompetencia}/>
           <Route path="/formularioCategoria" component={AgregarCategoria}/>
+          <Route path="/tipoPregunta" component={SeleccionarTipoPregunta}/>
           <Route component={ErrorPage}/>
         </Switch>
       </Router>

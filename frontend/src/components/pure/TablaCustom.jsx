@@ -31,25 +31,25 @@ export default function TablaCustom({ columns, items, path, msg, showButton }) {
   return (
     <div>
       {showButton && (
-      <Button
-        as={Link}
-        to={path}
-        bgColor="principal.100"
-        textColor="white"
-        w={["100%", "250px"]}
-        display="flex"
-        alignItems="center"
-        borderRadius="18px"
-      >
-        <Flex marginRight="0.5rem">
-          <Icon ml={["1px", "0px"]} color="white" as={MdAdd} boxSize={5} />
-        </Flex>
-        {msg}
-      </Button>
-    )}
+        <Button
+          as={Link}
+          to={path}
+          bgColor="principal.100"
+          textColor="white"
+          w={["100%", "250px"]}
+          display="flex"
+          alignItems="center"
+          borderRadius="18px"
+        >
+          <Flex marginRight="0.5rem">
+            <Icon ml={["1px", "0px"]} color="white" as={MdAdd} boxSize={5} />
+          </Flex>
+          {msg}
+        </Button>
+      )}
       <Box mb="15px" mt="20px" p="20px" borderRadius="8px" bgColor="white">
         <Flex
-          w={["200px", "350px", "510px", "700px"]}
+          w={["190px", "350px", "510px", "700px"]}
           gap={["8px", "0"]}
           direction={["column", "row"]}
           justifyContent={["flex-start", "space-between"]}
@@ -92,7 +92,10 @@ export default function TablaCustom({ columns, items, path, msg, showButton }) {
           </Box>
         </Flex>
       </Box>
-      <div className="pagination" style={{ display: "flex", justifyContent: "center" }}>
+      <div
+        className="pagination"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
         <Button
           disabled={currentPage === 0}
           onClick={() => handlePageChange(currentPage - 1)}

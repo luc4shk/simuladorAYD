@@ -97,7 +97,7 @@ export default function PreguntaBody() {
     <TablaCustom
       columns={columns}
       items={items}
-      path={""}
+      path={"/tipoPregunta"}
       msg={"Agregar Pregunta"}
       showButton={true}
     />
