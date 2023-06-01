@@ -2,8 +2,6 @@ import React from "react";
 import TablaCustom from "./TablaCustom";
 import { RiEdit2Fill } from "react-icons/ri";
 import { Center } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
-import {Link} from "wouter"
 
 export default function CompetenciaBody() {
   const columns = ["Nombre", "Descripción", "Editar", "Estado"];
@@ -36,16 +34,7 @@ export default function CompetenciaBody() {
 
   return (
     <div>
-      <Button
-        as={Link}
-        to="/formularioCompetencia"
-        bgColor={"principal.100"}
-        textColor={"white"}
-        w={["100%", "170px"]}
-      >
-        Cambiar Contraseña
-      </Button>
-      <TablaCustom columns={columns} items={items} />
+      <TablaCustom columns={columns} items={items} path={"/formularioCompetencia"} msg={"Agregar Competencia"} />
     </div>
   );
 }
