@@ -10,7 +10,7 @@ import Preguntas from '../pages/Admin/preguntas/Preguntas'
 import Estudiantes from '../pages/Admin/estudiantes/Estudiantes'
 import Convocatorias from '../pages/Admin/convocatorias/Convocatorias'
 import AgregarCompetencia from "../pages/Admin/competencias/AgregarCompetencia"
-import AgregarCategoria from '../components/forms/FormularioCategoria'
+import AgregarCategoria from '../pages/Admin/categorias/AgregarCategoria'
 export default function AppRouter() {
   return (
     <Router>

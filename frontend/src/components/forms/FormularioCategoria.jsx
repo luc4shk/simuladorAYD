@@ -2,7 +2,7 @@ import { Box, Button, Center, Input, Textarea } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "wouter";
 
-export default function AgregarCategoria() {
+export default function FormularioCategoria() {
   const competencias = ["Competencia 1", "Competencia 2", "Competencia 3"];
   return (
     <Box position="fixed">
