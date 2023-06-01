@@ -6,13 +6,9 @@ export default function SideItem({icon, msg, active, index, tamanio, path}) {
     
      const [ruta, setRuta] = useState(path)
      const [loc, setLoc] = useLocation()
-
     return (
     <>
     <Button
-        onClick={()=>{
-            setRuta(path)
-        }}
         as={Link} 
         to={ruta !== undefined && ruta}
         w={'100%'}

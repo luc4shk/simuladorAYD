@@ -12,13 +12,8 @@ import {AppProvider} from './components/context/AppProvider';
 import AppRouter from './routes/AppRouter';
 
 function App() {
-  // const [open, setOpen] = useState(false);
-  // const change = () => setOpen(!open);
-
   return (
     <AppProvider>
-      {/* <SideBar isOpen={open} /> */}
-      <SideBar/>
       <AppRouter/>
     </AppProvider>
   );

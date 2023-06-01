@@ -9,13 +9,11 @@ import Categorias from '../pages/Admin/categorias/Categorias'
 import Preguntas from '../pages/Admin/preguntas/Preguntas'
 import Estudiantes from '../pages/Admin/estudiantes/Estudiantes'
 import Convocatorias from '../pages/Admin/convocatorias/Convocatorias'
+import AgregarCompetencia from "../pages/Admin/competencias/AgregarCompetencia"
 export default function AppRouter() {
-   const [location] = useLocation();
-
-  const showSideBar = location !== '/competencias'; 
   return (
     <Router>
-        {showSideBar && <SideBar/>}
+        { <SideBar/>}
         <Switch>
           <Route path="/" component={PrincipalPage}/>
           <Route path="/competencias" component={Competencias} />
@@ -24,6 +22,7 @@ export default function AppRouter() {
           <Route path="/preguntas" component={Preguntas}/>
           <Route path="/estudiantes" component={Estudiantes}/>
           <Route path="/convocatorias" component={Convocatorias}/>
+          <Route path="/formularioCompetencia" component={AgregarCompetencia}/>
           <Route component={ErrorPage}/>
         </Switch>
       </Router>

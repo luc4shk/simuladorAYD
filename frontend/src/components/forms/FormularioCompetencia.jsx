@@ -1,9 +1,9 @@
 import { Box, Button, Center, Input, Textarea } from "@chakra-ui/react";
 import React from "react";
 
-export default function AgregarCompetencia() {
+export default function FormularioCompetencia() {
   return (
-    <Box position="fixed" bg="gray.100">
+    <Box position="fixed">
       <Center h="100%">
         <Box
           p="40px"
@@ -40,7 +40,7 @@ export default function AgregarCompetencia() {
                 mt="10px"
                 id="descripcion"
                 name="descripcion"
-                resize="vertical"
+                resize="none"
                 h="180px"
                 maxW={["200px", "300px", "350px", "400px"]}
                 w="400px"

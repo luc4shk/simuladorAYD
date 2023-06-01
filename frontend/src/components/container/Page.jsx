@@ -20,9 +20,6 @@ export default function Page({ changeOpen, isOpen , componente, msg}) {
         isOpen={isOpen}
       />
       <Flex
-        onClick={() => {
-          isOpen ? null : changeOpen();
-        }}
         justifyContent={"center"}
         p={"20px"}
         minH={"calc(100% - 60px)"}

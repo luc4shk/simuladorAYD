@@ -14,8 +14,6 @@ import { AppContext } from './context/AppProvider';
 export default function SideBar({isOpen}) {
 
   const {open, change} = useContext(AppContext)
-  console.log(open)
-  console.log(change)
 
   const navItems = [
     {icon:AiOutlineHome,msg:"Panel Principal",active:false,path:"/"},
