@@ -8,7 +8,7 @@ export default function CompetenciaBody() {
   const items = [
     [
       "GENÉRICAS",
-      "esta competencia es de tipo genérica ",
+      "esta competencia es de tipo genéricas ",
       <Center>
         <RiEdit2Fill />
       </Center>,

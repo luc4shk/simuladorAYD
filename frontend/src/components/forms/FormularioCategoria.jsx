@@ -1,10 +1,11 @@
 import { Box, Button, Center, Input, Textarea } from "@chakra-ui/react";
 import React from "react";
+import { Link } from "wouter";
 
 export default function AgregarCategoria() {
   const competencias = ["Competencia 1", "Competencia 2", "Competencia 3"];
   return (
-    <Box position="fixed" bg="gray.100">
+    <Box position="fixed">
       <Center h="100%">
         <Box
           p="40px"
@@ -70,6 +71,8 @@ export default function AgregarCategoria() {
               </select>
             </Box>
             <Button
+            as={Link}
+            to={"/categorias"}
               bgColor="principal.100"
               textColor="white"
               w={["200px", "300px", "350px", "400px"]}
