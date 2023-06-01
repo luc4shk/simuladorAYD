@@ -16,7 +16,7 @@ import { MdAdd } from "react-icons/md";
 
 export default function TablaCustom({ columns, items, path, msg }) {
   return (
-    <>
+    <div>
       <Button
         as={Link}
         to={path}
@@ -77,6 +77,6 @@ export default function TablaCustom({ columns, items, path, msg }) {
           </Box>
         </Flex>
       </Box>
-    </>
+    </div>
   );
 }
