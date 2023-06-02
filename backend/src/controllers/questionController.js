@@ -28,6 +28,49 @@ const getAllQuestions = async (req, res) => {
 
 };
 
+const createQuestion = async (req, res) => {
+    try {
+
+        //Obtenemos los datos de la pregunta a crear
+        const {texto_pregunta, semestre, A, B, C, D, respuesta, categoria_id} = req.body;
+
+        // Validamos la existencia de todos los datos
+        if(!texto_pregunta || !semestre || !A || !B || !C || !D || !respuesta || !categoria_id){
+            return res.status(400).json({error: 'Todos los campos son requeridos'});
+        }
+
+        // Creamos el arreglo con las opciones
+        const options = [A,B,C,D];
+
+        //validamos los datos
+        const regexNum = /^[0-9]*$/;
+        if(!regexNum.test(semestre) || (!Array.isArray(options) || options.length !== 4) || !regexNum.test(categoria_id)){
+            return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
+        }
+
+        // Validamos que el id de categoria corresponda a una existente
+        const categoriaExist = Categoria.findByPk(categoria_id);
+
+        if(!categoriaExist){
+            return res.status(400).json({error: "El id de categoria proporcionado no corresponde a ninguna existente"});
+        }
+
+        // Creamos la pregunta
+        const pregunta = await Pregunta.create({
+            texto_pregunta,
+            semestre,
+            opciones: JSON.stringify(options),
+            respuesta,
+            categoria_id
+        })
+
+        res.status(200).json(pregunta);
+
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
 const createImageQuestion = async (req, res) => {
     try {
 
@@ -37,8 +80,6 @@ const createImageQuestion = async (req, res) => {
 
         // Validamos los datos
         const regexNum = /^[0-9]*$/;
-
-        console.log(texto_pregunta, semestre, A, B, C, D, respuesta, imagen, categoria_id);
 
         if(!texto_pregunta || !semestre || !A || !B || !C || !D || !respuesta || !imagen || !categoria_id){
             return res.status(400).json({error: 'Todos los campos son requeridos'});
@@ -78,7 +119,7 @@ const createImageQuestion = async (req, res) => {
     }
 }
 
-const createQuestion = async (req, res) => {
+const createQuestions = async (req, res) => {
 
     try{
 
@@ -210,7 +251,8 @@ const getQuestionById = async (req, res) => {
             respuesta: response,
             estado: pregunta.estado,
             semestre: pregunta.semestre,
-            categoria: pregunta.categoria.nombre
+            categoria: pregunta.categoria.nombre,
+            imageFile: `http://localhost:3500/questions/${pregunta.imagen}`
         });
 
     }catch(err){
@@ -242,12 +284,21 @@ const actualizarPregunta = async (req, res) => {
         }
 
         // Obtenemos los datos a actualizar
-        const {texto_pregunta, semestre, opciones, estado, respuesta, categoria_id} = req.body;
+        const {texto_pregunta, semestre, A, B, C, D, estado, respuesta, categoria_id} = req.body;
+        const imagen = req.file;
 
-        // Validamos los datos obtenidos
-        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/; // Validación de nombres y apellidos
+        // Validamos la existencia de todos los datos
+        if(!texto_pregunta || !semestre || !A || !B || !C || !D || !respuesta || !estado || !categoria_id){
+            return res.status(400).json({error: 'Todos los campos son requeridos'});
+        }
+        
+        // Creamos el arreglo con las opciones
+        const options = [A,B,C,D];
 
-        if(!regexId.test(semestre) || (!Array.isArray(opciones) || opciones.length !== 4) || typeof estado !== 'boolean' || !regexId.test(categoria_id)){
+        //validamos los datos
+        const regexNum = /^[0-9]*$/;
+
+        if(!regexNum.test(semestre) || (!Array.isArray(options) || options.length !== 4) || !regexNum.test(categoria_id)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
         }
 
@@ -262,11 +313,18 @@ const actualizarPregunta = async (req, res) => {
         await pregunta.update({
             texto_pregunta,
             semestre,
-            opciones: JSON.stringify(opciones),
+            opciones: JSON.stringify(options),
             estado,
             respuesta,
             categoria_id
         });
+
+        // Si existe una imagen, la actualizamos
+        if(imagen){
+            await pregunta.update({
+                imagen: imagen.filename
+            });
+        }
 
         res.status(200).json(pregunta);
 
@@ -278,8 +336,9 @@ const actualizarPregunta = async (req, res) => {
 
 module.exports = {
     getAllQuestions,
-    createImageQuestion,
     createQuestion,
+    createImageQuestion,
+    createQuestions,
     getQuestionById,
     actualizarPregunta
 }

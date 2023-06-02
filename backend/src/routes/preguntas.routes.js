@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const path = require('path');
 const multer = require('multer');
+const Pregunta = require('../models/Pregunta');
 
 // Middleware
 const fileupload = require('express-fileupload');
@@ -21,11 +22,16 @@ const router = Router();
 // @access solo Admin
 router.get('/', [verifyJWT, isAdmin], questionController.getAllQuestions);
 
-
-// @desc Endpoint encargada de la creación de una nueva pregunta
+// @desc Endpoint encargada de la creación de una pregunta simple
 // @route POST /api/question/create
 // @access solo Admin
-router.post('/create', [verifyJWT, isAdmin, fileupload()], questionController.createQuestion);
+router.post('/createQuestion', [verifyJWT, isAdmin], questionController.createQuestion);
+
+
+// @desc Endpoint encargada de la creación de preguntas por medio de un archivo
+// @route POST /api/question/create
+// @access solo Admin
+router.post('/create', [verifyJWT, isAdmin, fileupload()], questionController.createQuestions);
 
 // Storage de multer
 const multerStorage = multer.diskStorage({
@@ -82,7 +88,7 @@ router.get('/:id', [verifyJWT, isAdmin], questionController.getQuestionById);
 // @desc Endpoint encargado de la actualización de una pregunta por su id
 // @route PUT /api/question/update/:id
 // @access solo Admin
-router.put('/update/:id', [verifyJWT, isAdmin], questionController.actualizarPregunta);
+router.put('/update/:id', [verifyJWT, isAdmin, upload.single("imagen")], questionController.actualizarPregunta);
 
 
 // Importamos el router

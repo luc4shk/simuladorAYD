@@ -28,6 +28,8 @@ app.use(express.static(path.resolve(__dirname, './public')));
 
 app.use('directors', express.static(path.resolve(__dirname, './public/directors')));
 
+app.use('questions', express.static(path.resolve(__dirname, './public/questions')));
+
 // Middlwares
 app.use(logger);
 app.use(cors(corsOptions));
