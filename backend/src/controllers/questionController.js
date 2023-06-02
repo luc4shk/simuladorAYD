@@ -28,6 +28,55 @@ const getAllQuestions = async (req, res) => {
 
 };
 
+const createImageQuestion = async (req, res) => {
+    try {
+
+        //Obtenemos los datos de la pregunta a crear
+        const {texto_pregunta, semestre, A, B, C, D, respuesta, categoria_id} = req.body;
+        const imagen = req.file;
+
+        // Validamos los datos
+        const regexNum = /^[0-9]*$/;
+
+        console.log(texto_pregunta, semestre, A, B, C, D, respuesta, imagen, categoria_id);
+
+        if(!texto_pregunta || !semestre || !A || !B || !C || !D || !respuesta || !imagen || !categoria_id){
+            return res.status(400).json({error: 'Todos los campos son requeridos'});
+        }
+
+        // Creamos el arreglo con las opciones
+        const options = [A,B,C,D];
+
+        if(!regexNum.test(semestre) || (!Array.isArray(options) || options.length !== 4) || !regexNum.test(categoria_id)){
+            return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
+        }
+
+        // Validamos que el id de categoria corresponda a una existente
+        const categoriaExist = Categoria.findByPk(categoria_id);
+
+        if(!categoriaExist){
+            return res.status(400).json({error: "El id de categoria proporcionado no corresponde a ninguna existente"});
+        }
+
+        // Creamos la pregunta
+        const pregunta = await Pregunta.create({
+            texto_pregunta,
+            semestre,
+            opciones: JSON.stringify(options),
+            respuesta,
+            imagen: imagen.filename,
+            categoria_id
+        })
+
+        res.status(200).json({
+            pregunta,
+            imageFile: `http://localhost:3500/directors/${req.file.filename}`
+        });
+
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
 
 const createQuestion = async (req, res) => {
 
@@ -229,6 +278,7 @@ const actualizarPregunta = async (req, res) => {
 
 module.exports = {
     getAllQuestions,
+    createImageQuestion,
     createQuestion,
     getQuestionById,
     actualizarPregunta
