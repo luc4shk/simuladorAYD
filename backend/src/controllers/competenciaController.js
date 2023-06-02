@@ -1,5 +1,5 @@
 const Competencia = require('../models/Competencia');
-
+const Categoria = require('../models/Categoria');
 
 const getCompetencias = async (req, res) => {
 
@@ -7,7 +7,12 @@ const getCompetencias = async (req, res) => {
 
         // Obtenemos las competencias
         const competencias = await Competencia.findAll({
-            where: {estado: true}
+            where: {estado: true},
+            attributes: ['nombre', 'descripcion', 'estado'],
+            include: {
+                model: Categoria,
+                attributes: ['id', 'nombre']
+            }
         });
 
         // Respondemos al usuario
@@ -36,7 +41,10 @@ const getCompetenciaById = async (req, res) => {
 
         // Obtenemos y verificamos la competencia
         const competencia = await Competencia.findByPk(id, {
-            attributes: ['nombre', 'descripcion', 'estado']
+            include: {
+                model: Categoria,
+                attributes: ['id', 'nombre']
+            }
         });
 
         if(!competencia){
@@ -69,10 +77,10 @@ const createCompetencia = async (req, res) => {
             return res.status(400).json({error: 'El nombre y la descripción deben ser texto'});
         }
 
-        const regex = /^[a-zA-Z\s]*$/; // Expresión regular que controla solo la admición de caracteres comunes
+        const regex = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/; // Expresión regular que controla solo la admición de caracteres comunes
 
-        if(!regex.test(nombre) || !regex.test(descripcion)){
-            return res.status(400).json({error: 'El nombre y la descripción no pueden contener números o caracteres especiales'});
+        if(!regex.test(nombre)){
+            return res.status(400).json({error: 'El nombre no puede contener números o caracteres especiales'});
         }
 
         // Comprobamos que el nombre sea unico 
@@ -131,10 +139,10 @@ const updateCompetencia = async (req, res) => {
             return res.status(400).json({error: 'Los tipos de datos no coinciden'});
         }
 
-        const regex = /^[a-zA-Z\s]*$/; // Expresión regular que controla solo la admición de caracteres comunes
+        const regex = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/; // Expresión regular que controla solo la admición de caracteres comunes
 
-        if(!regex.test(nombre) || !regex.test(descripcion)){
-            return res.status(400).json({error: 'El nombre y la descripción no pueden contener números o caracteres especiales'});
+        if(!regex.test(nombre)){
+            return res.status(400).json({error: 'El nombre no puede contener números o caracteres especiales'});
         }
 
         // Comprobamos que el nombre sea unico 
@@ -149,7 +157,7 @@ const updateCompetencia = async (req, res) => {
         }
 
         // Actualizamos la competencia
-        competencia.update({
+        await competencia.update({
             nombre: nombre.toUpperCase(),
             descripcion,
             estado

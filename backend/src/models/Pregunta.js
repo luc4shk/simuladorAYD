@@ -66,6 +66,10 @@ const Pregunta = sequelize.define('preguntas', {
             }
         }
     },
+    imagen: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     categoria_id: {
         type: DataTypes.INTEGER,
         allowNull: false,

@@ -111,7 +111,8 @@ const Prueba = sequelize.define('pruebas', {
                 args: 1,
                 msg: "El puntaje total debe ser mayor que 0"
             }
-        }
+        },
+        defaultValue: 500
     }
 }, {
     timestamps: false
