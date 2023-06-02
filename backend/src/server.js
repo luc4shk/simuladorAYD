@@ -16,6 +16,7 @@ const userRoutes = require('./routes/user.routes');
 const preguntasRoutes = require('./routes/preguntas.routes');
 const competenciaRoutes = require('./routes/competencia.routes');
 const categoriaRoutes = require('./routes/categoria.routes');
+const pruebaRoutes = require('./routes/prueba.routes');
 
 // Inicializar el contexto principal
 const app = express();
@@ -41,6 +42,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/question', preguntasRoutes);
 app.use('/api/competencia', competenciaRoutes);
 app.use('/api/categoria', categoriaRoutes);
+app.use('/api/prueba', pruebaRoutes);
 
 // En caso de acceder a una ruta no especificada
 app.all('*', (req, res) => {

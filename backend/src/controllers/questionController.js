@@ -245,7 +245,7 @@ const actualizarPregunta = async (req, res) => {
         const {texto_pregunta, semestre, opciones, estado, respuesta, categoria_id} = req.body;
 
         // Validamos los datos obtenidos
-        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/; // Validación de nombres y apellidos
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/; // Validación de nombres y apellidos
 
         if(!regexId.test(semestre) || (!Array.isArray(opciones) || opciones.length !== 4) || typeof estado !== 'boolean' || !regexId.test(categoria_id)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
