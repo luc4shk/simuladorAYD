@@ -14,7 +14,7 @@ const router = Router();
 // Rutas
 
 // @desc Endpoint encargado de la obtención de todas las categorias activas
-// @route GET /api/categeoira
+// @route GET /api/categoria
 // @access solo Admin
 router.get('/', [authJWT, isAdmin], categoriaController.getCategorias);
 

@@ -79,10 +79,10 @@ const createCategoria = async (req, res) => {
             return res.status(400).json({error: 'El nombre y la descripción deben ser texto'});
         }
 
-        const regex = /^[a-zA-Z\s]*$/; // Expresión regular que controla solo la admición de caracteres comunes
+        const regex = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/; // Expresión regular que controla solo la admición de caracteres comunes
 
-        if(!regex.test(nombre) || !regex.test(descripcion)){
-            return res.status(400).json({error: 'El nombre y la descripción no pueden contener números o caracteres especiales'});
+        if(!regex.test(nombre)){
+            return res.status(400).json({error: 'El nombre no puede contener números o caracteres especiales'});
         }
 
         // Comprobamos que el nombre de la categoria sea unico 
@@ -145,9 +145,9 @@ const updateCategoria = async (req, res) => {
         const {nombre, descripcion, estado, competencia_id} = req.body;
 
         // Validamos los datos
-        const regexData = /^[a-zA-Z\s]*$/;
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
 
-        if(!regexData.test(nombre) || !regexData.test(descripcion) || !regexId.test(competencia_id)){
+        if(!regexData.test(nombre) || !regexId.test(competencia_id)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
         }
 
