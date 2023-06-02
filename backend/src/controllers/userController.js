@@ -1,9 +1,11 @@
+const { Op } = require('sequelize');
 const Usuario = require('../models/Usuario');
 const multer = require('multer');
+const password_generator = require('generate-password');
+const encryptPasswd= require('../util/encryptPassword');
+const generateCorreo = require('../util/emailGenerator');
 
-// @desc Endpoint encargado de la obtención de todos los estudiantes activos
-// @route GET /api/user
-// @access solo Admin
+
 getStudents =  async (req, res) => {
 
     try {
@@ -14,7 +16,7 @@ getStudents =  async (req, res) => {
                 tipo: 'estudiante', 
                 estado: true
             }
-        })
+        });
 
         // Respondemos al usuario
         res.status(200).json(students);
@@ -26,9 +28,6 @@ getStudents =  async (req, res) => {
 };
 
 
-// @desc Endpoint encargado de la obtención de un solo estudiante activo por su id
-// @route GET /api/user/:id
-// @access solo Admin
 getStudentById = async (req, res) => {
     
     try {
@@ -52,7 +51,7 @@ getStudentById = async (req, res) => {
         });
 
         if(!student){
-            return res.status(400).json({error: 'No se encuentra ningun estudiante asociado con el id especificado'});
+            return res.status(400).json({error: 'No se encuentra ningún estudiante asociado con el id especificado'});
         }
 
         // Respondemos al usuario
@@ -65,10 +64,7 @@ getStudentById = async (req, res) => {
 };
 
 
-// @desc Endpoint encargado de la actualización de los datos de contacto de un estudiante por el mismo a partir de su id
-// @route PUT /api/user/update/:id
-// @access solo Estudiante
-actualizarDatosEstudiante = async (req, res) => {
+updateStudentData = async (req, res) => {
 
     try {
 
@@ -105,7 +101,7 @@ actualizarDatosEstudiante = async (req, res) => {
         }
         
         //Actualizamos el estudiante
-        student.update({
+        await student.update({
             nombre,
             apellido
         });
@@ -119,51 +115,65 @@ actualizarDatosEstudiante = async (req, res) => {
 }
 
 
-//Métodos para el Director
+// ------------ Métodos para el Director ------------------
 
-// @desc Endpoint encargado de la creación de un nuevo estudiante
-// @route PUT /api/user/update/:id
-// @access solo Estudiante
+
 createStudent =  async (req, res) => {
 
     try {
 
         // Obtenemos los datos de el estudiante a crear
-        const {nombre, apellido, codigo, email, password, semestre} = req.body;
+        const {nombre, apellido, codigo, email, semestre} = req.body;
 
         // Validamos los datos obtenidos
-        if(!nombre || !apellido || !codigo || !email || !password || !semestre){
+        if(!nombre || !apellido || !codigo || !email || !semestre){
             return res.status(400).json({error: 'Todos los campos son requeridos'});
         } 
 
         const regexNum = /^[0-9]*$/;
-        const regexData = /^[a-zA-Z\s]*$/;
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/;
 
         if(!regexData.test(nombre) || !regexData.test(apellido) || !regexNum.test(codigo) || !regexNum.test(semestre)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
         }
 
-        //Validamos que el código sea único
+        //Validamos que el código y email sea único
         const studentExist = await Usuario.findOne({
             where: {
-                codigo
+                [Op.or]: [
+                    {codigo},
+                    {email}
+                ]
             }
         })
 
         if(studentExist){
-            return res.status(400).json({error: 'El codigo del estudiante debe ser unico'});
+            return res.status(400).json({error: 'El codigo y email del estudiante debe ser unico'});
         }
 
+        // Generamos la contraseña
+        const password = password_generator.generate({
+            length: 15,
+            numbers: true
+        });
+
+        // Ciframos la contraseña
+        const hashedPassword = await encryptPasswd(password);
+
+        // Creamos el usuario
         const student = await Usuario.create({
             nombre,
             apellido,
             codigo,
             email,
-            password,
+            hashedPassword,
             tipo: 'estudiante',
             semestre,
             rol_id: 2
-        })
+        });
+
+        // Enviamos correo de confirmación de registro
+        await generateCorreo(`${nombre} ${apellido}`, email, password);
 
         // Respondemos al usuario
         res.status(200).json(student);
@@ -174,7 +184,8 @@ createStudent =  async (req, res) => {
 
 };
 
-updateStudentForD = async (req, res) => {
+
+updateStudentDataDir = async (req, res) => {
 
     try {
 
@@ -188,51 +199,60 @@ updateStudentForD = async (req, res) => {
             return res.status(400).json({error: 'id no valido'});
         }
 
-        //Obtenemos el estudiante
-        const student = await Usuario.findByPk(id);
+        // Obtenemos el estudiante y verificamos su existencia
+        const student = await Usuario.findOne({
+            where: {
+                id,
+                rol_id: 2
+            }
+        });
 
         if(!student){
             return res.status(400).json({error: 'No se encuentra ningun estudiante asociado con el id especificado'});
         }
 
         // Obtenemos los datos a actualizar
-        const {nombre, apellido, codigo, email, password, semestre, estado} = req.body;
+        const {nombre, apellido, codigo, email, semestre, estado} = req.body;
 
-        const regexData = /^[a-zA-Z\s]*$/;
+        // Validamos los datos obtenidos
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/;
 
         if(!regexData.test(nombre) || !regexData.test(apellido) || !regexNum.test(codigo) || !regexNum.test(semestre)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
         }
 
-        //Comprobamos que no exista un estudiante con el mismo codigo
+        // Comprobamos que no exista un estudiante con el mismo codigo o email
         const studentExist = await Usuario.findOne({
             where: {
-                codigo
+                [Op.or]: [
+                    {codigo},
+                    {email}
+                ]
             }
-        });
+        })
 
         if(studentExist){
-            res.status(400).json({error: "El codigo de el estudiante debe ser unico"});
+            res.status(400).json({error: "El codigo y email de el estudiante debe ser unico"});
         }
 
-        //Actualizamos el estudiante
-        student.update({
+        // Actualizamos el estudiante
+        await student.update({
             nombre,
             apellido,
             codigo,
             email,
-            password,
             semestre,
             estado
         });
 
-        //Respondemos a la petición
+        // Respondemos a la petición
         res.status(200).json(student);
 
     } catch (error) {
         res.status(500).json({error: error.message});
     }
 }
+
 
 getDirectors =  async (req, res) => {
 
@@ -251,6 +271,7 @@ getDirectors =  async (req, res) => {
     }
 };
 
+
 getDirectorById = async (req, res) => {
 
     try {
@@ -259,13 +280,13 @@ getDirectorById = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexNum = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
 
-        if(!regexNum.test(id)){
+        if(!regexId.test(id)){
             return res.status(400).json({error: 'id no valido'});
         }
 
-        //Obtenemos el director
+        // Obtenemos el director y validamos su existencia
         const director = await Usuario.findOne({
             where: {
                 id,
@@ -284,6 +305,7 @@ getDirectorById = async (req, res) => {
         res.status(500).json({message: error.message});
     }
 };
+
 
 updateDirector = async (req, res) => {
 
@@ -312,9 +334,10 @@ updateDirector = async (req, res) => {
         }
 
         // Obtenemos los datos a actualizar
-        const {nombre, apellido, codigo, email, password, telefono, direccion, documento, celular, estado} = req.body;
+        const {nombre, apellido, codigo, email, telefono, direccion, documento, celular, estado} = req.body;
 
-        const regexData = /^[a-zA-Z\s]*$/;
+        // Validamos los datos obtenidos
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/;
 
         if(!regexData.test(nombre) || !regexData.test(apellido) || !regexNum.test(codigo) || !regexNum.test(telefono) || !regexNum.test(documento) || !regexNum.test(celular)){
            return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
@@ -323,8 +346,11 @@ updateDirector = async (req, res) => {
         //Comprobamos que no exista un director con el mismo codigo y documento
         const directorExist = await Usuario.findOne({
             where: {
-                codigo,
-                documento
+                [Op.or]: [
+                    {codigo},
+                    {email},
+                    {documento}
+                ]
             }
         });
 
@@ -333,12 +359,11 @@ updateDirector = async (req, res) => {
         }
 
         //Actualizamos el director
-        director.update({
+        await director.update({
             nombre,
             apellido,
             codigo,
             email,
-            password,
             telefono,
             direccion,
             documento,
@@ -354,7 +379,8 @@ updateDirector = async (req, res) => {
     }
 }
 
-updatePhotoD = async (req, res) => {
+
+updatePhotoDirector = async (req, res) => {
 
     try {
 
@@ -421,15 +447,14 @@ updatePhotoD = async (req, res) => {
 }
 
 
-
 module.exports = {
-    createStudent,
     getStudents,
     getStudentById,
-    updateStudentForS,
-    updateStudentForD,
+    updateStudentData,
+    createStudent,
+    updateStudentDataDir,
     getDirectors,
     getDirectorById,
     updateDirector,
-    updatePhotoD
+    updatePhotoDirector
 }

@@ -6,7 +6,6 @@ const XLSX = require("xlsx");
 const sequelize = require('../database/db');
 
 
-// Función encargada de mostrar todas las preguntas almacenadas que esten activas
 const getAllQuestions = async (req, res) => {
 
     try{
@@ -14,7 +13,7 @@ const getAllQuestions = async (req, res) => {
         // Obtenemos todas las preguntas de la BD
         const questions = await Pregunta.findAll({
             where: {estado: true},
-            attributes: ['texto_pregunta', 'semestre', 'estado'],
+            attributes: ['id', 'texto_pregunta', 'semestre', 'estado'],
             include: {
                 model: Categoria,
                 attributes: ['nombre']
@@ -29,10 +28,13 @@ const getAllQuestions = async (req, res) => {
 
 };
 
-// Función encargada de la creación de una nueva pregunta
+
 const createQuestion = async (req, res) => {
 
     try{
+
+        // Creamos un array que contendra las preguntas insertadas
+        const questions = [];
 
         //Inicializamos la transacción
         await sequelize.transaction(async (t) => {
@@ -51,30 +53,183 @@ const createQuestion = async (req, res) => {
             // Creamos las preguntas
             for(const itemFila of dataExcel){
 
-                if(!itemFila['Enunciado'] || !itemFila['Semestre'] || !itemFila['Enunciado'])
-                console.log(typeof itemFila['Enunciado']);
+                // Validar las cabeceras del archivo
+                if(!itemFila['Enunciado'] || !itemFila['Semestre'] || !itemFila['A'] || !itemFila['B']
+                    || !itemFila['C'] || !itemFila['D'] || !itemFila['Respuesta'] || !itemFila['Categoria']){
 
-                const question =  await Pregunta.create({
-                    texto_pregunta,
-                    semestre,
-                    opciones,
-                    respuesta,
-                    categoria_id
+                    return res.status(400).json({error: 'Formato de archivo no correspondiente'});
+
+                }
+               
+                // Obtener la categoria de la pregunta
+                const categoriaReceived = itemFila['Categoria'].toUpperCase();
+
+                // En caso de haber un error, verificamos la existencia de la pregunta con el fin
+                // de que esta no vuelva a ser insertada
+                const preguntaExist = await Pregunta.findOne({
+                    where: {
+                        texto_pregunta: itemFila['Enunciado']
+                    }
+                });
+
+                if(preguntaExist){
+                    continue;
+                }
+
+                // Validar la categoria
+                const categoriaFound = await Categoria.findOne({
+                    where: {
+                        nombre: categoriaReceived
+                    }
                 })
+
+                if(!categoriaFound){
+                    return res.status(400).json({error: 'La categoria proporcionada no existe'});
+                }
+
+                // Creamos el arreglo con las opciones
+                const options = [itemFila['A'], itemFila['B'], itemFila['C'], itemFila['D']];
+
+                // Formateamos el enunciado
+                const enunciado = itemFila['Enunciado'].replace(/- /g, "");
+                const enunciadoFinal = enunciado.replace(/\n/g, " ")
+
+                // Creamos la pregunta
+                const question =  await Pregunta.create({
+                    texto_pregunta: enunciadoFinal,
+                    semestre: itemFila['Semestre'],
+                    opciones: JSON.stringify(options),
+                    respuesta: itemFila['Respuesta'],
+                    categoria_id: categoriaFound.id
+                }, {transaction: t});
+
+                questions.push(question);
+
             }
 
-            res.json('Archivo leido correctamente');
+            res.status(200).json({message: `Se han procesado ${questions.length} preguntas correctamente`});
 
         });
 
-    }catch(error){
-
+    }catch(err){
+        res.status(500).json({error: err.message});
     }
 
 }
 
 
+const getQuestionById = async (req, res) => {
+
+    try{
+
+        // Obtenemos el id de la pregunta a especificar
+        const {id} = req.params;
+
+        // Verificamos el id de entrada
+        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+
+        if(!regexId.test(id)){
+            return res.status(400).json({error: 'id no valido'});
+        }
+
+        // Obtenemos la pregunta y validamos su existencia
+        const pregunta = await Pregunta.findByPk(id, {
+            include: {
+                model: Categoria,
+                attributes: ['nombre']
+            }
+        });
+
+        if(!pregunta){
+            return res.status(400).json({error: 'No se encuentra ninguna pregunta con el id especificado'});
+        }
+
+        // Formateamos las opciones
+        const opciones = JSON.parse(pregunta.opciones);
+
+        const formatedOptions = opciones.map(opcion => {
+            return opcion.replace(/\n/g, " ")
+        });
+
+        // Formateamos la respuesta
+        const response = pregunta.respuesta.replace(/\n/g, " ");
+
+        // Respondemos al usuario
+        res.status(200).json({
+            enunciado: pregunta.texto_pregunta,
+            opciones: formatedOptions,
+            respuesta: response,
+            estado: pregunta.estado,
+            semestre: pregunta.semestre,
+            categoria: pregunta.categoria.nombre
+        });
+
+    }catch(err){
+        return res.status(500).json({error: err.message});
+    }
+
+};
+
+
+const actualizarPregunta = async (req, res) => {
+
+    try{
+
+        // Obtenemos el id de la pregunta a especificar
+        const {id} = req.params;
+
+        // Verificamos el id de entrada
+        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+
+        if(!regexId.test(id)){
+            return res.status(400).json({error: 'id no valido'});
+        }
+
+        // Obtenemos la pregunta y validamos su existencia
+        const pregunta = await Pregunta.findByPk(id);
+
+        if(!pregunta){
+            return res.status(400).json({error: 'No se encuentra ninguna pregunta con el id especificado'});
+        }
+
+        // Obtenemos los datos a actualizar
+        const {texto_pregunta, semestre, opciones, estado, respuesta, categoria_id} = req.body;
+
+        // Validamos los datos obtenidos
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/; // Validación de nombres y apellidos
+
+        if(!regexId.test(semestre) || (!Array.isArray(opciones) || opciones.length !== 4) || typeof estado !== 'boolean' || !regexId.test(categoria_id)){
+            return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
+        }
+
+        // Validamos que el id de categoria recibido corresponda a una existente
+        const categoriaExist = Categoria.findByPk(categoria_id);
+
+        if(!categoriaExist){
+            return res.status(400).json({error: "El id de categoria proporcionado no corresponde a ninguna existente"});
+        }
+
+        // Actualizamos la pregunta
+        pregunta.update({
+            texto_pregunta,
+            semestre,
+            opciones: JSON.stringify(opciones),
+            estado,
+            respuesta,
+            categoria_id
+        });
+
+        res.status(200).json(pregunta);
+
+    }catch(err){
+        return res.status(400).json({error: err.message});
+    }
+
+};
+
 module.exports = {
     getAllQuestions,
-    createQuestion
+    createQuestion,
+    getQuestionById,
+    actualizarPregunta
 }

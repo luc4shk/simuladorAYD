@@ -1,9 +1,7 @@
 const Categoria = require('../models/Categoria');
 const Competencia = require('../models/Competencia');
 
-// @desc Endpoint encargado de la obtención de todas las categorias activas
-// @route GET /api/categeoira
-// @access solo Admin
+
 const getCategorias = async (req, res) => {
 
     try{
@@ -28,9 +26,6 @@ const getCategorias = async (req, res) => {
 };
 
 
-// @desc Endpoint encargado de la obtención de una categoria por Id
-// @route GET /api/categoria/:id
-// @access solo Admin
 const getCategoriaById = async (req, res) => {
 
     try{
@@ -68,9 +63,6 @@ const getCategoriaById = async (req, res) => {
 };
 
 
-// @desc Endpoint encargado de la creación de una categoria
-// @route POST /api/categoria/create
-// @access solo Admin
 const createCategoria = async (req, res) => {
 
     try{
@@ -111,9 +103,9 @@ const createCategoria = async (req, res) => {
             return res.status(400).json({error: 'El id proporcionado no corresponde con una competencia existente'});
         }
 
-        // Creamos la competencia
+        // Creamos la categoria
         const categoria = await Categoria.create({
-            nombre,
+            nombre: nombre.toUpperCase(),
             descripcion,
             competencia_id
         });
@@ -128,9 +120,6 @@ const createCategoria = async (req, res) => {
 };
 
 
-// @desc Endpoint encargado de la actualización de una categoria dado su id 
-// @route PUT /api/categoria/update/:id
-// @access solo Admin
 const updateCategoria = async (req, res) => {
 
     try{
@@ -182,7 +171,7 @@ const updateCategoria = async (req, res) => {
 
         // Actualizamos la categoria
         categoria.update({
-            nombre,
+            nombre: nombre.toUpperCase(),
             descripcion,
             estado,
             competencia_id

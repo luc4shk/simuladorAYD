@@ -4,9 +4,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 
-// @desc Endpoint encargado de la administración del Login de usuario
-// @route POST /api/auth
-// @access public
 const login = async (req, res) => {
 
     try{
@@ -77,9 +74,7 @@ const login = async (req, res) => {
 
 };
 
-// @desc Enpoint encargado de realizar el refresco del token de acceso
-// @route GET /api/auth/refresh
-// @access public - token de refresco expirado
+
 const refresh = async (req, res) => {
 
     // Recuperamos la cookie
@@ -126,9 +121,7 @@ const refresh = async (req, res) => {
 
 };
 
-// @desc Enpoint encargado de gestionar el cierre de sesión
-// @route GET /api/auth/logout
-// @access public 
+
 const logout = (req, res) => {
 
     // Obtengo las cookies

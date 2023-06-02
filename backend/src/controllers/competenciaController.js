@@ -1,8 +1,6 @@
 const Competencia = require('../models/Competencia');
 
-// @desc Endpoint encargado de la obtención de todas las competencias activas
-// @route POST /api/competencia
-// @access solo Admin
+
 const getCompetencias = async (req, res) => {
 
     try{
@@ -22,9 +20,6 @@ const getCompetencias = async (req, res) => {
 };
 
 
-// @desc Endpoint encargado de la obtención de una competencia por id
-// @route POST /api/competencia/:id
-// @access solo Admin
 const getCompetenciaById = async (req, res) => {
 
     try{
@@ -58,9 +53,6 @@ const getCompetenciaById = async (req, res) => {
 };
 
 
-// @desc Endpoint encargado de la creación de una competencia
-// @route POST /api/competencia/create
-// @access solo Admin
 const createCompetencia = async (req, res) => {
 
     try{
@@ -96,7 +88,7 @@ const createCompetencia = async (req, res) => {
 
         // Creamos la competencia
         const competencia = await Competencia.create({
-            nombre,
+            nombre: nombre.toUpperCase(),
             descripcion
         });
 
@@ -109,9 +101,7 @@ const createCompetencia = async (req, res) => {
 
 };
 
-// @desc Endpoint encargado de la actualización de una competencia
-// @route POST /api/competencia/update/:id
-// @access solo Admin
+
 const updateCompetencia = async (req, res) => {
 
     try{
@@ -160,7 +150,7 @@ const updateCompetencia = async (req, res) => {
 
         // Actualizamos la competencia
         competencia.update({
-            nombre,
+            nombre: nombre.toUpperCase(),
             descripcion,
             estado
         });

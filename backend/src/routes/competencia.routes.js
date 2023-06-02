@@ -12,12 +12,28 @@ const router = Router();
 
 
 // Rutas
+
+// @desc Endpoint encargado de la obtención de todas las competencias activas
+// @route GET /api/competencia
+// @access solo Admin
 router.get('/', [authJWT, isAdmin], competenciaController.getCompetencias);
 
+
+// @desc Endpoint encargado de la obtención de una competencia por id
+// @route GET /api/competencia/:id
+// @access solo Admin
 router.get('/:id', [authJWT, isAdmin], competenciaController.getCompetenciaById);
 
+
+// @desc Endpoint encargado de la creación de una competencia
+// @route POST /api/competencia/create
+// @access solo Admin
 router.post('/create', [authJWT, isAdmin], competenciaController.createCompetencia);
 
+
+// @desc Endpoint encargado de la actualización de una competencia
+// @route POST /api/competencia/update/:id
+// @access solo Admin
 router.put('/update/:id', [authJWT, isAdmin], competenciaController.updateCompetencia);
 
 // Exportamos el router
