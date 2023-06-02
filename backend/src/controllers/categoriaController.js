@@ -170,7 +170,7 @@ const updateCategoria = async (req, res) => {
         }
 
         // Actualizamos la categoria
-        categoria.update({
+        await categoria.update({
             nombre: nombre.toUpperCase(),
             descripcion,
             estado,

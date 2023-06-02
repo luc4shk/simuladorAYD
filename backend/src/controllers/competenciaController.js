@@ -149,7 +149,7 @@ const updateCompetencia = async (req, res) => {
         }
 
         // Actualizamos la competencia
-        competencia.update({
+        await competencia.update({
             nombre: nombre.toUpperCase(),
             descripcion,
             estado

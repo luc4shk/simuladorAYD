@@ -210,7 +210,7 @@ const actualizarPregunta = async (req, res) => {
         }
 
         // Actualizamos la pregunta
-        pregunta.update({
+        await pregunta.update({
             texto_pregunta,
             semestre,
             opciones: JSON.stringify(opciones),
