@@ -15,7 +15,7 @@ export default function ConvocatoriaBody() {
   ];
   const items = [
     [
-      "Prueba Estudiantes Quinto Semestre",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -30,7 +30,7 @@ export default function ConvocatoriaBody() {
       </Center>,
     ],
     [
-      "Prueba Estudiantes Quinto Semestre",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -45,7 +45,7 @@ export default function ConvocatoriaBody() {
       </Center>,
     ],
     [
-      "Prueba Estudiantes Quinto Semestre",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -60,7 +60,7 @@ export default function ConvocatoriaBody() {
       </Center>,
     ],
     [
-      "Prueba Estudiantes Quinto Semestre",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -75,7 +75,7 @@ export default function ConvocatoriaBody() {
       </Center>,
     ],
     [
-      "Prueba Estudiantes Quinto Semestre",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -90,7 +90,7 @@ export default function ConvocatoriaBody() {
       </Center>,
     ],
     [
-      "Prueba Estudiantes Quinto Semestre",
+      "1",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -105,7 +105,7 @@ export default function ConvocatoriaBody() {
       </Center>,
     ],
     [
-      "Prueba Estudiantes Quinto Semestre",
+      "1",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -120,7 +120,533 @@ export default function ConvocatoriaBody() {
       </Center>,
     ],
     [
-      "Prueba Estudiantes Quinto Semestre",
+      "1",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "1",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "1",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "2",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "2",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "2",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "2",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "2",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "3",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "3",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "3",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "3",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "3",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "4",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "4",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "4",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "4",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "4",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "5",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "5",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "5",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "5",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "5",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "6",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "6",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "6",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "6",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "6",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "7",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "7",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "7",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "7",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "7",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],
+    [
+      "8",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "8",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "8",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiDeleteBin2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+    ],[
+      "8",
       "Activo",
       "10/05/23",
       "15/06/23",
