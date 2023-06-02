@@ -5,6 +5,7 @@ const sequelize = require('./database/db');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const corsOptions = require('./util/corsOptions');
+const path = require('path');
 
 // Importamos las tablas a crear
 require('./database/associations');
@@ -22,6 +23,10 @@ const app = express();
 // Puerto de escucha del servidor
 const PORT = process.env.PORT || 3500;
 
+// Especificamos el directorio de archivos estáticos
+app.use(express.static(path.resolve(__dirname, './public')));
+
+app.use('directors', express.static(path.resolve(__dirname, './public/directors')));
 
 // Middlwares
 app.use(logger);

@@ -1,4 +1,7 @@
 const {Router} = require('express');
+const multer = require('multer');
+const path = require('path');
+const Usuario = require('../models/Usuario');
 
 // Middleware de verificación de token
 const verifyJWT = require('../middlewares/verifyJWT');
@@ -62,11 +65,56 @@ router.put('/admin/update/:id', [verifyJWT, isAdmin], userContoller.updateDirect
 
 
 // Storage de multer
+const multerStorage = multer.diskStorage({
+
+    destination: (req, file, cb) => {
+        const filePath = path.resolve(__dirname, '../public/directors');
+        cb(null, filePath);
+    },
+    filename: (req, file, cb) => {
+
+        // Obtenemos los datos del usuario
+        Usuario.findOne({
+            where: {
+                email: req.user.username
+            }
+        }).then((director) => {
+
+            // Obtenemos la extensión del archivo
+            const fileExtension = path.extname(file.originalname);
+
+            // Creamos el nombre del archivo 
+            const fileName = `${director.documento}${fileExtension}`;
+
+            cb(null, fileName);
+
+        }).catch(error => cb(error));
+
+    }
+
+});
+const upload = multer({
+    storage: multerStorage,
+    fileFilter: (req, file, cb) => {
+
+        const mymetypes = ["image/jpeg", "image/png"];
+
+        if(mymetypes.includes(file.mimetype)){
+            cb(null, true);
+        }else{
+            cb(new Error(`Solo se admiten los siguientes mymetypes: ${mymetypes.join(' ')}`), false);
+        }
+
+    },
+    limits: {
+        fileSize: 4 * 1024 * 1024
+    }
+});
 
 // @desc Endpoint encargado de la actualización de la foto de perfil del director
 // @route PUT /api/user/admin/updatePhoto/:id
 // @access solo Admin
-router.put('/updatePhotoD/:id', [verifyJWT, isAdmin], userContoller.updatePhotoDirector);
+router.put('/admin/updatePhoto/:id', [verifyJWT, isAdmin, upload.single('avatar')], userContoller.updatePhotoDirector);
 
 
 // Importamos el router

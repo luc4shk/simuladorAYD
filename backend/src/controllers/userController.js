@@ -395,52 +395,26 @@ updatePhotoDirector = async (req, res) => {
         }
 
         //Obtenemos el director
-        const director = await Usuario.findByPk(id);
+        const director = await Usuario.findOne({
+            where: {
+                id,
+                rol_id: 1
+            }
+        });
 
         if(!director){
             return res.status(400).json({error: 'No se encuentra ningun director asociado con el id especificado'});
         }
 
-        const fileName = req.files.file.name;
-        
-        // Configuración de almacenamiento de Multer
-        const storage = multer.diskStorage({
-
-            destination: (req, file, cb) => {
-                const ruta = './src/multimedia/directors';
-                cb(null, ruta);
-            },
-            filename: (req, file, cb) => {
-                const ext = file.originalname.split('.').pop();
-                const nombreArchivo = `${director.documento}.${ext}`;
-                cb(null, nombreArchivo);
-            },
-            
+        await director.update({
+            foto_perfil: req.file.filename
         });
-
-        // Configuración de carga de Multer
-        const upload = multer({ storage }).single('file');
     
-        // Ejecutamos la carga del archivo
-        upload(req, res, async (err) => {
-            if (err) {
-                return res.status(400).json(err.message);
-            }
-
-            const ext = fileName.originalname.split('.').pop();
-    
-            // Obtenemos la ruta de la foto
-            const ruta = `./src/multimedia/directors/${director.documento}.${ext}`;
-
-            // Actualizamos el director
-            director.update({
-                foto_perfil: ruta
-            });
-    
-            // Respondemos a la petición
-            res.status(200).json(director);
+        res.status(200).json({
+            message: "Tu foto ha sido actualizada correctamente",
+            imageFile: `http://localhost:3500/directors/${req.file.filename}`
         });
-
+    
     } catch (error) {
         res.status(500).json({error: error.message});
     }
