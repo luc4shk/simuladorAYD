@@ -1,6 +1,7 @@
-import { Box, Button, Center, Input, Textarea } from "@chakra-ui/react";
+import { Box, Button, Center, Input, Textarea, Select } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "wouter";
+import Boton from "../pure/Boton";
 
 export default function FormularioCategoria() {
   const competencias = ["Competencia 1", "Competencia 2", "Competencia 3"];
@@ -19,6 +20,7 @@ export default function FormularioCategoria() {
             flexDirection="column"
             alignItems="center"
             textAlign="center"
+            w={"100%"}
           >
             <Box display="flex" flexDirection="column" justifyContent="center">
               <label htmlFor="nombre">Nombre</label>
@@ -53,34 +55,33 @@ export default function FormularioCategoria() {
               display="flex"
               flexDirection="column"
               justifyContent="center"
+              w={["200px", "300px", "350px", "400px"]}
             >
               <label htmlFor="competencia">Competencia</label>
-              <select
+              <Select
                 id="competencia"
                 name="competencia"
                 maxW={["200px", "300px", "350px", "400px"]}
-                w="400px"
+                w="100%"
                 border="2px solid gray"
-                p="8px"
+                mt={"10px"}
               >
                 {competencias.map((competencia, index) => (
                   <option key={index} value={competencia}>
                     {competencia}
                   </option>
                 ))}
-              </select>
+              </Select>
             </Box>
-            <Button
+            <Boton
             as={Link}
             to={"/categorias"}
-              bgColor="principal.100"
-              textColor="white"
-              w={["200px", "300px", "350px", "400px"]}
-              mt="30px"
-              type="submit"
-            >
-              Guardar
-            </Button>
+            w={["200px", "300px", "350px", "400px"]}
+            mt="30px"
+            type="submit"
+            msg={"Guardar"}
+            />
+
           </Box>
         </Box>
       </Center>

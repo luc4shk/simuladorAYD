@@ -12,6 +12,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { Link } from "wouter";
+import Boton from "../pure/Boton"
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 export default function TablaCustom({ columns, items, path, msg, showButton }) {
@@ -28,24 +29,30 @@ export default function TablaCustom({ columns, items, path, msg, showButton }) {
     setCurrentPage(selected);
   };
 
+  const atrasPage = () =>{
+    handlePageChange(currentPage - 1)
+  }
+
+  const adelantePage = () =>{
+    handlePageChange(currentPage + 1)
+  }
+
+
+  
+
   return (
     <div>
       {showButton && (
-        <Button
-          as={Link}
-          to={path}
-          bgColor="principal.100"
-          textColor="white"
-          w={["100%", "250px"]}
-          display="flex"
-          alignItems="center"
-          borderRadius="18px"
-        >
-          <Flex marginRight="0.5rem">
-            <Icon ml={["1px", "0px"]} color="white" as={MdAdd} boxSize={5} />
-          </Flex>
-          {msg}
-        </Button>
+       <Boton
+        msg={
+          msg
+        }
+        leftIcon={<MdAdd/>}
+        as={"link"}
+        path={path}
+        w={["100%", "250px"]}
+        radius={"8px"}
+      /> 
       )}
       <Box mb="15px" mt="20px" p="20px" borderRadius="8px" bgColor="white">
         <Flex
@@ -96,7 +103,7 @@ export default function TablaCustom({ columns, items, path, msg, showButton }) {
         className="pagination"
         style={{ display: "flex", justifyContent: "center" }}
       >
-        <Button
+        {/* <Button
           disabled={currentPage === 0}
           onClick={() => handlePageChange(currentPage - 1)}
           bgColor="principal.100"
@@ -107,22 +114,33 @@ export default function TablaCustom({ columns, items, path, msg, showButton }) {
           borderRadius="18px"
         >
           <Icon as={MdChevronLeft} boxSize={5} />
-        </Button>
+        </Button> */}
+        <Boton
+          isDisabled={currentPage===0}
+          funcion={atrasPage}
+          w={"30px"}
+          radius={"50%"}
+          msg={<Icon as={MdChevronLeft} boxSize={5} />}
+        />
         {Array.from({ length: totalPages }).map((_, index) => (
           <Button
             key={index}
             onClick={() => handlePageChange(index)}
-            bgColor={currentPage === index ? "principal.100" : "gray.200"}
-            textColor={currentPage === index ? "white" : "black"}
+            bgColor={currentPage === index ? "gray.200" : "principal.100"}
+            textColor={currentPage === index ? "black" : "white"}
+            _hover={
+              {
+                bgColor: currentPage===index ? "#F0847D" : "gray.300" 
+              }
+            }
             w="30px"
-            // display="flex"
             alignItems="center"
             border="1px solid white"
           >
             {index + 1}
           </Button>
         ))}
-        <Button
+        {/* <Button
           disabled={currentPage === totalPages - 1}
           onClick={() => handlePageChange(currentPage + 1)}
           bgColor="principal.100"
@@ -132,8 +150,16 @@ export default function TablaCustom({ columns, items, path, msg, showButton }) {
           alignItems="center"
           borderRadius="18px"
         >
+        
           <Icon as={MdChevronRight} boxSize={5} />
-        </Button>
+        </Button> */}
+        <Boton 
+          isDisabled={currentPage === totalPages - 1}
+          funcion={adelantePage}
+          w={"30px"}
+          radius={"50%"}
+          msg={<Icon as={MdChevronRight} boxSize={5} />}
+        />
       </div>
     </div>
   );
