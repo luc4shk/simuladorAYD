@@ -2,6 +2,7 @@ import React from 'react'
 import { Input, Flex, Box, Button, Image, Icon } from "@chakra-ui/react";
 
 import { RiEdit2Fill } from "react-icons/ri";
+import Boton from '../pure/Boton';
 export default function AdminProfileForm() {
   return (
     <>
@@ -37,7 +38,7 @@ export default function AdminProfileForm() {
                 padding={"0"}
                 height={["21px","27px","30px"]}
                 top={["50px","73px", "100px"]}
-                left={["145px","195px","230px", "260px"]}
+                left={["125px","180px","210px", "260px"]}
                 borderRadius={"50%"}
                 backgroundColor={"principal.100"}
                 _hover={"none"}
@@ -46,8 +47,11 @@ export default function AdminProfileForm() {
                 <Icon color="white" as={RiEdit2Fill} />
               </Button>
             </Box>
-            <Flex direction={["column","column","row","row", "row"]} w={"100%"} justifyContent={"space-between"}>
-              <Box display={"flex"} flexDirection={"column"}>
+            <Flex 
+            gap={["20px","20px"]}
+            direction={["column","column","row","row", "row"]} w={"100%"} justifyContent={"space-between"}>
+              <Box display={"flex"} 
+              flexDirection={"column"}>
                 <label htmlFor="nombre">Nombre</label>
                 <Input
                   mt={"10px"}
@@ -59,11 +63,12 @@ export default function AdminProfileForm() {
                 ></Input>
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
-                <label htmlFor="">Apellido</label>
+                <label 
+                htmlFor="apellido">Apellido</label>
                 <Input
                   mt={"10px"}
-                  id="nombre"
-                  name="nombre"
+                  id="apellido"
+                  name="apellido"
                   type="text"
                   w={["100%","100%","160px","185px", "200px"]}
                   disabled
@@ -71,70 +76,74 @@ export default function AdminProfileForm() {
               </Box>
             </Flex>
             <Flex flexDir={"column"}>
-              <label htmlFor="">Dirección</label>
+              <label htmlFor="direccion">Dirección</label>
               <Input
                 mt={"10px"}
-                id="nombre"
-                name="nombre"
+                id="direccion"
+                name="direccion"
                 type="text"
                 w={"100%"}
                 disabled
               ></Input>
             </Flex>
             <Flex flexDir={"column"}>
-              <label htmlFor="">Correo Institucional</label>
+              <label htmlFor="correo">Correo Institucional</label>
               <Input
                 mt={"10px"}
-                id="nombre"
-                name="nombre"
+                id="correo"
+                name="correo"
                 type="text"
                 w={"100%"}
                 disabled
               ></Input>
             </Flex>
 
-            <Flex direction={["column","column","row","row", "row"]} w={"100%"} justifyContent={"space-between"}>
+            <Flex 
+            gap={["20px","20px"]}
+            direction={["column","column","row","row", "row"]} w={"100%"} justifyContent={"space-between"}>
               <Box display={"flex"} flexDirection={"column"}>
-                <label htmlFor="">Número de Documento</label>
+                <label htmlFor="documento">Número de Documento</label>
                 <Input
                   mt={"10px"}
-                  id="nombre"
-                  name="nombre"
+                  id="documento"
+                  name="documento"
                   type="text"
                   w={["100%","100%","160px","185px", "200px"]}
                   disabled
                 ></Input>
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
-                <label htmlFor="">Celular</label>
+                <label htmlFor="celular">Celular</label>
                 <Input
                   mt={"10px"}
-                  id="nombre"
-                  name="nombre"
+                  id="celular"
+                  name="celular"
                   type="text"
                   w={["100%","100%","160px","185px", "200px"]}
                   disabled
                 ></Input>
               </Box>
             </Flex>
-            <Flex  direction={["column","column","row","row", "row"]}w={"100%"} justifyContent={"space-between"}>
+            <Flex 
+            gap={["20px","20px"]}
+             direction={["column","column","row","row", "row"]}w={"100%"} justifyContent={"space-between"}>
               <Box display={"flex"} flexDirection={"column"}>
-                <label htmlFor="">Teléfono</label>
+                <label htmlFor="telefono">Teléfono</label>
                 <Input
                   mt={"10px"}
-                  id="nombre"
-                  name="nombre"
+                  id="telefono"
+                  name="telefono"
                   type="text"
                   w={["100%","100%","160px","185px", "200px"]}
                   disabled
                 ></Input>
               </Box>
               <Box display={"flex"} flexDirection={"column"}>
-                <label htmlFor="">Código</label>
+                <label htmlFor="codigo">Código</label>
                 <Input
                   mt={"10px"}
-                  id="nombre"
-                  name="nombre"
+                  id="codigo"
+                  name="codigo"
                   type="text"
                   w={["100%","100%","160px","185px", "200px"]}
                   disabled
@@ -142,14 +151,13 @@ export default function AdminProfileForm() {
               </Box>
             </Flex>
             <Flex flexDirection={["column","column","row","row", "row"]}
-              w={["100%","200xpx"]} gap={["8px", "0"]}
+              w={"100%"} gap={["8px","8px", "0"]}
             justifyContent={"space-between"}>
-              <Button bgColor={"principal.100"} textColor={"white"} w={["100%","170px"]}>
+              {/* <Button bgColor={"principal.100"} textColor={"white"} w={["100%","100%","170px"]}>
                 Editar Información
-              </Button>
-              <Button bgColor={"principal.100"} textColor={"white"} w={["100%","170px"]}>
-                Cambiar Contraseña
-              </Button>
+              </Button> */}
+              <Boton msg={"Editar Información"} w={["100%","100%","160px","185px","200px"]}/>
+              <Boton msg={"Cambiar Contraseña"} w={["100%","100%","160px","185px","200px"]}/>
             </Flex>
           </Box>
         </Box>
