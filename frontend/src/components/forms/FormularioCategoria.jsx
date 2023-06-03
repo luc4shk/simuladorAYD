@@ -74,14 +74,13 @@ export default function FormularioCategoria() {
               </Select>
             </Box>
             <Boton
-            as={Link}
-            to={"/categorias"}
-            w={["200px", "300px", "350px", "400px"]}
-            mt="30px"
-            type="submit"
-            msg={"Guardar"}
+              as={"link"}
+              path={"/categorias"}
+              w={["200px", "300px", "350px", "400px"]}
+              mt={"30px"}
+              type={"submit"}
+              msg={"Guardar"}
             />
-
           </Box>
         </Box>
       </Center>

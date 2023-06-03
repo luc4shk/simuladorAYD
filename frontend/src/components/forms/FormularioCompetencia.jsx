@@ -1,6 +1,7 @@
 import { Box, Button, Center, Input, Textarea } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "wouter";
+import Boton from "../pure/Boton";
 
 export default function FormularioCompetencia() {
   return (
@@ -47,17 +48,14 @@ export default function FormularioCompetencia() {
                 w="400px"
               />
             </Box>
-            <Button
-              as={Link}
-              to={"/competencias"}
-              bgColor="principal.100"
-              textColor="white"
+            <Boton
+              as={"link"}
+              path={"/competencias"}
               w={["200px", "300px", "350px", "400px"]}
-              mt="30px"
-              type="submit"
-            >
-              Guardar
-            </Button>
+              mt={"30px"}
+              type={"submit"}
+              msg={"Guardar"}
+            />
           </Box>
         </Box>
       </Center>

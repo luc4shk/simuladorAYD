@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Button, Center, Heading, Stack } from "@chakra-ui/react";
+import { Link } from "wouter";
 
 export default function TipoPregunta() {
   return (
@@ -17,13 +18,15 @@ export default function TipoPregunta() {
           mt="100px"
         >
           <Button
+            as={Link}
+            to="/formularioPreguntaSimple" // Cambia Link por la ruta directa
             bgColor="principal.100"
             textColor="white"
             w={["100%", "100%", "250px"]}
             display="flex"
             alignItems="center"
             borderRadius="18px"
-            mb={[2, 2, 0]} 
+            mb={[2, 2, 0]}
           >
             Preguntas Simples
           </Button>
