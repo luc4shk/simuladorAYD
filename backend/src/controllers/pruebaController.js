@@ -5,6 +5,7 @@ const ConfiguracionCategoria = require('../models/ConfiguracionCategoria');
 const Pregunta = require('../models/Pregunta');
 const Categoria = require('../models/Categoria');
 const {validateCategories, validCantQuestions} = require('../util/validateDataCategories');
+const {createTestQuestion} = require('../util/createTestQuestion');
 
 
 /* --------- getPruebas function -------------- */
@@ -94,6 +95,16 @@ createPrueba = async (req, res) => {
 
         if(valoresGenericas.length === 0 && valoresEspecificas.length === 0){
             return res.status(400).json({error: 'Se debe seleccionar por lo menos una competencia'});
+        }
+
+        const existPrueba = await Prueba.findOne({
+            where: {
+                nombre
+            }
+        })
+
+        if(existPrueba){
+            return res.status(400).json({error: 'El nombre de la prueba debe ser unico'});
         }
 
         // Variables de control para la cantidad de preguntas y valor por categoría
@@ -197,8 +208,26 @@ createPrueba = async (req, res) => {
                     categoria_id: categoria_config[0]
                 });
 
-                asignarPreguntas(prueba.id, id_categoria, cant_preguntas_categoria, semestre);
+                createTestQuestion(prueba.id, id_categoria, cant_preguntas_categoria, semestre);
+            }
 
+        }
+
+        if(valoresEspecificas && valoresEspecificas.length > 0){
+
+            for(const categoria_config of valoresEspecificas){
+
+                const id_categoria = categoria_config[0];
+                const cant_preguntas_categoria = categoria_config[1];
+
+                await ConfiguracionCategoria.create({
+                    cantidad_preguntas: categoria_config[1],
+                    valor_categoria: categoria_config[2],
+                    prueba_id: prueba.id,
+                    categoria_id: categoria_config[0]
+                });
+
+                createTestQuestion(prueba.id, id_categoria, cant_preguntas_categoria, semestre);
             }
 
         }
