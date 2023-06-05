@@ -161,17 +161,17 @@ createPrueba = async (req, res) => {
         }
 
         // Creamos la prueba
-        /*const prueba = await Prueba.create({
+        const prueba = await Prueba.create({
             nombre,
             descripcion,
             semestre,
             duracion,
             total_preguntas
-        });*/
+        });
 
         // Creamos la relacion con competencia 
 
-        /*for (const competencia_id of competencias) {
+        for (const competencia_id of competencias) {
 
             await PruebaCompetencia.create({
                 prueba_id: prueba.id,
@@ -179,13 +179,16 @@ createPrueba = async (req, res) => {
             });
 
             
-        }*/
+        }
 
         // Creamos la relacion con categoria
 
-        /*if(valoresGenericas && valoresGenericas.length > 0){
+        if(valoresGenericas && valoresGenericas.length > 0){
 
             for(const categoria_config of valoresGenericas){
+
+                const id_categoria = categoria_config[0];
+                const cant_preguntas_categoria = categoria_config[1];
 
                 await ConfiguracionCategoria.create({
                     cantidad_preguntas: categoria_config[1],
@@ -194,11 +197,11 @@ createPrueba = async (req, res) => {
                     categoria_id: categoria_config[0]
                 });
 
-                asignarPreguntas(prueba.id, total_preguntas, categoria_config[0], categoria[1])
+                asignarPreguntas(prueba.id, id_categoria, cant_preguntas_categoria, semestre);
 
             }
 
-        }*/
+        }
 
         res.status(200).json('Prueba creada exitosamente');
 
