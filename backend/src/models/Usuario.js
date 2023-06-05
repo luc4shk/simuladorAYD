@@ -1,5 +1,4 @@
 const {DataTypes} = require('sequelize');
-//const bcrypt = require('bcrypt');
 
 // Importamos el objeto de conexión
 const sequelize = require('../database/db');
@@ -195,10 +194,7 @@ const User = sequelize.define('usuarios', {
     timestamps: false
 });
 
-// Función encargada de la validación de la contraseña
-/*User.prototype.validatePassword = function (receivedPasswd, passwd) {
-    return bcrypt.compare(receivedPasswd, passwd);
-}*/
+
 
 // Exportamos el modelo
 module.exports = User;

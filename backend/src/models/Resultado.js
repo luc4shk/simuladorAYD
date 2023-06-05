@@ -30,22 +30,19 @@ const Resultado = sequelize.define('resultados', {
             }
         }
     },
-    fecha_finalizacion: {
-        type: DataTypes.DATE,
-        validate: {
-            notEmpty:{
-                msg: "La fecha de finalización no puede ser vacia"
-            },
-            isDate: {
-                msg : "Por favor ingrese un formato de fecha válido"
-            }
-        }
-    },
     categoria_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: 'categorias',
+            key: 'id'
+        }
+    },
+    inscripcion_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'inscripciones',
             key: 'id'
         }
     }

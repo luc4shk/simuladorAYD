@@ -11,6 +11,14 @@ const ConfiguracionCategoria = require('../models/ConfiguracionCategoria');
 const Competencia = require('../models/Competencia');
 const PruebaCompetencia = require('../models/PruebaCompetencia');
 const PreguntaPrueba = require('../models/PreguntaPrueba');
+const PasswordReset = require('../models/PasswordReset');
+
+
+// Definimos la relación Usuario - PasswordReset
+User.hasMany(PasswordReset, {foreignKey: 'usuario_id'});
+PasswordReset.belongsTo(User, {
+    foreignKey: 'usuario_id'
+});
 
 // Definimos la relación Usuario - Rol
 Rol.hasMany(User, {foreignKey: 'rol_id'});
@@ -31,9 +39,9 @@ Inscripcion.belongsTo(Convocatoria, {
 });
 
 // Definimos la relación Resultado - Inscripcion
-Resultado.hasOne(Inscripcion, {foreignKey: 'resultado_id'});
-Inscripcion.belongsTo(Resultado, {
-    foreignKey: 'resultado_id'
+Inscripcion.hasMany(Resultado, {foreignKey: 'inscripcion_id'});
+Resultado.belongsTo(Inscripcion, {
+    foreignKey: 'inscripcion_id'
 });
 
 // Definimos la relación Prueba - Convocatoria

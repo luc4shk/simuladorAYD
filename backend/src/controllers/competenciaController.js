@@ -1,6 +1,9 @@
 const Competencia = require('../models/Competencia');
 const Categoria = require('../models/Categoria');
 
+
+/* --------- getCompetencias function -------------- */
+
 const getCompetencias = async (req, res) => {
 
     try{
@@ -8,7 +11,7 @@ const getCompetencias = async (req, res) => {
         // Obtenemos las competencias
         const competencias = await Competencia.findAll({
             where: {estado: true},
-            attributes: ['nombre', 'descripcion', 'estado'],
+            attributes: ['id', 'nombre', 'descripcion', 'estado'],
             include: {
                 model: Categoria,
                 attributes: ['id', 'nombre']
@@ -19,11 +22,13 @@ const getCompetencias = async (req, res) => {
         res.status(200).json(competencias);
 
     }catch(err){
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al obtener las competencias: ${err.message}`});
     }
 
 };
 
+
+/* --------- getCompetenciaById function -------------- */
 
 const getCompetenciaById = async (req, res) => {
 
@@ -36,11 +41,12 @@ const getCompetenciaById = async (req, res) => {
         const regex = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regex.test(id)){
-            return res.status(400).json({error: 'id no valido'});
+            return res.status(400).json({error: 'id no válido'});
         }
 
         // Obtenemos y verificamos la competencia
         const competencia = await Competencia.findByPk(id, {
+            attributes: ['nombre', 'descripcion', 'estado'],
             include: {
                 model: Categoria,
                 attributes: ['id', 'nombre']
@@ -55,11 +61,13 @@ const getCompetenciaById = async (req, res) => {
         res.status(200).json(competencia);
 
     }catch(err){
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al obtener la competencia con el id especificado: ${err.message}`});
     }
 
 };
 
+
+/* --------- createCompetencia function -------------- */
 
 const createCompetencia = async (req, res) => {
 
@@ -91,7 +99,7 @@ const createCompetencia = async (req, res) => {
         });
 
         if(compFound){
-            return res.status(400).json({error: "El nombre de la competencia debe ser unico"});
+            return res.status(400).json({error: "El nombre de la competencia debe ser único"});
         }
 
         // Creamos la competencia
@@ -104,11 +112,13 @@ const createCompetencia = async (req, res) => {
         res.status(200).json(competencia);
 
     }catch(err){
-        res.status(500).json({err: err.message});
+        return res.status(500).json({err: `Error al crear la competencia: ${err.message}`});
     }
 
 };
 
+
+/* --------- updateCompetencia function -------------- */
 
 const updateCompetencia = async (req, res) => {
 
@@ -121,7 +131,7 @@ const updateCompetencia = async (req, res) => {
         const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
-            return res.status(400).json({error: 'id no valido'});
+            return res.status(400).json({error: 'id no válido'});
         }
 
         // Obtenemos y verificamos la competencia
@@ -163,11 +173,24 @@ const updateCompetencia = async (req, res) => {
             estado
         });
 
+        // Si la competencia es desactivada, desabilitamos todas las categorias asociadas a esta
+        if(!competencia.estado){
+
+            await Categoria.update({
+                estado: false
+            }, {
+                where: {
+                    competencia_id: competencia.id
+                }
+            });
+
+        }
+
         // Respondemos al usuario
         res.status(200).json(competencia);
 
     }catch(err){
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al actualizar la competencia: ${err.message}`});
     }
 
 };

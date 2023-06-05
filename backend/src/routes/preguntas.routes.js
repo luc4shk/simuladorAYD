@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const path = require('path');
 const multer = require('multer');
-const Pregunta = require('../models/Pregunta');
+
 
 // Middleware
 const fileupload = require('express-fileupload');
@@ -22,16 +22,18 @@ const router = Router();
 // @access solo Admin
 router.get('/', [verifyJWT, isAdmin], questionController.getAllQuestions);
 
+
 // @desc Endpoint encargada de la creación de una pregunta simple
-// @route POST /api/question/create
+// @route POST /api/question/createQuestion
 // @access solo Admin
 router.post('/createQuestion', [verifyJWT, isAdmin], questionController.createQuestion);
 
 
 // @desc Endpoint encargada de la creación de preguntas por medio de un archivo
-// @route POST /api/question/create
+// @route POST /api/question/createQuestionFile
 // @access solo Admin
-router.post('/create', [verifyJWT, isAdmin, fileupload()], questionController.createQuestions);
+router.post('/createQuestionFile', [verifyJWT, isAdmin, fileupload()], questionController.createQuestions);
+
 
 // Storage de multer
 const multerStorage = multer.diskStorage({

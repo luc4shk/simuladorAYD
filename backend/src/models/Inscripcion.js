@@ -23,6 +23,15 @@ const Inscripcion = sequelize.define('inscripciones', {
             }
         }
     },
+    fecha_finalizacion: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        validate: {
+            isDate: {
+                msg: "Favor ingresar un formato de fecha valido"
+            }
+        }
+    },
     usuario_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -38,15 +47,7 @@ const Inscripcion = sequelize.define('inscripciones', {
             model: 'convocatorias',
             key: 'id'
         },
-    },
-    resultado_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'resultados',
-            key: 'id'
-        }
-    },
+    }
 }, {
     timestamps: false
 });
