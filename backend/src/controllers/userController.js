@@ -1,6 +1,5 @@
 const { Op } = require('sequelize');
 const Usuario = require('../models/Usuario');
-const multer = require('multer');
 const password_generator = require('generate-password');
 const encryptPasswd= require('../util/encryptPassword');
 const generateCorreo = require('../util/emailGenerator');
@@ -143,12 +142,28 @@ createStudent =  async (req, res) => {
                 [Op.or]: [
                     {codigo},
                     {email}
-                ]
+                ],
+                tipo: 'estudiante'
             }
-        })
+        });
 
         if(studentExist){
-            return res.status(400).json({error: 'El codigo y email del estudiante debe ser unico'});
+            return res.status(400).json({error: 'El codigo y email del estudiante deben ser unicos'});
+        }
+
+        // Validamos la existencia del estudiante
+        const estudianteExist = await Usuario.findOne({
+            where: {
+                nombre,
+                apellido,
+                email,
+                codigo,
+                tipo: 'estudiante'
+            }
+        });
+
+        if(estudianteExist){
+            return res.status(400).json({error: 'El estudiante ya se encuentra registrado'});
         }
 
         // Generamos la contraseña

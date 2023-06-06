@@ -40,6 +40,35 @@ const validateCategories = (valoresCategoria, total_preguntas) => {
 }
 
 
+const validate_percentage_categories = (valoresCategoria) => {
+
+    let valor_total_categorias = 0;
+
+    try{
+
+        for(const categoria_config of valoresCategoria){
+
+            const valor_categoria = categoria_config[2];
+        
+            // Validamos que el porcentaje por cada categoria
+            // NO supere el total (100%)
+            if(valor_categoria > 100){
+                throw new Error('El valor porcentual por categoria no puede superar el 100%');
+            }
+        
+            valor_total_categorias += valor_categoria;
+        
+        }
+
+        return valor_total_categorias;
+
+    }catch(error){
+        throw new Error(`Error al actualizar los porcentajes de las categorias: ${error.message}`);
+    }
+
+};
+
+
 const validCantQuestions = async (valoresCategoria, semestre) => {
 
     try{
@@ -78,5 +107,6 @@ const validCantQuestions = async (valoresCategoria, semestre) => {
 
 module.exports = {
     validateCategories,
-    validCantQuestions
+    validCantQuestions,
+    validate_percentage_categories
 };

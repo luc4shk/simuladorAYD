@@ -33,22 +33,6 @@ const createTestQuestion = async (id_prueba, id_categoria, cant_preguntas_catego
                 continue;
             }
 
-            /*//obtenemos una pregunta que aún no haya sido agregada a la prueba
-            while(existQuestion){
-
-                const index_question = Math.floor(Math.random() * (questions.length));
-
-                const question = questions[index_question];
-
-                const existQuestion = await PreguntaPrueba.findOne({
-                    where: {
-                        pregunta_id: question.id,
-                        prueba_id: id_prueba
-                    }
-                })
-
-            }*/
-
             //agregamos la pregunta a la prueba
             await PreguntaPrueba.create({
                 pregunta_id: question.id,

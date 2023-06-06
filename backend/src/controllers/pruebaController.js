@@ -4,7 +4,7 @@ const PruebaCompetencia = require('../models/PruebaCompetencia');
 const ConfiguracionCategoria = require('../models/ConfiguracionCategoria');
 const Pregunta = require('../models/Pregunta');
 const Categoria = require('../models/Categoria');
-const {validateCategories, validCantQuestions} = require('../util/validateDataCategories');
+const {validateCategories, validCantQuestions, validate_percentage_categories} = require('../util/validateDataCategories');
 const {createTestQuestion} = require('../util/createTestQuestion');
 
 
@@ -97,6 +97,7 @@ createPrueba = async (req, res) => {
             return res.status(400).json({error: 'Se debe seleccionar por lo menos una competencia'});
         }
 
+        // Validamos que el nombre sea único
         const existPrueba = await Prueba.findOne({
             where: {
                 nombre
@@ -236,7 +237,140 @@ createPrueba = async (req, res) => {
 
 
     }catch(err){
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Errro al crear la prueba: ${err.message}`});
+    }
+
+};
+
+
+/* --------- updatePrueba function -------------- */
+
+const updatePrueba = async (req, res) => {
+
+    try{
+
+        // Obtenemos el id de la prueba a actualizar 
+        const {id} = req.params;
+
+        // Verificamos los datos de entrada
+        const regex = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+
+        if(!regex.test(id)){
+            return res.status(400).json({error: 'id no válido'});
+        }
+
+        // Obtenemos los datos a actualizar
+        const {nombre, descripcion, duracion, estado, valoresGenericas, valoresEspecificas} = req.body;
+
+        // Validamos los datos obtenidos
+
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
+
+        if(!regexData.test(nombre) || !regexNum.test(duracion)){
+            return res.status(400).json({error: 'La sintaxis de los datos es incorrecta'});
+        }
+
+        // Validamos que el nombre ingresado sea unico
+        const pruebaExist = await Pregunta.findOne({
+            where: {
+                nombre
+            }
+        });
+
+        if(pruebaExist && pruebaExist.nombre !== nombre){
+            return res.status(400).json({error: "El nombre de la prueba debe ser unico"});
+        }
+
+        // Validamos que los nuevos porcentajes sean coincidentes
+        let valor_total_categorias = 0;
+
+        // Validamos que los datos ingresados para las categotrias 
+        // de la competencia generica sean correctos (si aplica)
+        if(valoresGenericas && valoresGenericas.length > 0){
+
+            const dataCategoriasGenericas = validate_percentage_categories(valoresGenericas);
+                
+            valor_total_categorias += dataCategoriasGenericas;
+            
+        }
+
+        // Validamos que los datos ingresados para las categotrias 
+        // de la competencia especifica sean correctos (si aplica)
+        if(valoresEspecificas && valoresEspecificas.length > 0){
+
+            const dataCategoriasEspecificas = validate_percentage_categories(valoresEspecificas);
+
+            valor_total_categorias += dataCategoriasEspecificas;
+
+        }
+
+        // Validamos el valor total de las categorias
+        if(valor_total_categorias > 100 || valor_total_categorias < 100){
+            return res.status(400).json({error: 'El valor total de las categorias no coincide con el 100% designado'});
+        }
+
+        // Actualizamos los valores de la prueba
+        await Prueba.update({
+            nombre,
+            descripcion,
+            duracion,
+            estado,
+        }, {
+            where: {
+                id
+            }
+        });
+
+        // Actualizamos los valores de las categorias Gnericas (Si aplica)
+        if(valoresGenericas && valoresGenericas.length > 0){
+
+            for(const genericValue of valoresGenericas){
+
+                // Obtenemos el id de la categoria
+                const categoria_id = genericValue[0];
+                const percentage = genericValue[1];
+
+                // Actualizamos la configuración
+                await ConfiguracionCategoria.update({
+                    valor_categoria: percentage
+                }, {
+                    where: {
+                        categoria_id,
+                        prueba_id: id
+                    }
+                });
+
+            }
+            
+        }
+
+        // Actualizamos los valores de las categorias Especificas (Si aplica)
+        if(valoresEspecificas && valoresEspecificas.length > 0){
+
+            for(const especificValue of valoresEspecificas){
+
+                // Obtenemos el id de la categoria
+                const categoria_id = especificValue[0];
+                const percentage = especificValue[1];
+
+                // Actualizamos la configuración
+                await ConfiguracionCategoria.update({
+                    valor_categoria: percentage
+                }, {
+                    where: {
+                        categoria_id,
+                        prueba_id: id
+                    }
+                });
+
+            }
+            
+        }
+
+        return res.status(200).json('Prueba actualizada correctamente');
+
+    }catch(err){
+        return res.status(500).json({error: `Error al actualizar la prueba: ${err.message}`});
     }
 
 };
@@ -245,5 +379,6 @@ createPrueba = async (req, res) => {
 module.exports = {
     getPruebas,
     getPruebasId, 
-    createPrueba
+    createPrueba,
+    updatePrueba
 }
