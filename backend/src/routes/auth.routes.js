@@ -13,7 +13,7 @@ const router = Router();
 // Routes
 
 // @desc Endpoint encargado de la administración del Login de usuario
-// @route POST /api/auth
+// @route POST /api/auth/login
 // @access public
 router.post('/login', authController.login);
 
@@ -28,6 +28,18 @@ router.get('/refresh', authController.refresh);
 // @route POST /api/auth/logout
 // @access public 
 router.post('/logout', verifyJWT, authController.logout);
+
+
+// @desc Enpoint encargado de gestionar la petición de cambio de contraseña
+// @route POST /api/auth/requestPasswordReset
+// @access public 
+router.post('/requestPasswordReset', authController.requestPasswordRst);
+
+
+// @desc Enpoint encargado de llevar a cabo el cambio de contraseña
+// @route POST /api/auth/resetPassword
+// @access public 
+router.post('/resetPassword', authController.resetPassword);
 
 // Exportamos el router
 module.exports = router;

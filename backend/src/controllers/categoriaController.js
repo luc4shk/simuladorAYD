@@ -2,6 +2,8 @@ const Categoria = require('../models/Categoria');
 const Competencia = require('../models/Competencia');
 
 
+/* --------- getCategorias function -------------- */
+
 const getCategorias = async (req, res) => {
 
     try{
@@ -12,7 +14,7 @@ const getCategorias = async (req, res) => {
             attributes: ['id', 'nombre', 'descripcion'],
             include: {
                 model: Competencia,
-                attributes: ['nombre']
+                attributes: ['id', 'nombre']
             }
         });
 
@@ -20,11 +22,13 @@ const getCategorias = async (req, res) => {
         res.status(200).json(categorias);
 
     }catch(err){
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al obtener las categorias: ${err.message}`});
     }
 
 };
 
+
+/* --------- getCategoriaById function -------------- */
 
 const getCategoriaById = async (req, res) => {
 
@@ -57,11 +61,13 @@ const getCategoriaById = async (req, res) => {
         res.status(200).json(categoria);
 
     }catch(err){
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al obtener los datos de la categoria especificada: ${err.message}`});
     }
 
 };
 
+
+/* --------- createCategoria function -------------- */
 
 const createCategoria = async (req, res) => {
 
@@ -100,7 +106,7 @@ const createCategoria = async (req, res) => {
         const competencia_exist = await Competencia.findByPk(competencia_id);
         
         if(!competencia_exist){
-            return res.status(400).json({error: 'El id proporcionado no corresponde con una competencia existente'});
+            return res.status(400).json({error: 'El id de competencia proporcionado no corresponde con ninguna existente'});
         }
 
         // Creamos la categoria
@@ -114,11 +120,13 @@ const createCategoria = async (req, res) => {
         res.status(200).json(categoria);
 
     }catch(err){
-        res.status(500).json({err: err.message});
+        return res.status(500).json({err: `Error al crear categoria: ${err.message}`});
     }
 
 };
 
+
+/* --------- updateCategoria function -------------- */
 
 const updateCategoria = async (req, res) => {
 
@@ -166,7 +174,7 @@ const updateCategoria = async (req, res) => {
         const competencia_exist = await Competencia.findByPk(competencia_id);
         
         if(!competencia_exist){
-            return res.status(400).json({error: 'El id proporcionado no corresponde con una competencia existente'});
+            return res.status(400).json({error: 'El id de competencia proporcionado no corresponde con ninguna existente'});
         }
 
         // Actualizamos la categoria
@@ -181,7 +189,7 @@ const updateCategoria = async (req, res) => {
         res.status(200).json(categoria);
 
     }catch(err){
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al actualizar la categoria: ${err.message}`});
     }
 
 };

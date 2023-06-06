@@ -6,6 +6,8 @@ const XLSX = require("xlsx");
 const sequelize = require('../database/db');
 
 
+/* --------- getAllQuestions function -------------- */
+
 const getAllQuestions = async (req, res) => {
 
     try{
@@ -16,19 +18,23 @@ const getAllQuestions = async (req, res) => {
             attributes: ['id', 'texto_pregunta', 'semestre', 'estado'],
             include: {
                 model: Categoria,
-                attributes: ['nombre']
+                attributes: ['id', 'nombre']
             }
         });
 
         res.status(200).json(questions);
 
     }catch(error){
-        res.status(500).json({message: error.message});
+        return res.status(500).json({error: `Error al obtener las preguntas: ${error.message}`});
     }
 
 };
 
+
+/* --------- createQuestion function -------------- */
+
 const createQuestion = async (req, res) => {
+
     try {
 
         //Obtenemos los datos de la pregunta a crear
@@ -49,7 +55,7 @@ const createQuestion = async (req, res) => {
         }
 
         // Validamos que el id de categoria corresponda a una existente
-        const categoriaExist = Categoria.findByPk(categoria_id);
+        const categoriaExist = await Categoria.findByPk(categoria_id);
 
         if(!categoriaExist){
             return res.status(400).json({error: "El id de categoria proporcionado no corresponde a ninguna existente"});
@@ -67,11 +73,16 @@ const createQuestion = async (req, res) => {
         res.status(200).json(pregunta);
 
     } catch (err) {
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al intentar crear la pregunra: ${err.message}`});
     }
+
 }
 
+
+/* --------- createImageQuesrion function -------------- */
+
 const createImageQuestion = async (req, res) => {
+
     try {
 
         //Obtenemos los datos de la pregunta a crear
@@ -93,7 +104,7 @@ const createImageQuestion = async (req, res) => {
         }
 
         // Validamos que el id de categoria corresponda a una existente
-        const categoriaExist = Categoria.findByPk(categoria_id);
+        const categoriaExist = await Categoria.findByPk(categoria_id);
 
         if(!categoriaExist){
             return res.status(400).json({error: "El id de categoria proporcionado no corresponde a ninguna existente"});
@@ -111,13 +122,17 @@ const createImageQuestion = async (req, res) => {
 
         res.status(200).json({
             pregunta,
-            imageFile: `http://localhost:3500/directors/${req.file.filename}`
+            imageFile: `http://localhost:3500/questions/${req.file.filename}`
         });
 
     } catch (err) {
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al intentar crear una pregunta con imagen: ${err.message}`});
     }
+
 }
+
+
+/* --------- createQuestions function -------------- */
 
 const createQuestions = async (req, res) => {
 
@@ -174,7 +189,7 @@ const createQuestions = async (req, res) => {
                 })
 
                 if(!categoriaFound){
-                    return res.status(400).json({error: 'La categoria proporcionada no existe'});
+                    return res.status(400).json({error: `La categoria ${categoriaReceived} proporcionada no existe`});
                 }
 
                 // Creamos el arreglo con las opciones
@@ -202,11 +217,13 @@ const createQuestions = async (req, res) => {
         });
 
     }catch(err){
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al procesar el archivo de preguntas: ${err.message}`});
     }
 
 }
 
+
+/* --------- getQuestionById function -------------- */
 
 const getQuestionById = async (req, res) => {
 
@@ -219,7 +236,7 @@ const getQuestionById = async (req, res) => {
         const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
-            return res.status(400).json({error: 'id no valido'});
+            return res.status(400).json({error: `El id ${id} no es válido`});
         }
 
         // Obtenemos la pregunta y validamos su existencia
@@ -238,6 +255,7 @@ const getQuestionById = async (req, res) => {
         const opciones = JSON.parse(pregunta.opciones);
 
         const formatedOptions = opciones.map(opcion => {
+            if(typeof opcion === 'number') return opcion
             return opcion.replace(/\n/g, " ")
         });
 
@@ -252,15 +270,17 @@ const getQuestionById = async (req, res) => {
             estado: pregunta.estado,
             semestre: pregunta.semestre,
             categoria: pregunta.categoria.nombre,
-            imageFile: `http://localhost:3500/questions/${pregunta.imagen}`
+            imageFile: pregunta.imagen ? `http://localhost:3500/questions/${pregunta.imagen}` : ''
         });
 
     }catch(err){
-        return res.status(500).json({error: err.message});
+        return res.status(500).json({error: `Error al obtener los datos de la pregunta especificada: ${err.message}`});
     }
 
 };
 
+
+/* --------- actualizarPregunta function -------------- */
 
 const actualizarPregunta = async (req, res) => {
 
@@ -273,7 +293,7 @@ const actualizarPregunta = async (req, res) => {
         const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
-            return res.status(400).json({error: 'id no valido'});
+            return res.status(400).json({error: `El id ${id} no es válido`});
         }
 
         // Obtenemos la pregunta y validamos su existencia
@@ -303,7 +323,7 @@ const actualizarPregunta = async (req, res) => {
         }
 
         // Validamos que el id de categoria recibido corresponda a una existente
-        const categoriaExist = Categoria.findByPk(categoria_id);
+        const categoriaExist = await Categoria.findByPk(categoria_id);
 
         if(!categoriaExist){
             return res.status(400).json({error: "El id de categoria proporcionado no corresponde a ninguna existente"});
@@ -329,7 +349,7 @@ const actualizarPregunta = async (req, res) => {
         res.status(200).json(pregunta);
 
     }catch(err){
-        return res.status(400).json({error: err.message});
+        return res.status(500).json({error: `Error al actualizar pregunta: ${err.message}`});
     }
 
 };
