@@ -25,7 +25,7 @@ export default function SideItem({icon, msg, active, index, tamanio, path}) {
         
     >
         <Flex  w={"100%"} gap={"15px"} p={"10px"}  justifyContent={tamanio ? 'flex-start' : 'center'} alignItems={"center"}>
-            <Icon as={icon} color={ loc==ruta ? "principal.100" : null } fontSize="25px"/>
+            <Icon as={icon} color={ loc==ruta ? "white" : null } fontSize="25px"/>
             {msg!="" ? <Text>{msg}</Text> : msg}
         </Flex>
     

@@ -38,7 +38,7 @@ export default function SideBar({isOpen}) {
         w={["70px","70px","200px"]}
         h={"100%"}
         alignItems={"center"}
-        backgroundColor={"white"}
+        backgroundColor={"principal.100"}
         padding={"15px"}
         justifyContent={"space-between"}
         transform={ isOpen ? "translateX(-100%)" : "translateX(0px)"}

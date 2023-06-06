@@ -6,7 +6,7 @@ export default function NavBar({ changeOpen, msg, isOpen }) {
   return (
     <Flex
       w={"100%"}
-      bgColor={"white"}
+      bgColor={"red.200"}
       h={"60px"}
       p={"10px"}
       alignItems={"center"}
