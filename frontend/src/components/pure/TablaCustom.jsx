@@ -75,9 +75,9 @@ export default function TablaCustom({ columns, items, path, msg, showButton }) {
           // w={["190px", "350px", "510px", "700px"]}
           w={{
             base: "240px",
-            sm: "300px",
-            md: "425px",
-            lg: "640px",
+            sm: "310px",
+            md: "450px",
+            lg: "690px",
             tableBreakpoint: "100%",
           }}
           gap={["8px", "0"]}
