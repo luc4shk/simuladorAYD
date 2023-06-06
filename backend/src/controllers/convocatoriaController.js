@@ -5,6 +5,9 @@ const password_generator = require('generate-password');
 const encryptPasswd= require('../util/encryptPassword');
 const generateCorreo = require('../util/emailGenerator');
 const Inscripcion = require('../models/Inscripcion');
+const sequelize = require('../database/db');
+const XLSX = require("xlsx");
+const { Op } = require('sequelize');
 
 /* --------- getConvocatorias function -------------- */
 
@@ -137,14 +140,20 @@ const createConvocatoria = async (req, res) => {
 
                 const studentExist = await Usuario.findOne({
                     where: {
-                        [Op.or]: [
-                            {codigo},
-                            {email}
-                        ],
-                        tipo: 'estudiante'
+                      [Op.or]: [
+                        {
+                          codigo,
+                          email: { [Op.ne]: email } // Email diferente al ingresado
+                        },
+                        {
+                          codigo: { [Op.ne]: codigo }, // Código diferente al ingresado
+                          email // Email coincidente al ingresado
+                        }
+                      ],
+                      tipo: 'estudiante'
                     }
                 });
-
+                
                 if(studentExist){
                     return res.status(400).json({error: `El código ${codigo} o el email ${email} ya fueron asignados`});
                 }
@@ -173,8 +182,8 @@ const createConvocatoria = async (req, res) => {
             const convocatoria = await Convocatoria.create({
                 nombre,
                 descripcion,
-                fecha_inicio,
-                fecha_fin,
+                fecha_inicio: new Date(fecha_inicio),
+                fecha_fin: new Date(fecha_fin),
                 prueba_id
             });
 
@@ -211,7 +220,7 @@ const createConvocatoria = async (req, res) => {
                     await student.save();
 
                     // Enviamos correo de confirmación de registro
-                    await generateCorreo(`${student.nombre} ${student.apellido}`, student.email, student.password);
+                    await generateCorreo(`${student.nombre} ${student.apellido}`, student.email, password);
 
                 }
 

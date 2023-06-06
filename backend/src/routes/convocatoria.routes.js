@@ -6,6 +6,7 @@ const convocatoriaController = require('../controllers/convocatoriaController');
 // Importamos los middlewares de autenticación
 const authJWT = require('../middlewares/verifyJWT');
 const isAdmin = require('../middlewares/isAdmin');
+const fileupload = require('express-fileupload');
 
 // Inicializamos el router
 const router = Router();
@@ -28,10 +29,13 @@ router.get('/:id', [authJWT, isAdmin], convocatoriaController.getConvocatoriaByI
 // @desc Endpoint encargado de la creación de una nueva convocatoria
 // @route POST /api/convocatoria/create
 // @access solo Admin
-router.post('/create', [authJWT, isAdmin], convocatoriaController.createConvocatoria);
+router.post('/create', [authJWT, isAdmin, fileupload()], convocatoriaController.createConvocatoria);
 
 
 // @desc Endpoint encargado de la actualización de una convocatoria por su od
 // @route PUT /api/convocatoria/update/:id
 // @access solo Admin
-router.put('/update/:id', [authJWT, isAdmin], convocatoriaController);
+//router.put('/update/:id', [authJWT, isAdmin], convocatoriaController);
+
+
+module.exports = router;
