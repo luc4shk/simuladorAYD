@@ -14,7 +14,7 @@ export default function SideItem({icon, msg, active, index, tamanio, path}) {
         w={'100%'}
         borderRadius={"8px"}
         _hover={{
-            backgroundColor: "#F4F4F4",
+            backgroundColor: "#E7CECA",
             textDecoration:"none"
         }}
         display={"flex"}
