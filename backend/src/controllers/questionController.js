@@ -49,7 +49,7 @@ const createQuestion = async (req, res) => {
         const options = [A,B,C,D];
 
         //validamos los datos
-        const regexNum = /^[0-9]*$/;
+        const regexNum = /^[0-9]+$/;
         if(!regexNum.test(semestre) || (!Array.isArray(options) || options.length !== 4) || !regexNum.test(categoria_id)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
         }
@@ -90,7 +90,7 @@ const createImageQuestion = async (req, res) => {
         const imagen = req.file;
 
         // Validamos los datos
-        const regexNum = /^[0-9]*$/;
+        const regexNum = /^[0-9]+$/;
 
         if(!texto_pregunta || !semestre || !A || !B || !C || !D || !respuesta || !imagen || !categoria_id){
             return res.status(400).json({error: 'Todos los campos son requeridos'});
@@ -233,7 +233,7 @@ const getQuestionById = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
             return res.status(400).json({error: `El id ${id} no es válido`});
@@ -290,7 +290,7 @@ const actualizarPregunta = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
             return res.status(400).json({error: `El id ${id} no es válido`});
@@ -316,9 +316,7 @@ const actualizarPregunta = async (req, res) => {
         const options = [A,B,C,D];
 
         //validamos los datos
-        const regexNum = /^[0-9]*$/;
-
-        if(!regexNum.test(semestre) || (!Array.isArray(options) || options.length !== 4) || !regexNum.test(categoria_id)){
+        if(!regexId.test(semestre) || (!Array.isArray(options) || options.length !== 4) || !regexId.test(categoria_id)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
         }
 

@@ -35,7 +35,7 @@ getStudentById = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
             return res.status(400).json({error: 'id no valido'});
@@ -71,7 +71,7 @@ updateStudentData = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
             return res.status(400).json({error: 'id no valido'});
@@ -129,7 +129,7 @@ createStudent =  async (req, res) => {
             return res.status(400).json({error: 'Todos los campos son requeridos'});
         } 
 
-        const regexNum = /^[0-9]*$/;
+        const regexNum = /^[0-9]+$/;
         const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/;
 
         if(!regexData.test(nombre) || !regexData.test(apellido) || !regexNum.test(codigo) || !regexNum.test(semestre)){
@@ -208,7 +208,7 @@ updateStudentDataDir = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexNum = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexNum = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexNum.test(id)){
             return res.status(400).json({error: 'id no valido'});
@@ -295,7 +295,7 @@ getDirectorById = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
             return res.status(400).json({error: 'id no valido'});
@@ -330,7 +330,7 @@ updateDirector = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexNum = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexNum = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexNum.test(id)){
             return res.status(400).json({error: 'id no valido'});
@@ -403,7 +403,7 @@ updatePhotoDirector = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexNum = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexNum = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexNum.test(id)){
             return res.status(400).json({error: 'id no valido'});

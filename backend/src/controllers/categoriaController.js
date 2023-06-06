@@ -38,7 +38,7 @@ const getCategoriaById = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos los datos de entrada
-        const regex = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regex = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regex.test(id)){
             return res.status(400).json({error: 'id no valido'});
@@ -136,7 +136,7 @@ const updateCategoria = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
             return res.status(400).json({error: 'id no valido'});

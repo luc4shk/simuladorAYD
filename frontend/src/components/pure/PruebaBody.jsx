@@ -99,7 +99,7 @@ export default function PruebaBody() {
     <TablaCustom
       columns={columns}
       items={items}
-      path={""}
+      path={"/crearPrueba"}
       msg={"Crear Prueba"}
       showButton={true}
     />
