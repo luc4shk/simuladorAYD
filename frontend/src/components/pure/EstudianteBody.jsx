@@ -11,7 +11,6 @@ export default function EstudianteBody() {
     "Semestre",
     "Código",
     "Editar",
-    "Eliminar"
   ];
   const items = [
     [
@@ -23,9 +22,6 @@ export default function EstudianteBody() {
       <Center>
         <RiEdit2Fill />
       </Center>,
-      <Center>
-      <RiDeleteBin2Fill />
-    </Center>,
     ],
     [
       "Samuel Omar",
@@ -36,9 +32,6 @@ export default function EstudianteBody() {
       <Center>
         <RiEdit2Fill />
       </Center>,
-      <Center>
-      <RiDeleteBin2Fill />
-    </Center>,
     ],
     [
       "Luis Carlos",
@@ -49,9 +42,6 @@ export default function EstudianteBody() {
       <Center>
         <RiEdit2Fill />
       </Center>,
-      <Center>
-      <RiDeleteBin2Fill />
-    </Center>,
     ],
     [
       "Jaider Gustavo",
@@ -62,9 +52,6 @@ export default function EstudianteBody() {
       <Center>
         <RiEdit2Fill />
       </Center>,
-      <Center>
-      <RiDeleteBin2Fill />
-    </Center>,
     ],
     [
       "Jennifer Dayana",
@@ -75,9 +62,6 @@ export default function EstudianteBody() {
       <Center>
         <RiEdit2Fill />
       </Center>,
-      <Center>
-      <RiDeleteBin2Fill />
-    </Center>,
     ],
     [
       "Samuel Omar",
@@ -88,9 +72,6 @@ export default function EstudianteBody() {
       <Center>
         <RiEdit2Fill />
       </Center>,
-      <Center>
-      <RiDeleteBin2Fill />
-    </Center>,
     ],
     [
       "Luis Carlos",
@@ -101,9 +82,6 @@ export default function EstudianteBody() {
       <Center>
         <RiEdit2Fill />
       </Center>,
-      <Center>
-      <RiDeleteBin2Fill />
-    </Center>,
     ],
     [
       "Jaider Gustavo",
@@ -114,9 +92,6 @@ export default function EstudianteBody() {
       <Center>
         <RiEdit2Fill />
       </Center>,
-      <Center>
-      <RiDeleteBin2Fill />
-    </Center>,
     ],
   ];
   return (

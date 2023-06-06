@@ -2,6 +2,7 @@ import React from "react";
 import TablaCustom from "./TablaCustom";
 import { Center } from "@chakra-ui/react";
 import { RiEdit2Fill, RiDeleteBin2Fill, RiEyeFill } from "react-icons/ri";
+import { BsFillFileEarmarkBarGraphFill } from "react-icons/bs";
 
 export default function ConvocatoriaBody() {
   const columns = [
@@ -23,13 +24,12 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
         <RiEyeFill />
       </Center>,
-    ],
-    [
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
       "0",
       "Activo",
       "10/05/23",
@@ -38,13 +38,12 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
         <RiEyeFill />
       </Center>,
-    ],
-    [
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
       "0",
       "Activo",
       "10/05/23",
@@ -53,13 +52,12 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
         <RiEyeFill />
       </Center>,
-    ],
-    [
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
       "0",
       "Activo",
       "10/05/23",
@@ -68,13 +66,12 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
         <RiEyeFill />
       </Center>,
-    ],
-    [
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
       "0",
       "Activo",
       "10/05/23",
@@ -83,58 +80,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
         <RiEyeFill />
       </Center>,
-    ],
-    [
-      "1",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
       <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "1",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "1",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "1",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -142,13 +94,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "1",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -156,13 +108,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "2",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -170,133 +122,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
         <RiEyeFill />
       </Center>,
-    ],
-    [
-      "2",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
       <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "2",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "2",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "2",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "3",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "3",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "3",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "3",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "3",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -304,13 +136,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "4",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -318,13 +150,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "4",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -332,13 +164,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "4",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -346,118 +178,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
         <RiEyeFill />
       </Center>,
-    ],
-    [
-      "4",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
       <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "4",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "5",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "5",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "5",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "5",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "5",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "6",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -465,13 +192,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "6",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -479,13 +206,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "6",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -493,13 +220,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "6",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -507,118 +234,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
         <RiEyeFill />
       </Center>,
-    ],
-    [
-      "6",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
       <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "7",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "7",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "7",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "7",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "7",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
-      </Center>,
-    ],
-    [
-      "8",
-      "Activo",
-      "10/05/23",
-      "15/06/23",
-      <Center>
-        <RiEdit2Fill />
-      </Center>,
-      <Center>
-        <RiDeleteBin2Fill />
-      </Center>,
-      <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "8",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -626,13 +248,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "8",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -640,13 +262,13 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
       </Center>,
       <Center>
-        <RiEyeFill />
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],[
-      "8",
+      "0",
       "Activo",
       "10/05/23",
       "15/06/23",
@@ -654,10 +276,304 @@ export default function ConvocatoriaBody() {
         <RiEdit2Fill />
       </Center>,
       <Center>
-        <RiDeleteBin2Fill />
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
       </Center>,
       <Center>
         <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
+      </Center>,
+    ],[
+      "0",
+      "Activo",
+      "10/05/23",
+      "15/06/23",
+      <Center>
+        <RiEdit2Fill />
+      </Center>,
+      <Center>
+        <RiEyeFill />
+      </Center>,
+      <Center>
+        <BsFillFileEarmarkBarGraphFill/>
       </Center>,
     ],
   ];
