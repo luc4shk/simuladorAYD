@@ -251,8 +251,72 @@ const createConvocatoria = async (req, res) => {
 };
 
 
+/* --------- updateConvocatoria function -------------- */
+
+const updateConvocatoria = async (req, res) => {
+
+    try {
+
+        //Obtenemos el id
+        const {id} = req.params;
+        
+        // Verificamos el id
+        const regexNum = /^[0-9]+$/;
+
+        if(!regexNum.test(id)){
+            return res.status(400).json({error: 'id no valido'});
+        }
+
+        // Obtenemos la convocatoria
+        const convocatoria = await Convocatoria.findByPk(id);
+        
+        //Verificamos que exista la convocatoria
+        if(!convocatoria){
+            return res.status(400).json({error: 'No se encuentra ninguna convocatoria con el id especificado'});
+        }
+
+        // Obtenemos los datos a actualizar
+        const {nombre, prueba_id, descripcion, fecha_inicio, fecha_fin} = req.body;
+
+        // Validamos los datos a actualizar
+        if(!nombre || !prueba_id || !descripcion || !fecha_inicio || !fecha_fin){
+            return res.status(400).json({error: 'Todos los campos son requeridos'});
+        }
+
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
+
+        if(!regexData.test(nombre) || !regexNum.test(prueba_id)){
+            return res.status(400).json({error: 'La sintaxis de los datos no es correcta'});
+        }
+
+        // Validamos que exista la prueba enlazada a la convocatoria
+        const existPrueba = await Prueba.findByPk(prueba_id);
+
+        if(!existPrueba){
+            return res.status(400).json({error: 'No existe ninguna prueba con el id especificado'})
+        }
+
+        //Actualizamos la convocatoria
+        await convocatoria.update({
+            nombre,
+            descripcion,
+            fecha_inicio: new Date(fecha_inicio),
+            fecha_fin: new Date(fecha_fin),
+            prueba_id
+        })
+
+        res.status(200).json('Convocatoria actualizada correctamente');
+        
+    } catch (err) {
+        return res.status(500).json({error: `Error al actualizar la convocatoria: ${err.message}` });
+    }
+
+}
+
+
 module.exports = {
     getConvocatorias,
     getConvocatoriaById,
-    createConvocatoria
+    createConvocatoria,
+    updateConvocatoria
 }
