@@ -32,10 +32,10 @@ router.get('/:id', [authJWT, isAdmin], convocatoriaController.getConvocatoriaByI
 router.post('/create', [authJWT, isAdmin, fileupload()], convocatoriaController.createConvocatoria);
 
 
-// @desc Endpoint encargado de la actualización de una convocatoria por su od
+// @desc Endpoint encargado de la actualización de una convocatoria por su id
 // @route PUT /api/convocatoria/update/:id
 // @access solo Admin
 //router.put('/update/:id', [authJWT, isAdmin], convocatoriaController);
-
+router.put('/update/:id', [authJWT, isAdmin], convocatoriaController.updateConvocatoria);
 
 module.exports = router;
