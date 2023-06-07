@@ -57,7 +57,7 @@ const login = async (req, res) => {
         // Creamos una cookie para almacenar el token de refresco
         res.cookie('jwt', refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: 'Lax',
             maxAge: 24 * 60 * 1000
         });
