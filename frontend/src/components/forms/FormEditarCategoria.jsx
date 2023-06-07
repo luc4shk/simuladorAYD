@@ -1,35 +1,11 @@
-import { Box, Button, Select, Center, Input, Textarea } from "@chakra-ui/react";
-import { useFormik } from "formik";
+import { Box, Button, Center, Input, Textarea, Select } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "wouter";
 import Boton from "../pure/Boton";
 
-export default function FormularioEditarCompetencia() {
+export default function FormularioEditarCategoria() {
+  const competencias = ["Competencia 1", "Competencia 2", "Competencia 3"];
   const estados = ["Activo", "Inactivo"];
-  const formik = useFormik({
-    initialValues: {
-      nombre: "",
-      descripcion: "",
-    },
-    validate: (values) => {
-      const errors = {};
-
-      if (!values.nombre) {
-        errors.nombre = "El nombre es requerido";
-      }
-
-      if (!values.descripcion) {
-        errors.descripcion = "La descripción es requerida";
-      }
-
-      return errors;
-    },
-    onSubmit: (values) => {
-      // Lógica para enviar el formulario
-      console.log(values);
-    },
-  });
-
   return (
     <Box position="fixed">
       <Center h="100%">
@@ -45,6 +21,7 @@ export default function FormularioEditarCompetencia() {
             flexDirection="column"
             alignItems="center"
             textAlign="center"
+            w={"100%"}
           >
             <Box display="flex" flexDirection="column" justifyContent="center">
               <label htmlFor="nombre">Nombre</label>
@@ -55,13 +32,30 @@ export default function FormularioEditarCompetencia() {
                 type="text"
                 maxW={["200px", "300px", "350px", "400px"]}
                 w="400px"
-                value={formik.values.nombre}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
-              {formik.touched.nombre && formik.errors.nombre && (
-                <span style={{ color: "red" }}>{formik.errors.nombre}</span>
-              )}
+            </Box>
+            <Box
+              mt="20px"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              w={["200px", "300px", "350px", "400px"]}
+            >
+              <label htmlFor="competencia">Competencia</label>
+              <Select
+                id="competencia"
+                name="competencia"
+                maxW={["200px", "300px", "350px", "400px"]}
+                w="100%"
+                border="2px solid gray"
+                mt={"10px"}
+              >
+                {competencias.map((competencia, index) => (
+                  <option key={index} value={competencia}>
+                    {competencia}
+                  </option>
+                ))}
+              </Select>
             </Box>
             <Box
               mt="20px"
@@ -97,23 +91,15 @@ export default function FormularioEditarCompetencia() {
                 mt="10px"
                 id="descripcion"
                 name="descripcion"
-                resize="none"
-                h="180px"
+                resize="vertical"
+                h="100px"
                 maxW={["200px", "300px", "350px", "400px"]}
                 w="400px"
-                value={formik.values.descripcion}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
-              {formik.touched.descripcion && formik.errors.descripcion && (
-                <span style={{ color: "red" }}>
-                  {formik.errors.descripcion}
-                </span>
-              )}
             </Box>
             <Boton
               as={"link"}
-              path={"/competencias"}
+              path={"/categorias"}
               w={["200px", "300px", "350px", "400px"]}
               mt={"30px"}
               type={"submit"}
