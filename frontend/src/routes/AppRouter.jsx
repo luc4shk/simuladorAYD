@@ -18,6 +18,7 @@ import CambiarContrasenia from '../pages/Admin/principal/CambiarContrasenia'
 import PreguntaImagen from '../pages/Admin/preguntas/PreguntaImagen'
 import CambiarImagen from '../pages/Admin/principal/CambiarImagen'
 import EditarInformacion from '../pages/Admin/principal/EditarInformación'
+import EditarCompetencia from "../pages/Admin/competencias/EditarCompetencia"
 export default function AppRouter() {
   return (
     <Router>
@@ -39,6 +40,7 @@ export default function AppRouter() {
           <Route path="/cambiarContrasenia" component={CambiarContrasenia}/>
           <Route path="/cambiarImagen" component={CambiarImagen}/>
           <Route path="/editarInformacion" component={EditarInformacion}/>
+          <Route path="/editarCompetencia" component={EditarCompetencia}/>
           <Route component={ErrorPage}/>
         </Switch>
       </Router>
