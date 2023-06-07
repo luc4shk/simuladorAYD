@@ -17,7 +17,7 @@ import AgregarPrueba from '../pages/Admin/pruebas/AgregarPrueba'
 import CambiarContrasenia from '../pages/Admin/principal/CambiarContrasenia'
 import PreguntaImagen from '../pages/Admin/preguntas/PreguntaImagen'
 import CambiarImagen from '../pages/Admin/principal/CambiarImagen'
-import FormularioImagen from '../components/forms/FormularioImagen'
+import EditarInformacion from '../pages/Admin/principal/EditarInformación'
 export default function AppRouter() {
   return (
     <Router>
@@ -38,6 +38,7 @@ export default function AppRouter() {
           <Route path="/crearPrueba" component={AgregarPrueba}/>
           <Route path="/cambiarContrasenia" component={CambiarContrasenia}/>
           <Route path="/cambiarImagen" component={CambiarImagen}/>
+          <Route path="/editarInformacion" component={EditarInformacion}/>
           <Route component={ErrorPage}/>
         </Switch>
       </Router>
