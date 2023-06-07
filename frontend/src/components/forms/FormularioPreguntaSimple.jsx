@@ -1,14 +1,23 @@
-import { Box, Grid, GridItem, Input, Textarea, Select, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Input, Textarea, Select, Button, Flex, Text, color } from "@chakra-ui/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Boton from "../pure/Boton";
+import { useState, useRef } from "react";
 
 const categorias = ["Inglés", "Español", "Análisis", "Matemáticas"];
 
 export default function FormularioSimple() {
+  const [archivo, setArchivo] = useState(null);
+  const archivoInputRef = useRef(null);
+
   const handleSelectArchivo = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.click();
+    archivoInputRef.current.click();
+  };
+
+  const handleArchivoSeleccionado = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setArchivo(file);
+    }
   };
 
   const handleGuardar = (values) => {
@@ -184,7 +193,18 @@ export default function FormularioSimple() {
               />
             </Box>
             {/* //---------- -----------------------------------------------*/}
-            <Box mt="50px">
+            <Box mt="30px">
+            {archivo && (
+                  <Text fontSize="sm">
+                    {archivo.name} 
+                  </Text>
+                )}
+                <input
+                  type="file"
+                  ref={archivoInputRef}
+                  style={{ display: "none"}}
+                  onChange={handleArchivoSeleccionado}
+                />
               <Flex
                 direction={{ base: "column", md: "row" }}
                 justify={"space-between"}
@@ -199,6 +219,7 @@ export default function FormularioSimple() {
                     tableBreakpoint: "340px",
                   }}
                   mb="10px"
+                  mt="10px"
                 >
                   Seleccionar archivo
                 </Button>
@@ -206,6 +227,7 @@ export default function FormularioSimple() {
                   as={"link"}
                   path={"/preguntas"}
                   type={"submit"}
+                  mt="10px"
                   msg={"Guardar"}
                   w={{
                     sm: "100%",

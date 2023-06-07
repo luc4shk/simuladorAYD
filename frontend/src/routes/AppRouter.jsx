@@ -15,6 +15,7 @@ import SeleccionarTipoPregunta from '../pages/Admin/preguntas/SeleccionarTipoPre
 import PreguntaSimple from '../pages/Admin/preguntas/PreguntaSimple'
 import AgregarPrueba from '../pages/Admin/pruebas/AgregarPrueba'
 import CambiarContrasenia from '../pages/Admin/principal/CambiarContrasenia'
+import PreguntaImagen from '../pages/Admin/preguntas/PreguntaImagen'
 export default function AppRouter() {
   return (
     <Router>
@@ -31,6 +32,7 @@ export default function AppRouter() {
           <Route path="/formularioCategoria" component={AgregarCategoria}/>
           <Route path="/tipoPregunta" component={SeleccionarTipoPregunta}/>
           <Route path="/formularioPreguntaSimple" component={PreguntaSimple}/>
+          <Route path="/formularioPreguntaImagen" component={PreguntaImagen}/>
           <Route path="/crearPrueba" component={AgregarPrueba}/>
           <Route path="/cambiarContrasenia" component={CambiarContrasenia}/>
           <Route component={ErrorPage}/>

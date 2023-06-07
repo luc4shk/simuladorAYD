@@ -31,6 +31,8 @@ export default function TipoPregunta() {
             Preguntas Simples
           </Button>
           <Button
+            as={Link}
+            to="/formularioPreguntaImagen"
             bgColor="principal.100"
             textColor="white"
             w={["100%", "100%", "250px"]}
