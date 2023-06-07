@@ -3,9 +3,12 @@ const Usuario = require('../models/Usuario');
 const password_generator = require('generate-password');
 const encryptPasswd= require('../util/encryptPassword');
 const generateCorreo = require('../util/emailGenerator');
+const bcrypt = require('bcrypt');
 
 
-getStudents =  async (req, res) => {
+/* --------- getStudents function -------------- */
+
+const getStudents =  async (req, res) => {
 
     try {
 
@@ -27,7 +30,9 @@ getStudents =  async (req, res) => {
 };
 
 
-getStudentById = async (req, res) => {
+/* --------- getStudentById function -------------- */
+
+const getStudentById = async (req, res) => {
     
     try {
 
@@ -63,7 +68,9 @@ getStudentById = async (req, res) => {
 };
 
 
-updateStudentData = async (req, res) => {
+/* --------- updateStudentData function -------------- */
+
+const updateStudentData = async (req, res) => {
 
     try {
 
@@ -117,7 +124,9 @@ updateStudentData = async (req, res) => {
 // ------------ Métodos para el Director ------------------
 
 
-createStudent =  async (req, res) => {
+/* --------- createStudent function -------------- */
+
+const createStudent =  async (req, res) => {
 
     try {
 
@@ -200,7 +209,9 @@ createStudent =  async (req, res) => {
 };
 
 
-updateStudentDataDir = async (req, res) => {
+/* --------- updateStudentDir function -------------- */
+
+const updateStudentDataDir = async (req, res) => {
 
     try {
 
@@ -269,7 +280,9 @@ updateStudentDataDir = async (req, res) => {
 }
 
 
-getDirectors =  async (req, res) => {
+/* --------- getDirectors function -------------- */
+
+const getDirectors =  async (req, res) => {
 
     try {
 
@@ -287,7 +300,9 @@ getDirectors =  async (req, res) => {
 };
 
 
-getDirectorById = async (req, res) => {
+/* --------- getDirectorById function -------------- */
+
+const getDirectorById = async (req, res) => {
 
     try {
 
@@ -317,12 +332,14 @@ getDirectorById = async (req, res) => {
         res.status(200).json(director);
 
     } catch (error) {
-        res.status(500).json({message: error.message});
+        return res.status(500).json({error: `Error al obtener un director por id: ${error.message}`});
     }
 };
 
 
-updateDirector = async (req, res) => {
+/* --------- updateDirector function -------------- */
+
+const updateDirector = async (req, res) => {
 
     try {
 
@@ -390,12 +407,14 @@ updateDirector = async (req, res) => {
         res.status(200).json(director);
 
     } catch (error) {
-        res.status(500).json({error: error.message});
+        return res.status(500).json({error: `Error al actualizar la información del director: ${error.message}`});
     }
-}
+};
 
 
-updatePhotoDirector = async (req, res) => {
+/* --------- updatePhotoDirector function -------------- */
+
+const updatePhotoDirector = async (req, res) => {
 
     try {
 
@@ -431,9 +450,54 @@ updatePhotoDirector = async (req, res) => {
         });
     
     } catch (error) {
-        res.status(500).json({error: error.message});
+        return res.status(500).json({error: `Error al actualizar la foto de administrador: ${error.message}`});
     }
-}
+};
+
+
+/* --------- updatePassword function -------------- */
+
+const updatePassword = async (req, res) => {
+
+    try{
+
+        // Obtenemos el email del usuario
+        const {email, password, newPassword} = req.body.email
+
+        // Verificamos la existencia del usuario
+        const user = await Usuario.findOne({
+            where: {
+                email
+            }
+        });
+
+        if(!user){
+            return res.status(400).json({error: `El email del usuario no se encuentra registrado`});
+        }
+
+        // Comparamos la contraseña ingreasada
+        const match = await bcrypt.compare(password, user.password);
+
+        if(!match){
+            return res.status(400).json({error: `La contraseña ingresada no corresponde con la original`});
+        }
+
+        // Hasheamos la nueva contraseña
+        const genSalt = await bcrypt.genSalt(11);
+        const hash = await bcrypt.hash(newPassword, genSalt);
+
+        // Actualizamos la contraseña
+        await user.update({
+            password: hash
+        });
+
+        res.status(200).json("Contraseña cambiada correctamente");
+
+    }catch(error){
+        return res.status(500).json({error: `Error al cambiar contraseña: ${error.message}`})
+    }
+
+};
 
 
 module.exports = {
@@ -445,5 +509,6 @@ module.exports = {
     getDirectors,
     getDirectorById,
     updateDirector,
-    updatePhotoDirector
+    updatePhotoDirector,
+    updatePassword
 }

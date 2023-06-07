@@ -117,5 +117,11 @@ const upload = multer({
 router.put('/admin/updatePhoto/:id', [verifyJWT, isAdmin, upload.single('avatar')], userController.updatePhotoDirector);
 
 
+// @desc Endpoint encargado de la actualización de la contraseña de un admin
+// @route PUT /api/user/admin/updatePassword
+// @access solo Admin
+router.put('/admin/updatePassword', [verifyJWT, isAdmin], userController.updatePassword);
+
+
 // Importamos el router
 module.exports = router;
