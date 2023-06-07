@@ -1,6 +1,6 @@
 import React from "react";
 import { Input, Flex, Box, Button, Image, Icon } from "@chakra-ui/react";
-
+import {Link} from "wouter"
 import { RiEdit2Fill } from "react-icons/ri";
 import Boton from "../pure/Boton";
 export default function AdminProfileForm() {
@@ -46,6 +46,8 @@ export default function AdminProfileForm() {
               left={["125px", "180px", "210px", "260px"]}
               borderRadius={"50%"}
               backgroundColor={"principal.100"}
+              as={Link}
+              to="/cambiarImagen"
               _hover={"none"}
               _active={"none"}
             >
