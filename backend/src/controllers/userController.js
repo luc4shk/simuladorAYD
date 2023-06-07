@@ -93,7 +93,7 @@ updateStudentData = async (req, res) => {
         const {nombre, apellido} = req.body;
 
         // Validamos los datos obtenidos
-        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/; // Validación de nombres y apellidos
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/; // Validación de nombres y apellidos
 
         if(!regexData.test(nombre) || !regexData.test(apellido)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
@@ -130,7 +130,7 @@ createStudent =  async (req, res) => {
         } 
 
         const regexNum = /^[0-9]+$/;
-        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/;
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
 
         if(!regexData.test(nombre) || !regexData.test(apellido) || !regexNum.test(codigo) || !regexNum.test(semestre)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
@@ -230,7 +230,7 @@ updateStudentDataDir = async (req, res) => {
         const {nombre, apellido, codigo, email, semestre, estado} = req.body;
 
         // Validamos los datos obtenidos
-        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/;
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
 
         if(!regexData.test(nombre) || !regexData.test(apellido) || !regexNum.test(codigo) || !regexNum.test(semestre)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
@@ -352,7 +352,7 @@ updateDirector = async (req, res) => {
         const {nombre, apellido, codigo, email, telefono, direccion, documento, celular, estado} = req.body;
 
         // Validamos los datos obtenidos
-        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/;
+        const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
 
         if(!regexData.test(nombre) || !regexData.test(apellido) || !regexNum.test(codigo) || !regexNum.test(telefono) || !regexNum.test(documento) || !regexNum.test(celular)){
            return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
