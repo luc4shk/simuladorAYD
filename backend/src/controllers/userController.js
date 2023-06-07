@@ -462,7 +462,7 @@ const updatePassword = async (req, res) => {
     try{
 
         // Obtenemos el email del usuario
-        const {email, password, newPassword} = req.body.email
+        const {email, password, newPassword} = req.body
 
         // Verificamos la existencia del usuario
         const user = await Usuario.findOne({
