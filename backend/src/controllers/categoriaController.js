@@ -10,8 +10,7 @@ const getCategorias = async (req, res) => {
 
         // Obtenemos las categorias
         const categorias = await Categoria.findAll({
-            where: {estado: true},
-            attributes: ['id', 'nombre', 'descripcion'],
+            attributes: ['id', 'nombre', 'descripcion', 'estado'],
             include: {
                 model: Competencia,
                 attributes: ['id', 'nombre']
