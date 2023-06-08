@@ -58,7 +58,7 @@ export default function AppRouter() {
             <Route path="/cambiarImagen" component={CambiarImagen} />
             <Route path="/editarInformacion" component={EditarInformacion} />
             <Route path="/editarCompetencia/:id" component={EditarCompetencia} />
-            <Route path="/editarCategoria" component={EditarCategoria} />
+            <Route path="/editarCategoria/:id" component={EditarCategoria} />
             <Route component={ErrorPage} />
           </Switch>
         </>

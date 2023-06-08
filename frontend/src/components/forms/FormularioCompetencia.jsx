@@ -108,6 +108,9 @@ export default function FormularioCompetencia() {
                     </FormControl>
                   </Box>
                   <Button
+                   bgColor={"principal.100"}
+                      _hover={{backgroundColor:"fondo.100"}}
+                      color={"white"}
                     w={["200px", "300px", "350px", "400px"]}
                     mt={"30px"}
                     type="submit"

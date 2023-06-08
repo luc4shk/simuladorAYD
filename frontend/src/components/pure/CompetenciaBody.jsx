@@ -1,5 +1,5 @@
 import {React, useContext, useEffect, useState} from "react";
-import TablaCustom from "./TablaCustom";
+import TablaCustom from "./TablaCompetencia";
 import { RiEdit2Fill } from "react-icons/ri";
 import { Center } from "@chakra-ui/react";
 import { AppContext } from "../context/AppProvider";

@@ -44,6 +44,7 @@ export default function SideBar({isOpen}) {
         transform={ isOpen ? "translateX(-100%)" : "translateX(0px)"}
         transition={"all 0.5s"}
         overflow={"hidden"}
+        borderRight={"1px solid #bbb"}
         >
         <Flex
           direction={"column"}
@@ -55,7 +56,7 @@ export default function SideBar({isOpen}) {
           items.map( ({icon, msg, active, path}, i) => <SideItem key={i} path={path} icon={icon} active={active} msg={w ? msg : ""} tamanio={w} index={i}/> ) 
         }
         </Flex>
-        <SideItem icon={BiLogOut} msg={w ? "Cerrar Sesión" : ""}></SideItem>
+        <SideItem icon={BiLogOut} msg={w ? "Cerrar Sesión" : ""} index={10000}></SideItem>
         </Flex>
     </>
   )

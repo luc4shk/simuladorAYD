@@ -42,7 +42,7 @@ const validationSchema = Yup.object().shape({
   avatar: Yup.mixed()
     .test("file-type", "El tipo de archivo es PNG/JPEG", (value) => {
       if (value) {
-        return value.endsWith(".jpeg") || value.endsWith(".png")
+        return value.endsWith(".jfif") || value.endsWith(".png")
       }
       return true;
     }).required("La avatar es requerida"),

@@ -277,7 +277,7 @@ export default function FormularioCategoria() {
                     mt={"10px"}
                   >
                     <option value="">Selecciona una competencia</option>
-                    {competencia.map((competencia) => (
+                    {elementosActivos.map((competencia) => (
                       <option key={competencia.id} value={competencia.id}>
                         {competencia.nombre}
                       </option>
@@ -286,6 +286,9 @@ export default function FormularioCategoria() {
                   <FormErrorMessage>{formik.errors.competencia}</FormErrorMessage>
                 </FormControl>
                 <Button
+                 bgColor={"principal.100"}
+                      _hover={{backgroundColor:"fondo.100"}}
+                      color={"white"}
                   w={["200px", "300px", "350px", "400px"]}
                   mt={"30px"}
                   type="submit"

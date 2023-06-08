@@ -11,6 +11,9 @@ const theme = extendTheme({
     principal: {
      100: "#fb8b83" 
     },
+    fondo:{
+      100: "#F0847D"
+    },
     secundario:{
       100: "#ececec"
     },

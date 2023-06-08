@@ -153,7 +153,6 @@ import * as Yup from "yup";
 import React, { useEffect, useContext, useState } from "react";
 import { useRoute } from "wouter";
 import { AppContext } from "../context/AppProvider";
-import Boton from "../pure/Boton";
 import axiosApi from "../../utils/config/axios.config";
 import { toast, Toaster } from "react-hot-toast";
 
@@ -314,6 +313,9 @@ export default function FormularioEditarCompetencia() {
                   w={["200px", "300px", "350px", "400px"]}
                   mt={"30px"}
                   type="submit"
+                  bgColor={"principal.100"}
+                  _hover={{backgroundColor:"fondo.100"}}
+                  color={"white"}
                 >Guardar</Button>
               </Box>
             </Form>

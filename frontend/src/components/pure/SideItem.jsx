@@ -24,7 +24,7 @@ export default function SideItem({icon, msg, active, index, tamanio, path}) {
         variant={'unstyled'}
         fontWeight={"semibold"}
         onClick={()=>{
-            if(msg==="Cerrar Sesión"){
+            if(index===10000){
                 setToken(localStorage.removeItem("token"))
                 localStorage.removeItem("token")
                 setLoc("/login")
