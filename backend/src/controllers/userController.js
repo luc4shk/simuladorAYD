@@ -491,10 +491,10 @@ const updatePassword = async (req, res) => {
             password: hash
         });
 
-        res.status(200).json("Contraseña cambiada correctamente");
+        res.status(200).json({message:"Contraseña cambiada correctamente"});
 
     }catch(error){
-        return res.status(500).json({error: `Error al cambiar contraseña: ${error.message}`})
+        return res.status(500).json({error: `Error al cambiar contraseña: ${error}`})
     }
 
 };

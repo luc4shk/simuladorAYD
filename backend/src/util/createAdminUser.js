@@ -16,19 +16,19 @@ const createAdminUser = async () => {
             });
 
             const getSalt = await bcrypt.genSalt(11);
-            const hashed = await bcrypt.hash('Director1234', getSalt);
+            const hashed = await bcrypt.hash('123456789', getSalt);
 
             // Creamos el usuario
             const user  = await Usuario.create({
-                nombre: 'Jaider',
-                apellido: 'Oliveros',
-                codigo: '1156060',
-                email: 'fogattateam@gmail.com',
+                nombre: 'Luis Carlos',
+                apellido: 'Ascencio',
+                codigo: '1152019',
+                email: 'luiscarlosasqu@ufps.edu.co',
                 password: hashed,
                 tipo: 'director',
-                telefono: '5556575',
-                direccion: 'Mi hogar es Colombia carajo',
-                documento: '1002432780',
+                telefono: '5555555',
+                direccion: 'Mi hogar mi casa al lado de mi vecino',
+                documento: '1004758624',
                 celular: '3135687982',
                 rol_id: adminRole.id
             }, {transaction: t});

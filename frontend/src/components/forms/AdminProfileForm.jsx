@@ -1,9 +1,54 @@
-import React from "react";
-import { Input, Flex, Box, Button, Image, Icon } from "@chakra-ui/react";
+import {React, useState, useContext, useEffect, useRef} from "react";
+import { Input, Flex, Box, Button, Image, Icon, useEditable } from "@chakra-ui/react";
 import { Link } from "wouter";
 import { RiEdit2Fill } from "react-icons/ri";
 import Boton from "../pure/Boton";
+import axiosApi from "../../utils/config/axios.config";
+import { getAdministratorById } from "../../services/user/axios.service";
+import { AppContext } from "../context/AppProvider";
+
 export default function AdminProfileForm() {
+
+  const {token, setToken, imagen} = useContext(AppContext)
+  const [adminData, setAdminData] = useState()
+  const [data, setData] = useState({})
+
+  const nombreRef = useRef(null);
+  const apellidoRef = useRef(null);
+  const direccionRef = useRef(null);
+  const correoRef = useRef(null);
+  const documentoRef = useRef(null);
+  const celularRef = useRef(null);
+  const telefonoRef = useRef(null);
+  const codigoRef = useRef(null);
+
+  useEffect(()=>{
+    getAdminById(1)
+  },[])
+  const getAdministratorById = async (id) =>{
+
+    let response = await axiosApi.get(`/api/user/admin/${id}`,{
+        headers:{ Authorization:"Bearer " + token},
+    })
+    return response.data
+    
+}
+
+  const getAdminById = async (id) =>{
+     const data = await getAdministratorById(id)
+     console.log(data)
+     setData({
+        nombre:data.nombre,
+        apellido:data.apellido,
+        direccion:data.direccion,
+        email: data.email,
+        documento: data.documento,
+        celular: data.celular,
+        telefono: data.telefono,
+        codigo: data.codigo
+     })
+  }
+
   return (
     <>
       <Box
@@ -30,7 +75,7 @@ export default function AdminProfileForm() {
             w={"100%"}
           >
             <Image
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=464&q=80"
+              src={imagen}
               width={["70px", "100px", "130px"]}
               height={["70px", "100px", "130px"]}
               borderRadius={"50%"}
@@ -63,6 +108,8 @@ export default function AdminProfileForm() {
             <Box display={"flex"} flexDirection={"column"}>
               <label htmlFor="nombre">Nombre</label>
               <Input
+                value={data && data.nombre}
+                ref={nombreRef}
                 mt={"10px"}
                 id="nombre"
                 name="nombre"
@@ -74,6 +121,8 @@ export default function AdminProfileForm() {
             <Box display={"flex"} flexDirection={"column"}>
               <label htmlFor="apellido">Apellido</label>
               <Input
+                value={data && data.apellido}
+                ref={apellidoRef}
                 mt={"10px"}
                 id="apellido"
                 name="apellido"
@@ -86,6 +135,8 @@ export default function AdminProfileForm() {
           <Flex flexDir={"column"}>
             <label htmlFor="direccion">Dirección</label>
             <Input
+                value={data && data.direccion}
+                ref={direccionRef}
               mt={"10px"}
               id="direccion"
               name="direccion"
@@ -97,6 +148,8 @@ export default function AdminProfileForm() {
           <Flex flexDir={"column"}>
             <label htmlFor="correo">Correo Institucional</label>
             <Input
+                value={data && data.email}
+              ref={correoRef}
               mt={"10px"}
               id="correo"
               name="correo"
@@ -115,6 +168,8 @@ export default function AdminProfileForm() {
             <Box display={"flex"} flexDirection={"column"}>
               <label htmlFor="documento">Número de Documento</label>
               <Input
+                value={data && data.documento}
+              ref={documentoRef}
                 mt={"10px"}
                 id="documento"
                 name="documento"
@@ -126,6 +181,8 @@ export default function AdminProfileForm() {
             <Box display={"flex"} flexDirection={"column"}>
               <label htmlFor="celular">Celular</label>
               <Input
+                value={data && data.celular}
+              ref={celularRef}
                 mt={"10px"}
                 id="celular"
                 name="celular"
@@ -144,6 +201,8 @@ export default function AdminProfileForm() {
             <Box display={"flex"} flexDirection={"column"}>
               <label htmlFor="telefono">Teléfono</label>
               <Input
+                value={data && data.telefono}
+              ref={telefonoRef}
                 mt={"10px"}
                 id="telefono"
                 name="telefono"
@@ -155,6 +214,8 @@ export default function AdminProfileForm() {
             <Box display={"flex"} flexDirection={"column"}>
               <label htmlFor="codigo">Código</label>
               <Input
+                value={data && data.codigo}
+              ref={codigoRef}
                 mt={"10px"}
                 id="codigo"
                 name="codigo"

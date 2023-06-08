@@ -1,16 +1,38 @@
-import React from "react";
+import {React, useContext, useEffect, useState} from "react";
 import TablaCustom from "./TablaCustom";
 import { RiEdit2Fill } from "react-icons/ri";
 import { Center } from "@chakra-ui/react";
+import TablaCategoria from "./TablaCategoria";
+import axiosApi from "../../utils/config/axios.config";
+import { AppContext } from "../context/AppProvider";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function CategoriaBody() {
+  const {token} = useContext(AppContext)
   const columns = [
-    "Categoría",
-    "No. de preguntas",
+    "Id",
+    "Nombre",
     "Estado",
     "Competencia",
     "Editar",
   ];
+  const [categorias, setCategorias] = useState()
+  const obtenerCategorias = async () =>{
+     let response = await axiosApi.get("api/categoria",{
+      headers:{
+        Authorization:"Bearer " + token,
+      }
+     }).catch((e)=>{
+        toast.error(e.response.data.error)
+     })
+     setCategorias(response.data)
+     console.log(response.data)
+  }
+
+  useEffect(()=>{
+    obtenerCategorias()
+  },[])
+  
   const items = [
     [
       "INGLÉS",
@@ -86,12 +108,20 @@ export default function CategoriaBody() {
     ],
   ];
   return (
-    <TablaCustom
+   <> 
+    {
+      categorias ? 
+      <TablaCategoria
       columns={columns}
-      items={items}
+      items={categorias}
       path={"/formularioCategoria"}
       msg={"Agregar Categoria"}
       showButton={true}
-    />
+    />:
+    <div>Cargando...</div>
+    }
+    
+    <Toaster/>
+    </>
   );
 }

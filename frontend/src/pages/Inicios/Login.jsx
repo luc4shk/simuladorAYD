@@ -10,8 +10,11 @@ import {
 import * as Yup from "yup";
 import { Formik, Field, Form } from "formik";
 import toast, { Toaster } from "react-hot-toast";
-import CardLogo from "../pure/CardLogo";
-import React from "react";
+import CardLogo from "../../components/pure/CardLogo";
+import {React, useContext} from "react";
+import { AppContext } from "../../components/context/AppProvider";
+import { login } from "../../services/user/axios.service";
+import { useLocation } from "wouter";
 
 export default function Login() {
   const initialValues = {
@@ -19,9 +22,31 @@ export default function Login() {
     password: "",
   };
 
+  const {logged, setLogged, user, setUser,token, setToken} = useContext(AppContext)
+
+
+  const [location, navigate] = useLocation();
+
   const notify = (values = "Va") => {
     toast.success("Ingreso exitoso!");
   };
+
+
+  const ingresar = async (email, password) =>{
+    const data = await login(email,password)
+    // document.cookie = data.accessToken
+    console.log(data)
+    localStorage.setItem("token",data.accessToken)
+    setToken(localStorage.getItem("token"))
+    localStorage.setItem("username", data.username)
+    localStorage.setItem("role",data.role)
+    setUser({
+      username: localStorage.getItem("username"),
+      role: localStorage.getItem("role")
+    })
+    console.log(user)
+    navigate("/")
+  } 
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Correo Inválido").required("Correo requerido"),
@@ -37,8 +62,11 @@ export default function Login() {
         initialValues={initialValues}
         validationSchema={validationSchema}
         enableReinitialize={true}
-        onSubmit={(values) => {
-          notify();
+        onSubmit={({email, password}) => {
+          // notify();
+          console.log(email,password)
+          ingresar(email, password)
+          console.log(values)
         }}
       >
         {(props) => {
@@ -86,7 +114,7 @@ export default function Login() {
               >
                 Ingresar
               </Button>
-              <Toaster position="bottom-right" />
+              <Toaster position="top-center"/>
             </Form>
           );
         }}

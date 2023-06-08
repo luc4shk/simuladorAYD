@@ -5,31 +5,55 @@ import {
   Input,
   FormErrorMessage,
   Box,
+  Toast,
 } from "@chakra-ui/react";
+import axiosApi from "../../utils/config/axios.config";
 import * as Yup from "yup";
 import { Formik, Field, Form } from "formik";
-import toast, { Toaster } from "react-hot-toast";
-import React from "react";
+import { Toaster, toast} from "react-hot-toast";
+import {React, useContext }from "react";
 import { Link } from "wouter";
+import { AppContext } from "../context/AppProvider";
 import Boton from "../pure/Boton";
 
 export default function FormularioCambiarContraseña() {
+
+  const {token,user} = useContext(AppContext)
+  const cambiarContraseña = async (password, newPassword) =>{
+    let body = {
+        email:user.username,
+        password,
+        newPassword
+    }
+    let response = await axiosApi.put("api/user/admin/updatePassword",body,{
+       headers: {
+            "Content-Type": "application/json",
+            Authorization:"Bearer " + token
+        },
+    }).catch((e)=>{
+      toast.error(e.response.data.error)
+    })
+
+    if(response.status === 200){
+      toast.success(`¡${response.data.message}!`)
+    }
+    console.log(response)
+  }
+
   const initialValues = {
     passwordActual: "",
     password: "",
     passwordR: "",
   };
 
-  const notify = (values = "Va") => {
-    toast.success("Cambio exitoso!");
-  };
+
 
   const validationSchema = Yup.object().shape({
     passwordActual: Yup.string().required("Contraseña actual requerida"),
     password: Yup.string()
       .required("Contraseña requerida")
-      .min(5, "La contraseña es muy corta")
-      .max(20, "La contraseña es muy larga"),
+      .min(10, "La contraseña es muy corta")
+      .max(65, "La contraseña es muy larga"),
     passwordR: Yup.string()
       .required("Contraseña requerida")
       .oneOf([Yup.ref("password")], "Las contraseñas no coinciden"),
@@ -47,9 +71,9 @@ export default function FormularioCambiarContraseña() {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        enableReinitialize={true}
-        onSubmit={(values) => {
-          notify();
+        onSubmit={({passwordR, passwordActual}) => {
+          cambiarContraseña(passwordActual, passwordR)
+
         }}
       >
         {(props) => {
@@ -102,8 +126,6 @@ export default function FormularioCambiarContraseña() {
                 <FormErrorMessage>{errors.passwordR}</FormErrorMessage>
               </FormControl>
               <Button
-                as = {Link}
-                to = "/"
                 color="white"
                 background="principal.100"
                 mt={4}
@@ -120,7 +142,7 @@ export default function FormularioCambiarContraseña() {
               width="full"
               type={"submit"}
             /> */}
-              <Toaster position="bottom-right" />
+              <Toaster position="top-center" />
             </Form>
           );
         }}

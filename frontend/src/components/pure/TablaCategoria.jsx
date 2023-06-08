@@ -12,11 +12,11 @@ import {
   Icon,
   useEditable,
 } from "@chakra-ui/react";
-import { Link} from "wouter";
+import { Link } from "wouter";
 import Boton from "../pure/Boton";
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { RiEdit2Fill } from "react-icons/ri";
-export default function TablaCustom({ columns, items, path, msg, showButton }) {
+export default function TablaCategoria({ columns, items, path, msg, showButton }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [indexI, setIndexI] = useState(0);
   const [indexF, setIndexF] = useState(5);
@@ -27,8 +27,6 @@ export default function TablaCustom({ columns, items, path, msg, showButton }) {
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
   const totalPages = Math.ceil(items.length / itemsPerPage);
-
-  
 
   const handlePageChange = (selected) => {
     if (selected >= indexF) {
@@ -108,27 +106,14 @@ export default function TablaCustom({ columns, items, path, msg, showButton }) {
               </Thead>
               <Tbody>
                 {currentItems.map((item, index) => (
-                  
+                    
                     <Tr key={item.id}>
                       <Td>{item.id}</Td>
                       <Td>{item.nombre}</Td>
                       <Td>{item.estado ? "Activo" : "Inactivo"}</Td>
+                      <Td>{item.competencia.nombre}</Td>
                       <Td>{
-                       
-                      item.categorias && item.categorias.map((item,index)=>{
-                        console.log(item)
-                        return(
-                          <p>{item.nombre}</p>
-                        )
-                      })
-                     
-                      
-                    
-                      }
-                        
-                      </Td>
-                      <Td>{
-                        <Button variant={"unstyled"} as={Link} to={`/editarCompetencia/${item.id}`}>
+                        <Button variant={"unstyled"}>
                         <Icon w={"20px"} h={"20px"} as={RiEdit2Fill}/>
                         </Button>
                         }</Td>

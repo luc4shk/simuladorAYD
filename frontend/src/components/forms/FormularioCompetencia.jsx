@@ -1,33 +1,49 @@
-import { Box, Button, Center, Input, Textarea } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import React from "react";
+import { Box, Button, Center, Input, Textarea, FormControl, FormErrorMessage } from "@chakra-ui/react";
+import { Formik, Field, Form } from "formik";
+import {React, useContext} from "react";
 import { Link } from "wouter";
 import Boton from "../pure/Boton";
-
+import * as Yup from "yup"
+import axiosApi from "../../utils/config/axios.config";
+import { AppContext } from "../context/AppProvider";
+import { toast, Toaster } from "react-hot-toast";
 export default function FormularioCompetencia() {
-  const formik = useFormik({
-    initialValues: {
+
+  
+  const {token,user} = useContext(AppContext)
+  
+  const AgregarCompetencia = async (nombre, descripcion) =>{
+    let body={
+      nombre:nombre,
+      descripcion:descripcion
+    }
+    let response = await axiosApi.post("api/competencia/create",body,{
+      headers:{
+      "Content-Type": "application/json",
+       Authorization:"Bearer " + token
+      }
+    }).catch((e)=>{
+      toast.error(e.response.data.error)
+    }) 
+
+    if(response.status === 200){
+      toast.success("¡Competencia Creada!")
+    }
+
+    console.log(response)
+  }
+
+    const initialValues = {
       nombre: "",
       descripcion: "",
-    },
-    validate: (values) => {
-      const errors = {};
+    }
 
-      if (!values.nombre) {
-        errors.nombre = "El nombre es requerido";
+    const validationSchema= Yup.object().shape(
+      {
+         nombre: Yup.string().required("El nombre es requerido").min(5,"Minimo 5 caracteres").max(25,"Maximo 25 caracteres"),
+        descripcion: Yup.string().required("La descripción es requerida").min(10,"Minimo 10 caracteres").max(200,"Máximo 200 caracteres"),
       }
-
-      if (!values.descripcion) {
-        errors.descripcion = "La descripción es requerida";
-      }
-
-      return errors;
-    },
-    onSubmit: (values) => {
-      // Lógica para enviar el formulario
-      console.log(values);
-    },
-  });
+    )
 
   return (
     <Box position="fixed">
@@ -39,63 +55,70 @@ export default function FormularioCompetencia() {
           minW={["150px", "250px", "480px", "550px"]}
           overflow="hidden"
         >
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            textAlign="center"
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={({nombre, descripcion}) => {
+              console.log(token)
+              AgregarCompetencia(nombre, descripcion)
+            }}
           >
-            <Box display="flex" flexDirection="column" justifyContent="center">
-              <label htmlFor="nombre">Nombre</label>
-              <Input
-                mt="10px"
-                id="nombre"
-                name="nombre"
-                type="text"
-                maxW={["200px", "300px", "350px", "400px"]}
-                w="400px"
-                value={formik.values.nombre}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.nombre && formik.errors.nombre && (
-                <span style={{ color: "red" }}>{formik.errors.nombre}</span>
-              )}
-            </Box>
-            <Box
-              mt="10px"
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-            >
-              <label htmlFor="descripcion">Descripción</label>
-              <Textarea
-                mt="10px"
-                id="descripcion"
-                name="descripcion"
-                resize="none"
-                h="180px"
-                maxW={["200px", "300px", "350px", "400px"]}
-                w="400px"
-                value={formik.values.descripcion}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.descripcion && formik.errors.descripcion && (
-                <span style={{ color: "red" }}>{formik.errors.descripcion}</span>
-              )}
-            </Box>
-            <Boton
-              as={"link"}
-              path={"/competencias"}
-              w={["200px", "300px", "350px", "400px"]}
-              mt={"30px"}
-              type={"submit"}
-              msg={"Guardar"}
-            />
-          </Box>
+            {({ errors, touched }) => (
+              <Form>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  textAlign="center"
+                >
+                  <Box display="flex" flexDirection="column" justifyContent="center">
+                    <label htmlFor="nombre">Nombre</label>
+                    <FormControl isInvalid={errors.nombre && touched.nombre}>
+                      <Field
+                        as={Input}
+                        mt="10px"
+                        id="nombre"
+                        name="nombre"
+                        type="text"
+                        maxW={["200px", "300px", "350px", "400px"]}
+                        w="400px"
+                      />
+                      <FormErrorMessage>{errors.nombre}</FormErrorMessage>
+                    </FormControl>
+                  </Box>
+                  <Box
+                    mt="10px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                  >
+                    <label htmlFor="descripcion">Descripción</label>
+                    <FormControl isInvalid={errors.descripcion && touched.descripcion}>
+                      <Field
+                        as={Textarea}
+                        mt="10px"
+                        id="descripcion"
+                        name="descripcion"
+                        resize="none"
+                        h="180px"
+                        maxW={["200px", "300px", "350px", "400px"]}
+                        w="400px"
+                      />
+                      <FormErrorMessage>{errors.descripcion}</FormErrorMessage>
+                    </FormControl>
+                  </Box>
+                  <Button
+                    w={["200px", "300px", "350px", "400px"]}
+                    mt={"30px"}
+                    type="submit"
+                  >Guardar</Button>
+                </Box>
+              </Form>
+            )}
+          </Formik>
         </Box>
       </Center>
+      <Toaster/>
     </Box>
   );
 }

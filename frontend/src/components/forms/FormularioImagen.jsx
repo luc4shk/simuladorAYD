@@ -1,33 +1,59 @@
-import React from "react";
+import {React, useState, useRef, useContext, useEffect} from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
+import axiosApi from "../../utils/config/axios.config";
+import { AppContext } from "../context/AppProvider";
 import { Box, FormControl, Input, Image, Button, Flex, FormErrorMessage } from "@chakra-ui/react";
-
-export default function FormularioImagen() {
+import { useLocation } from "wouter";
+export default function Formularioavatar() {
+  const {token, setToken,imagen, setImagen, user} = useContext(AppContext)
+  const inputRef = useRef()
+  const [loc, navigation] = useLocation()
   const initialValues = {
-    imagen: null,
+    avatar: null,
   };
+
+const actualizaravatar = async (file) =>{
+   const formData = new FormData();
+    formData.append("avatar", file);
+
+  let response = await axiosApi.put(`/api/user/admin/updatePhoto/${1}`,formData,
+  {
+    headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization:"Bearer " + token
+        },
+  }).catch((e)=>alert("ERRORRRRR"))
+
+  console.log(response)
+  localStorage.setItem("imagen",response.data.imageFile)
+  setImagen(localStorage.getItem("imagen"))
+  console.log(user)
+  console.log(token)
+
+  window.location.reload()
+  // navigation("/")
+}
+
+
 
  
 const validationSchema = Yup.object().shape({
-  imagen: Yup.mixed()
+  avatar: Yup.mixed()
     .test("file-type", "El tipo de archivo es PNG/JPEG", (value) => {
-      console.log(value)
-      console.log(value.endsWith(".jpeg"))
       if (value) {
         return value.endsWith(".jpeg") || value.endsWith(".png")
       }
       return true;
-    }).required("La imagen es requerida"),
+    }).required("La avatar es requerida"),
 });
 
 
   const handleFileChange = (event, setFieldValue) => {
-    const file = event.target.files[0].value;
-    console.log("alo?"+ file)
-    console.log(event)
-    setFieldValue("imagen", file);
-  };
+    const file = event.target.files[0];
+    setFieldValue("avatar", inputRef.current.files[0]);
+
+    };
 
   return (
     <Box
@@ -39,7 +65,7 @@ const validationSchema = Yup.object().shape({
     >
       <Flex w="100%" alignItems="center" justifyContent="center" mb="15px">
         <Image
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=464&q=80"
+          src={imagen}
           width={["100px", "130px"]}
           height={["100px", "130px"]}
           borderRadius="50%"
@@ -48,21 +74,26 @@ const validationSchema = Yup.object().shape({
         />
       </Flex>
 
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={() => {}}>
+      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={(values) => {
+        actualizaravatar(inputRef.current.files[0])
+      }}>
         {(props) => {
           const { errors, touched, setFieldValue } = props;
 
           return (
-            <Form>
+            <Form >
               <Flex flexDir={"column"} gap={"15px"}>
-              <FormControl isInvalid={errors.imagen && touched.imagen} display="flex" justifyContent="center" flexDir={"column"}>
-                <Field id="imagen" name="imagen" >
+              <FormControl isInvalid={errors.avatar && touched.avatar} display="flex" justifyContent="center" flexDir={"column"}>
+                <Field id="avatar" name="avatar" >
                   {({ field }) => (
-                    <Input type="file" 
-                     variant="unstyled" onChange={(event) => handleFileChange(event, setFieldValue)} {...field} />
+                    <Input type="file" name="avatar" ref={inputRef}
+                     variant="unstyled" onChange={(event) =>{ 
+                      handleFileChange(event, setFieldValue)
+                     }
+                    } {...field} />
                   )}
                 </Field>
-                <FormErrorMessage>{errors.imagen}</FormErrorMessage>
+                <FormErrorMessage>{errors.avatar}</FormErrorMessage>
               </FormControl>
               <Button type="submit" w="100%">
                 Actualizar
