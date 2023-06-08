@@ -10,7 +10,6 @@ const getCompetencias = async (req, res) => {
 
         // Obtenemos las competencias
         const competencias = await Competencia.findAll({
-            where: {estado: true},
             attributes: ['id', 'nombre', 'descripcion', 'estado'],
             include: {
                 model: Categoria,
