@@ -6,6 +6,7 @@ const path = require('path');
 
 
 // Función encargada de crear la estructura e insertar el log requerido
+
 const logEvents = async (message, logFileName) => {
 
     // Definimos el formato de la fecha 
@@ -31,6 +32,7 @@ const logEvents = async (message, logFileName) => {
 
 
 // Middleware encargado de tomar la información requerida de la solicitud a disposición del logger
+
 const logger = (req, res, next) => {
 
     logEvents(`${req.method}\t${req.url}\t${req.header.origin}`, 'reqLog.log');

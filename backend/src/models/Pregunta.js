@@ -22,7 +22,7 @@ const Pregunta = sequelize.define('preguntas', {
     },
     semestre: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         validate: {
             notEmpty:{
                 msg: "El semestre no puede ser vacio"

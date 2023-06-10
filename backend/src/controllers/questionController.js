@@ -12,13 +12,18 @@ const getAllQuestions = async (req, res) => {
 
     try{
 
+        // Estado
+        const state = req.query.estado || true;
+
         // Obtenemos todas las preguntas de la BD
         const questions = await Pregunta.findAll({
-            where: {estado: true},
+            where: {
+                estado: state
+            },
             attributes: ['id', 'texto_pregunta', 'semestre', 'estado'],
             include: {
                 model: Categoria,
-                attributes: ['id', 'nombre']
+                attributes: ['nombre']
             }
         });
 
@@ -50,7 +55,7 @@ const createQuestion = async (req, res) => {
 
         //validamos los datos
         const regexNum = /^[0-9]+$/;
-        if(!regexNum.test(semestre) || (!Array.isArray(options) || options.length !== 4) || !regexNum.test(categoria_id)){
+        if(!regexNum.test(semestre) || !regexNum.test(categoria_id)){
             return res.status(400).json({error: 'La sintaxis de los datos ingresados es incorrecta'});
         }
 
@@ -58,7 +63,7 @@ const createQuestion = async (req, res) => {
         const categoriaExist = await Categoria.findByPk(categoria_id);
 
         if(!categoriaExist){
-            return res.status(400).json({error: "El id de categoria proporcionado no corresponde a ninguna existente"});
+            return res.status(400).json({error: "La categoria proporcionada no corresponde a ninguna existente"});
         }
 
         // Creamos la pregunta
@@ -73,13 +78,13 @@ const createQuestion = async (req, res) => {
         res.status(200).json(pregunta);
 
     } catch (err) {
-        return res.status(500).json({error: `Error al intentar crear la pregunra: ${err.message}`});
+        return res.status(500).json({error: `Error al intentar crear la pregunta: ${err.message}`});
     }
 
 }
 
 
-/* --------- createImageQuesrion function -------------- */
+/* --------- createImageQuestion function -------------- */
 
 const createImageQuestion = async (req, res) => {
 
@@ -107,7 +112,7 @@ const createImageQuestion = async (req, res) => {
         const categoriaExist = await Categoria.findByPk(categoria_id);
 
         if(!categoriaExist){
-            return res.status(400).json({error: "El id de categoria proporcionado no corresponde a ninguna existente"});
+            return res.status(400).json({error: "La categoria proporcionada no corresponde a ninguna existente"});
         }
 
         // Creamos la pregunta

@@ -13,21 +13,21 @@ const errorHandler = (err, req, res, next) => {
         }
 
         // Otros errores de Multer
-        return res.status(500).json({ error: `Error de Multer: ${err.message}` });
+        return res.status(400).json({ error: `Error al cargar el archivo: ${err}` });
 
     } else if (err) {
         
         // Definimos el contenido del log
         logEvents(`${err.name}: ${err.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
 
-        console.log(err.stack);
+        console.error(err.stack);
 
         // Definimos el error a mostrar
         const status = res.statusCode ? res.statusCode : 500;
 
         res.status(status);
 
-        res.json({message: err.message});
+        res.json({error: err.message});
 
     }
 

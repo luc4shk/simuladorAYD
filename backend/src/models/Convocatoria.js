@@ -19,8 +19,8 @@ const Convocatoria = sequelize.define('convocatorias', {
                 msg: 'El nombre de la competencia no puede ser vacio'
             },
             len:{
-                args: [10, 55],
-                msg: "El nombre de la competencia solo ha de contener minimo 10 caracteres"
+                args: [5, 55],
+                msg: "El nombre de la competencia ha de contener minimo 5 caracteres"
             }
         }
     },

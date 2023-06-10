@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/Usuario');
 
+
+/** Middleware encargado de la verficicación del token de acceso de un usuario  */
+
 const verifyJWT = (req, res, next) => {
 
     // Obtenemos el encabezado de autorización
@@ -31,7 +34,7 @@ const verifyJWT = (req, res, next) => {
                 }
             });
 
-            if(!foundUser) return res.status(401).json({ message: 'Acceso no autorizado' });
+            if(!foundUser || !foundUser.estado) return res.status(401).json({ message: 'Acceso no autorizado' });
 
             req.user = user;
             next();

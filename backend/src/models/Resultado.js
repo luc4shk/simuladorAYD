@@ -19,14 +19,6 @@ const Resultado = sequelize.define('resultados', {
             },
             isNumeric: {
                 msg: "El puntaje solo puede ser un valor numerico"
-            },
-            min: {
-                args: 0,
-                msg: "El puntaje debe ser mayor o igual a 0"
-            },
-            max: {
-                args: 100,
-                msg: "El puntaje debe ser menor o igual a 100"
             }
         }
     },

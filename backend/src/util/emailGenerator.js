@@ -1,6 +1,10 @@
 const nodeMailer = require('nodemailer');
 const mailGen = require('mailgen');
 
+
+/** Función encargada de llevar a cabo el envio de las credenciales a los usuarios que aun no se encuentran registrados
+ *  en el sistema
+*/
 const generateEmail = async (userName, userEmail, userPassword) => {
 
     // Crear un objeto de configuración con las credenciales

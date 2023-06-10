@@ -23,7 +23,16 @@ const Inscripcion = sequelize.define('inscripciones', {
             }
         }
     },
-    fecha_finalizacion: {
+    fecha_inicio_prueba: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        validate: {
+            isDate: {
+                msg: "Favor ingresar un formato de fecha valido"
+            }
+        }
+    },
+    fecha_finalizacion_prueba: {
         type: DataTypes.DATE,
         allowNull: true,
         validate: {

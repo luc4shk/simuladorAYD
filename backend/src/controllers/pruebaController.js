@@ -6,18 +6,22 @@ const Pregunta = require('../models/Pregunta');
 const Categoria = require('../models/Categoria');
 const {validateCategories, validCantQuestions, validate_percentage_categories} = require('../util/validateDataCategories');
 const {createTestQuestion} = require('../util/createTestQuestion');
+const sequelize = require('../database/db');
 
 
 /* --------- getPruebas function -------------- */
 
-getPruebas = async (req, res) => {
+const getPruebas = async (req, res) => {
 
     try{
+
+        // Estado
+        const state = req.query.estado || true;
 
         // Obtenemos todas las pruebas registradas en la BD
         const pruebas = await Prueba.findAll({
             where: {
-                estado: true
+                estado: state
             },
             attributes: ['id', 'nombre', 'semestre'],
             include: {
@@ -38,7 +42,7 @@ getPruebas = async (req, res) => {
 
 /* --------- getPruebasId function -------------- */
 
-getPruebasId = async (req, res) => {
+const getPruebasId = async (req, res) => {
 
     try{
 
@@ -46,7 +50,7 @@ getPruebasId = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos el id de entrada
-        const regexId = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regexId = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regexId.test(id)){
             return res.status(400).json({error: 'id no valido'});
@@ -76,7 +80,7 @@ getPruebasId = async (req, res) => {
 
 /* --------- createPrueba function -------------- */
 
-createPrueba = async (req, res) => {
+const createPrueba = async (req, res) => {
 
     try{
 
@@ -85,7 +89,7 @@ createPrueba = async (req, res) => {
 
         // Validamos los datos obtenidos
 
-        const regexNum = /^[0-9]*$/;
+        const regexNum = /^[0-9]+$/;
         const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
 
         if(!Array.isArray(competencias) || competencias.length === 0 || !regexData.test(nombre) || !regexNum.test(semestre) || 
@@ -105,7 +109,7 @@ createPrueba = async (req, res) => {
         })
 
         if(existPrueba){
-            return res.status(400).json({error: 'El nombre de la prueba debe ser unico'});
+            return res.status(400).json({error: `El nombre de prueba ${nombre} ya se encuentra registrado`});
         }
 
         // Variables de control para la cantidad de preguntas y valor por categoría
@@ -172,66 +176,71 @@ createPrueba = async (req, res) => {
 
         }
 
-        // Creamos la prueba
-        const prueba = await Prueba.create({
-            nombre,
-            descripcion,
-            semestre,
-            duracion,
-            total_preguntas
+
+        // Incializamos la transacción
+        await sequelize.transaction(async (t) => {
+
+            // Creamos la prueba
+            const prueba = await Prueba.create({
+                nombre,
+                descripcion,
+                semestre,
+                duracion,
+                total_preguntas
+            }, {transaction: t});
+
+            // Creamos la relacion con competencia 
+
+            for (const competencia_id of competencias) {
+
+                await PruebaCompetencia.create({
+                    prueba_id: prueba.id,
+                    competencia_id
+                }, {transaction: t});
+                
+            }
+
+            // Creamos la relacion con categoria
+
+            if(valoresGenericas && valoresGenericas.length > 0){
+
+                for(const categoria_config of valoresGenericas){
+
+                    const id_categoria = categoria_config[0];
+                    const cant_preguntas_categoria = categoria_config[1];
+
+                    await ConfiguracionCategoria.create({
+                        cantidad_preguntas: categoria_config[1],
+                        valor_categoria: categoria_config[2],
+                        prueba_id: prueba.id,
+                        categoria_id: categoria_config[0]
+                    }, {transaction: t});
+
+                    createTestQuestion(prueba.id, id_categoria, cant_preguntas_categoria, semestre, t);
+                }
+
+            }
+
+            if(valoresEspecificas && valoresEspecificas.length > 0){
+
+                for(const categoria_config of valoresEspecificas){
+
+                    const id_categoria = categoria_config[0];
+                    const cant_preguntas_categoria = categoria_config[1];
+
+                    await ConfiguracionCategoria.create({
+                        cantidad_preguntas: categoria_config[1],
+                        valor_categoria: categoria_config[2],
+                        prueba_id: prueba.id,
+                        categoria_id: categoria_config[0]
+                    }, {transaction: t});
+
+                    createTestQuestion(prueba.id, id_categoria, cant_preguntas_categoria, semestre, t);
+                }
+
+            }
+
         });
-
-        // Creamos la relacion con competencia 
-
-        for (const competencia_id of competencias) {
-
-            await PruebaCompetencia.create({
-                prueba_id: prueba.id,
-                competencia_id
-            });
-
-            
-        }
-
-        // Creamos la relacion con categoria
-
-        if(valoresGenericas && valoresGenericas.length > 0){
-
-            for(const categoria_config of valoresGenericas){
-
-                const id_categoria = categoria_config[0];
-                const cant_preguntas_categoria = categoria_config[1];
-
-                await ConfiguracionCategoria.create({
-                    cantidad_preguntas: categoria_config[1],
-                    valor_categoria: categoria_config[2],
-                    prueba_id: prueba.id,
-                    categoria_id: categoria_config[0]
-                });
-
-                createTestQuestion(prueba.id, id_categoria, cant_preguntas_categoria, semestre);
-            }
-
-        }
-
-        if(valoresEspecificas && valoresEspecificas.length > 0){
-
-            for(const categoria_config of valoresEspecificas){
-
-                const id_categoria = categoria_config[0];
-                const cant_preguntas_categoria = categoria_config[1];
-
-                await ConfiguracionCategoria.create({
-                    cantidad_preguntas: categoria_config[1],
-                    valor_categoria: categoria_config[2],
-                    prueba_id: prueba.id,
-                    categoria_id: categoria_config[0]
-                });
-
-                createTestQuestion(prueba.id, id_categoria, cant_preguntas_categoria, semestre);
-            }
-
-        }
 
         res.status(200).json('Prueba creada exitosamente');
 
@@ -253,7 +262,7 @@ const updatePrueba = async (req, res) => {
         const {id} = req.params;
 
         // Verificamos los datos de entrada
-        const regex = /^[0-9]*$/; // Expresión regular que controla solo la admición de numeros
+        const regex = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
         if(!regex.test(id)){
             return res.status(400).json({error: 'id no válido'});
@@ -278,7 +287,7 @@ const updatePrueba = async (req, res) => {
         });
 
         if(pruebaExist && pruebaExist.nombre !== nombre){
-            return res.status(400).json({error: "El nombre de la prueba debe ser unico"});
+            return res.status(400).json({error: `El nombre de prueba ${nombre} ya se encuentra registrado`});
         }
 
         // Validamos que los nuevos porcentajes sean coincidentes

@@ -8,17 +8,14 @@ const Inscripcion = require('../models/Inscripcion');
 const sequelize = require('../database/db');
 const XLSX = require("xlsx");
 const { Op } = require('sequelize');
+const {validarFechaCoherente} = require('../util/validarFechaCoherente');
+
 
 /* --------- getConvocatorias function -------------- */
 
 const getConvocatorias = async (req, res) => {
 
     try{
-
-        // Paginación y limites
-        const page = req.query.page || 1;
-        const limit = 5;
-        const offset = (page - 1) * limit;
 
         // Estado
         const state = req.query.estado || true;
@@ -90,6 +87,7 @@ const createConvocatoria = async (req, res) => {
         // Obtenemos el archivo excel cargado por el usuario 
         const excelFileBuffer = req.files.archivo.data;
 
+
         // Validamos los datos
         if(!nombre || !descripcion || !fecha_inicio || !fecha_fin || !prueba_id || !excelFileBuffer){
             return res.status(400).json({error: 'Todos los campos son requeridos'});
@@ -101,6 +99,15 @@ const createConvocatoria = async (req, res) => {
         if(!regexData.test(nombre) || !regexNum.test(prueba_id)){
             return res.status(400).json({error: 'La sintaxis de los datos no es correcta'});
         }
+
+
+        // Validamos que la fechas sean coherentes
+        const error_fecha = validarFechaCoherente(fecha_inicio.getTime(), fecha_fin.getTime());
+
+        if(error_fecha){
+            return res.status(400).json({error: error_fecha});
+        }
+
 
         // Validamos la exsitencia de la prueba 
         const pruebaExist = await Prueba.findByPk(prueba_id);
@@ -185,7 +192,7 @@ const createConvocatoria = async (req, res) => {
                 fecha_inicio: new Date(fecha_inicio),
                 fecha_fin: new Date(fecha_fin),
                 prueba_id
-            });
+            }, {transaction: t});
 
             // Creamos las inscripciones
             for(student of estudiantes){
@@ -217,7 +224,7 @@ const createConvocatoria = async (req, res) => {
                     student.password = hashedPassword;
 
                     // Guardamos en la BD
-                    await student.save();
+                    await student.save({transaction: t});
 
                     // Enviamos correo de confirmación de registro
                     await generateCorreo(`${student.nombre} ${student.apellido}`, student.email, password);
@@ -236,7 +243,7 @@ const createConvocatoria = async (req, res) => {
                     fecha_inscripcion: new Date(),
                     usuario_id: estudianteDB.id,
                     convocatoria_id: convocatoria.id
-                });
+                }, {transaction: t});
 
             }
 
@@ -260,12 +267,14 @@ const updateConvocatoria = async (req, res) => {
         //Obtenemos el id
         const {id} = req.params;
         
+
         // Verificamos el id
         const regexNum = /^[0-9]+$/;
 
         if(!regexNum.test(id)){
             return res.status(400).json({error: 'id no valido'});
         }
+
 
         // Obtenemos la convocatoria
         const convocatoria = await Convocatoria.findByPk(id);
@@ -274,6 +283,7 @@ const updateConvocatoria = async (req, res) => {
         if(!convocatoria){
             return res.status(400).json({error: 'No se encuentra ninguna convocatoria con el id especificado'});
         }
+
 
         // Obtenemos los datos a actualizar
         const {nombre, prueba_id, descripcion, fecha_inicio, fecha_fin} = req.body;
@@ -289,12 +299,22 @@ const updateConvocatoria = async (req, res) => {
             return res.status(400).json({error: 'La sintaxis de los datos no es correcta'});
         }
 
+
         // Validamos que exista la prueba enlazada a la convocatoria
         const existPrueba = await Prueba.findByPk(prueba_id);
 
         if(!existPrueba){
             return res.status(400).json({error: 'No existe ninguna prueba con el id especificado'})
         }
+
+
+        // Validamos que la fechas sean coherentes
+        const error_fecha = validarFechaCoherente(fecha_inicio.getTime(), fecha_fin.getTime());
+
+        if(error_fecha){
+            return res.status(400).json({error: error_fecha});
+        }
+        
 
         //Actualizamos la convocatoria
         await convocatoria.update({

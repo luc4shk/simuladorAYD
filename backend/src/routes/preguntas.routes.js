@@ -7,9 +7,13 @@ const multer = require('multer');
 const fileupload = require('express-fileupload');
 const verifyJWT = require('../middlewares/verifyJWT');
 const isAdmin = require('../middlewares/isAdmin');
+const fileSizeLimiter = require('../middlewares/fileSizeLimiter');
+const fileExtLimiter = require('../middlewares/fileExtLimiter');
+const filePayloadExist = require('../middlewares/filePayloadExist');
 
 // Importamos las funciones del controlador
 const questionController = require('../controllers/questionController');
+const { throws } = require('assert');
 
 // Inicializamos el router
 const router = Router();
@@ -32,7 +36,13 @@ router.post('/createQuestion', [verifyJWT, isAdmin], questionController.createQu
 // @desc Endpoint encargada de la creación de preguntas por medio de un archivo
 // @route POST /api/question/createQuestionFile
 // @access solo Admin
-router.post('/createQuestionFile', [verifyJWT, isAdmin, fileupload()], questionController.createQuestions);
+router.post('/createQuestionFile', [
+    verifyJWT, 
+    isAdmin, 
+    fileupload(),
+    filePayloadExist,
+    fileExtLimiter(['.xlsx']),
+    fileSizeLimiter], questionController.createQuestions);
 
 
 // Storage de multer

@@ -8,12 +8,18 @@ const getCategorias = async (req, res) => {
 
     try{
 
+        // Estado
+        const state = req.query.estado || true;
+
         // Obtenemos las categorias
         const categorias = await Categoria.findAll({
+            where: {
+                estado: state
+            },
             attributes: ['id', 'nombre', 'descripcion', 'estado'],
             include: {
                 model: Competencia,
-                attributes: ['id', 'nombre']
+                attributes: ['nombre']
             }
         });
 
@@ -98,7 +104,7 @@ const createCategoria = async (req, res) => {
         });
 
         if(categoriaExist){
-            return res.status(400).json({error: "El nombre de la categoria debe ser unico"});
+            return res.status(400).json({error: `El nombre de categoria ${nombre} ya se encuentra registrado`});
         }
 
         // Comprobamos que el id de la competencia corresponda a uno válido
@@ -166,7 +172,7 @@ const updateCategoria = async (req, res) => {
         });
 
         if(categoriaExist && categoriaExist.nombre.toLowerCase() !== categoria.nombre.toLowerCase()){
-            return res.status(400).json({error: "El nombre de la categoria debe ser unico"});
+            return res.status(400).json({error: `El nombre de categoria ${nombre} ya se encuentra registrado`});
         }
 
         // Comprobamos que el id de la competencia corresponda a uno válido

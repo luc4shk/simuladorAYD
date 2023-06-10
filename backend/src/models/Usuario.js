@@ -19,8 +19,8 @@ const User = sequelize.define('usuarios', {
                 msg: "El nombre no puede ser vacio"
             },
             len:{
-                args: [5, 25],
-                msg: "El nombre solo ha de contener entre 5 y 25 caracteres"
+                args: [3, 45],
+                msg: "El nombre solo ha de contener entre 3 y 45 caracteres"
             }
         }
     },
@@ -32,8 +32,8 @@ const User = sequelize.define('usuarios', {
                 msg: "El apellido no puede ser vacio"
             },
             len:{
-                args: [5, 35],
-                msg: "El apellido solo ha de contener entre 5 y 35 caracteres"
+                args: [3, 55],
+                msg: "El apellido solo ha de contener entre 3 y 55 caracteres"
             }
         }
     },

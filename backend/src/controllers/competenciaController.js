@@ -8,12 +8,18 @@ const getCompetencias = async (req, res) => {
 
     try{
 
+        // Estado
+        const state = req.query.estado || true;
+
         // Obtenemos las competencias
         const competencias = await Competencia.findAll({
+            where: {
+                estado: state
+            },
             attributes: ['id', 'nombre', 'descripcion', 'estado'],
             include: {
                 model: Categoria,
-                attributes: ['id', 'nombre']
+                attributes: ['nombre']
             }
         });
 
@@ -48,7 +54,7 @@ const getCompetenciaById = async (req, res) => {
             attributes: ['nombre', 'descripcion', 'estado'],
             include: {
                 model: Categoria,
-                attributes: ['id', 'nombre']
+                attributes: ['nombre']
             }
         });
 
@@ -98,7 +104,7 @@ const createCompetencia = async (req, res) => {
         });
 
         if(compFound){
-            return res.status(400).json({error: "El nombre de la competencia debe ser único"});
+            return res.status(400).json({error: `El nombre de competencia ${nombre} ya se encuentra registrado`});
         }
 
         // Creamos la competencia
@@ -162,7 +168,7 @@ const updateCompetencia = async (req, res) => {
         });
 
         if(compFound && competencia.nombre.toLowerCase() !== compFound.nombre.toLowerCase()){
-            return res.status(400).json({error: "El nombre de la competencia debe ser unico"});
+            return res.status(400).json({error: `El nombre de competencia ${nombre} ya se encuentra registrado`});
         }
 
         // Actualizamos la competencia

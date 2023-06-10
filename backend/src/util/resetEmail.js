@@ -5,6 +5,10 @@ const PasswordReset = require('../models/PasswordReset');
 const bcrypt = require('bcrypt');
 const {email_address, email_password} = require('../config')
 
+
+/** Función encargada de el envio de correo para el restablecimiento de contraseña de un 
+ *  usuario
+ */
 const sendResetEmail = async (user, redirectURL) => {
 
     try{

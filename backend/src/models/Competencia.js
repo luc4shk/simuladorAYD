@@ -19,8 +19,8 @@ const Competencia = sequelize.define('competencias', {
                 msg: "El nombre de la competencia no puede ser vacio"
             },
             len:{
-                args: [5, 25],
-                msg: "El nombre solo puede contener entre 5 y 25 caracteres"
+                args: [3, 45],
+                msg: "El nombre solo puede contener entre 3 y 45 caracteres"
             }
         }
     },

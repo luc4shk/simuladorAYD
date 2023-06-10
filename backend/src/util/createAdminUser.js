@@ -16,14 +16,14 @@ const createAdminUser = async () => {
             });
 
             const getSalt = await bcrypt.genSalt(11);
-            const hashed = await bcrypt.hash('123456789', getSalt);
+            const hashed = await bcrypt.hash('Director1234', getSalt);
 
             // Creamos el usuario
             const user  = await Usuario.create({
-                nombre: 'Luis Carlos',
-                apellido: 'Ascencio',
-                codigo: '1152019',
-                email: 'luiscarlosasqu@ufps.edu.co',
+                nombre: 'Jaider',
+                apellido: 'Oliveros',
+                codigo: '1152031',
+                email: 'jaidergustavoolmo@ufps.edu.co',
                 password: hashed,
                 tipo: 'director',
                 telefono: '5555555',

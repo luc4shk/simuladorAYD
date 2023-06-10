@@ -1,9 +1,12 @@
 const Usuario = require('../models/Usuario');
 const Rol = require('../models/Rol');
 
+
+/** Middleware encargado de verificar que un usuario sea administrador */
+
 const isAdmin = async (req, res, next) => {
 
-    // Obtenemos el usuario
+    // Obtenemos el usuario y verificamos su existencia
     const username = req.user.username;
 
     const user = await Usuario.findOne({
@@ -16,7 +19,7 @@ const isAdmin = async (req, res, next) => {
     const user_rol = await Rol.findByPk(user.rol_id);
 
     // Verificamos que el rol obtenido sea administrator
-    if(user_rol.nombre === 'Administrador'){
+    if(user_rol.nombre === 'Administrador' && user.estado){
         next();
         return;
     }

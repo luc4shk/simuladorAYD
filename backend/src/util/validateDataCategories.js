@@ -1,6 +1,10 @@
 const Pregunta = require('../models/Pregunta');
 const Categoria = require('../models/Categoria');
 
+
+/** Función encargada de los valores ingresados por categoria coincidan con los totales especificados
+ *  por el usuario
+ */
 const validateCategories = (valoresCategoria, total_preguntas) => {
 
     let total_preguntas_genericas = 0;
@@ -10,7 +14,7 @@ const validateCategories = (valoresCategoria, total_preguntas) => {
 
         for(const categoria_config of valoresCategoria){
 
-            // Obtenemos el id de la categoria actual
+            // Obtenemos los datos ingresados por categoria
             const preguntas_categoria = categoria_config[1];
             const valor_categoria = categoria_config[2];
         
@@ -40,6 +44,9 @@ const validateCategories = (valoresCategoria, total_preguntas) => {
 }
 
 
+/** Función encargada de validar que el valor porcentual por categoria coincida con los limites 
+ *  establecidos
+ */
 const validate_percentage_categories = (valoresCategoria) => {
 
     let valor_total_categorias = 0;
@@ -69,6 +76,9 @@ const validate_percentage_categories = (valoresCategoria) => {
 };
 
 
+/** Función encargada de validar que la cantidad de preguntas por categoria cumpla con la 
+ *  demanda establecida en la prueba
+ */
 const validCantQuestions = async (valoresCategoria, semestre) => {
 
     try{
