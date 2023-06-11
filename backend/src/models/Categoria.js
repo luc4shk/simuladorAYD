@@ -32,7 +32,7 @@ const Categoria =sequelize.define('categorias', {
                 msg: "La descripción de la categoria no puede ser vacia"
             },
             len:{
-                args: [10, 200],
+                args: [10, 240],
                 msg: "La descripción debe contener minímo 10 caracteres"
             }
         }

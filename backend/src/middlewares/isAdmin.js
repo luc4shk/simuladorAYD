@@ -15,11 +15,8 @@ const isAdmin = async (req, res, next) => {
         }
     });
 
-    // Obtenemos el rol del usuario
-    const user_rol = await Rol.findByPk(user.rol_id);
-
-    // Verificamos que el rol obtenido sea administrator
-    if(user_rol.nombre === 'Administrador' && user.estado){
+    // Verificamos que el usuario sea administrator
+    if(user.tipo === 'director' && user.estado){
         next();
         return;
     }

@@ -32,7 +32,7 @@ const Competencia = sequelize.define('competencias', {
                 msg: "La descripción de la competencia no puede ser vacia"
             },
             len:{
-                args: [10, 200],
+                args: [10, 240],
                 msg: "La descripción debe contener minímo 10 caracteres"
             }
         }

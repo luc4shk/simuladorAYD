@@ -37,7 +37,7 @@ const createTestQuestion = async (id_prueba, id_categoria, cant_preguntas_catego
             await PreguntaPrueba.create({
                 pregunta_id: question.id,
                 prueba_id: id_prueba
-            }, {transaction})
+            })
 
             cant_preguntas_categoria--;
         }

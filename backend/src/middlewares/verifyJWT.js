@@ -21,14 +21,14 @@ const verifyJWT = (req, res, next) => {
     jwt.verify(
         token,
         process.env.ACCESS_TOKEN_SECRET,
-        (err, user) => {
+        async (err, user) => {
 
             if(err) {
                 return res.status(403).json({message: 'Accceso prohibido'});
             }
 
             // Verificamos los datos del payload
-            const foundUser = Usuario.findOne({
+            const foundUser = await Usuario.findOne({
                 where: {
                     email: user.username
                 }

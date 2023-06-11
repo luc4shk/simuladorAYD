@@ -42,7 +42,7 @@ const login = async (req, res) => {
         const accessToken = jwt.sign({
             username: email,
             tipo: userFound.tipo
-        }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '25m'});
+        }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '55m'});
 
         // Creamos el token de refresco
         const refreshToken = jwt.sign(

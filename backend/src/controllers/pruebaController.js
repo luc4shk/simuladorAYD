@@ -2,8 +2,6 @@ const Prueba = require('../models/Prueba');
 const Competencia = require('../models/Competencia');
 const PruebaCompetencia = require('../models/PruebaCompetencia');
 const ConfiguracionCategoria = require('../models/ConfiguracionCategoria');
-const Pregunta = require('../models/Pregunta');
-const Categoria = require('../models/Categoria');
 const {validateCategories, validCantQuestions, validate_percentage_categories} = require('../util/validateDataCategories');
 const {createTestQuestion} = require('../util/createTestQuestion');
 const sequelize = require('../database/db');
@@ -246,7 +244,7 @@ const createPrueba = async (req, res) => {
 
 
     }catch(err){
-        return res.status(500).json({error: `Errro al crear la prueba: ${err.message}`});
+        return res.status(500).json({error: `${err.message}`});
     }
 
 };
@@ -261,26 +259,29 @@ const updatePrueba = async (req, res) => {
         // Obtenemos el id de la prueba a actualizar 
         const {id} = req.params;
 
-        // Verificamos los datos de entrada
-        const regex = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
 
-        if(!regex.test(id)){
+        // Verificamos los datos de entrada
+        const regexNum = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
+
+        if(!regexNum.test(id)){
             return res.status(400).json({error: 'id no válido'});
         }
+
 
         // Obtenemos los datos a actualizar
         const {nombre, descripcion, duracion, estado, valoresGenericas, valoresEspecificas} = req.body;
 
-        // Validamos los datos obtenidos
 
+        // Validamos los datos obtenidos
         const regexData = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
 
         if(!regexData.test(nombre) || !regexNum.test(duracion)){
             return res.status(400).json({error: 'La sintaxis de los datos es incorrecta'});
         }
 
+
         // Validamos que el nombre ingresado sea unico
-        const pruebaExist = await Pregunta.findOne({
+        const pruebaExist = await Prueba.findOne({
             where: {
                 nombre
             }
@@ -290,6 +291,7 @@ const updatePrueba = async (req, res) => {
             return res.status(400).json({error: `El nombre de prueba ${nombre} ya se encuentra registrado`});
         }
 
+        
         // Validamos que los nuevos porcentajes sean coincidentes
         let valor_total_categorias = 0;
 
@@ -318,63 +320,70 @@ const updatePrueba = async (req, res) => {
             return res.status(400).json({error: 'El valor total de las categorias no coincide con el 100% designado'});
         }
 
-        // Actualizamos los valores de la prueba
-        await Prueba.update({
-            nombre,
-            descripcion,
-            duracion,
-            estado,
-        }, {
-            where: {
-                id
+
+        // Incializamos la transacción
+        await sequelize.transaction(async (t) => {
+
+            // Actualizamos los valores de la prueba
+            await Prueba.update({
+                nombre,
+                descripcion,
+                duracion,
+                estado,
+            }, {
+                where: {
+                    id
+                },
+                transaction: t
+            });
+
+            // Actualizamos los valores de las categorias Gnericas (Si aplica)
+            if(valoresGenericas && valoresGenericas.length > 0){
+
+                for(const genericValue of valoresGenericas){
+
+                    // Obtenemos el id de la categoria
+                    const categoria_id = genericValue[0];
+                    const percentage = genericValue[1];
+
+                    // Actualizamos la configuración
+                    await ConfiguracionCategoria.update({
+                        valor_categoria: percentage
+                    }, {
+                        where: {
+                            categoria_id,
+                            prueba_id: id
+                        }, transaction: t
+                    });
+
+                }
+                
             }
+
+            // Actualizamos los valores de las categorias Especificas (Si aplica)
+            if(valoresEspecificas && valoresEspecificas.length > 0){
+
+                for(const especificValue of valoresEspecificas){
+
+                    // Obtenemos el id de la categoria
+                    const categoria_id = especificValue[0];
+                    const percentage = especificValue[1];
+
+                    // Actualizamos la configuración
+                    await ConfiguracionCategoria.update({
+                        valor_categoria: percentage
+                    }, {
+                        where: {
+                            categoria_id,
+                            prueba_id: id
+                        }, transaction: t
+                    });
+
+                }
+                
+            }
+
         });
-
-        // Actualizamos los valores de las categorias Gnericas (Si aplica)
-        if(valoresGenericas && valoresGenericas.length > 0){
-
-            for(const genericValue of valoresGenericas){
-
-                // Obtenemos el id de la categoria
-                const categoria_id = genericValue[0];
-                const percentage = genericValue[1];
-
-                // Actualizamos la configuración
-                await ConfiguracionCategoria.update({
-                    valor_categoria: percentage
-                }, {
-                    where: {
-                        categoria_id,
-                        prueba_id: id
-                    }
-                });
-
-            }
-            
-        }
-
-        // Actualizamos los valores de las categorias Especificas (Si aplica)
-        if(valoresEspecificas && valoresEspecificas.length > 0){
-
-            for(const especificValue of valoresEspecificas){
-
-                // Obtenemos el id de la categoria
-                const categoria_id = especificValue[0];
-                const percentage = especificValue[1];
-
-                // Actualizamos la configuración
-                await ConfiguracionCategoria.update({
-                    valor_categoria: percentage
-                }, {
-                    where: {
-                        categoria_id,
-                        prueba_id: id
-                    }
-                });
-
-            }
-            
-        }
 
         return res.status(200).json('Prueba actualizada correctamente');
 
