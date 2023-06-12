@@ -71,7 +71,6 @@ export default function CompetenciaBody() {
     />
     }
     
-    <Toaster/>
     </>
   );
 }

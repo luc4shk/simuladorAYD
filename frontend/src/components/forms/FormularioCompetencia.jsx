@@ -1,7 +1,7 @@
 import { Box, Button, Center, Input, Textarea, FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { Formik, Field, Form } from "formik";
 import {React, useContext} from "react";
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import Boton from "../pure/Boton";
 import * as Yup from "yup"
 import axiosApi from "../../utils/config/axios.config";
@@ -11,7 +11,7 @@ export default function FormularioCompetencia() {
 
   
   const {token,user} = useContext(AppContext)
-  
+  const [loc, setLoc] = useLocation()
   const AgregarCompetencia = async (nombre, descripcion) =>{
     let body={
       nombre:nombre,
@@ -24,13 +24,16 @@ export default function FormularioCompetencia() {
       }
     }).catch((e)=>{
       toast.error(e.response.data.error)
-    }) 
+    }).finally(
+      ()=>{
+        setLoc("/competencias")
+      }
+    )
 
     if(response.status === 200){
       toast.success("¡Competencia Creada!")
     }
-
-    console.log(response)
+    
   }
 
     const initialValues = {
@@ -121,7 +124,7 @@ export default function FormularioCompetencia() {
           </Formik>
         </Box>
       </Center>
-      <Toaster/>
+      
     </Box>
   );
 }

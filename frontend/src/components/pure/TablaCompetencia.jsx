@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Table,
   Thead,
@@ -11,24 +11,40 @@ import {
   Button,
   Icon,
   useEditable,
+  Switch,
+  FormLabel,
 } from "@chakra-ui/react";
 import { Link} from "wouter";
 import Boton from "./Boton";
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { RiEdit2Fill } from "react-icons/ri";
+import { AppContext } from "../context/AppProvider";
+import axiosApi from "../../utils/config/axios.config";
 export default function TablaCompetencia({ columns, items, path, msg, showButton }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [indexI, setIndexI] = useState(0);
   const [indexF, setIndexF] = useState(5);
+  const { token } = useContext(AppContext);
   const itemsPerPage = 5;
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const [categorias, setCategorias] = useState()
+  const currentItems = categorias && categorias.slice(indexOfFirstItem, indexOfLastItem);
+  const [showActive,setShowActive] = useState(false);
 
-  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = categorias && Math.ceil(categorias.length / itemsPerPage);
 
-  const totalPages = Math.ceil(items.length / itemsPerPage);
-
-  
+  const obtenerActivos = async ( estado ) =>{
+    let response = await axiosApi.get(`/api/competencia/?estado=${estado}`,{
+      headers:{
+        Authorization:"Bearer " + token,
+      }
+    }).catch(()=>{
+      toast.error("No se pueden obtener las categorías!")
+    })
+    setCategorias(response.data)
+    console.log(response)
+  }
 
   const handlePageChange = (selected) => {
     if (selected >= indexF) {
@@ -60,9 +76,14 @@ export default function TablaCompetencia({ columns, items, path, msg, showButton
     setIndexF(indexF - 5);
   };
 
+ useEffect(()=>{
+    obtenerActivos(1)
+  },[])
+
   return (
     <div>
       {showButton && (
+        <Flex align={"center"} flexDir={["column", "column", "row"]} gap={"15px"} justifyContent={"space-between"}>
         <Boton
           msg={msg}
           leftIcon={<MdAdd />}
@@ -71,10 +92,18 @@ export default function TablaCompetencia({ columns, items, path, msg, showButton
           w={["100%", "250px"]}
           radius={"8px"}
         />
+        <Flex align={"center"} gap={"5px"}>
+        <FormLabel id="switch" m={"0"}>Mostrar Inactivos</FormLabel> 
+        <Switch id="switch" colorScheme="cyan"  onChange={(e)=>{
+            setCurrentPage(0)
+            setShowActive(!showActive)
+            showActive===true ? obtenerActivos(1) : obtenerActivos(0)
+        }}/>
+        </Flex>
+        </Flex>
       )}
       <Box mb="15px" mt="20px" p="20px" borderRadius="8px" bgColor="white">
         <Flex
-          // w={["190px", "350px", "510px", "700px"]}
           w={{
             base: "240px",
             sm: "310px",
@@ -107,7 +136,7 @@ export default function TablaCompetencia({ columns, items, path, msg, showButton
                 </Tr>
               </Thead>
               <Tbody>
-                {currentItems.map((item, index) => (
+                {categorias && currentItems.map((item, index) => (
                   
                     <Tr key={item.id}>
                       <Td>{item.id}</Td>

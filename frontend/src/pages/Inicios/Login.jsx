@@ -45,7 +45,7 @@ export default function Login() {
       role: localStorage.getItem("role")
     })
     console.log(user)
-    navigate("/")
+    navigate("/") 
   } 
 
   const validationSchema = Yup.object().shape({
@@ -64,9 +64,7 @@ export default function Login() {
         enableReinitialize={true}
         onSubmit={({email, password}) => {
           // notify();
-          console.log(email,password)
           ingresar(email, password)
-          console.log(values)
         }}
       >
         {(props) => {
@@ -114,7 +112,6 @@ export default function Login() {
               >
                 Ingresar
               </Button>
-              <Toaster position="top-center"/>
             </Form>
           );
         }}

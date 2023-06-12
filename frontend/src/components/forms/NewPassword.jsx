@@ -83,7 +83,6 @@ import {
                 >
                   Aceptar
                 </Button>
-                <Toaster position="bottom-right" />
               </Form>
             );
           }}

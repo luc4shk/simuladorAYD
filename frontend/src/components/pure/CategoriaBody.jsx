@@ -26,7 +26,6 @@ export default function CategoriaBody() {
         toast.error(e.response.data.error)
      })
      setCategorias(response.data)
-     console.log(response.data)
   }
 
   useEffect(()=>{
@@ -121,7 +120,7 @@ export default function CategoriaBody() {
     <div>Cargando...</div>
     }
     
-    <Toaster/>
+    
     </>
   );
 }

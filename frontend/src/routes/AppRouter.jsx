@@ -74,6 +74,9 @@ export default function AppRouter() {
           </Switch>
       )}
     </Router>
+    <Toaster reverseOrder={true}/>
     </>
   );
+
+ 
 }

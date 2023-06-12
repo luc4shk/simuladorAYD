@@ -26,6 +26,7 @@ export default function TipoPregunta() {
             display="flex"
             alignItems="center"
             borderRadius="18px"
+            _hover={{ backgroundColor: "fondo.100" }}
             mb={[2, 2, 0]}
           >
             Preguntas Simples
@@ -36,6 +37,7 @@ export default function TipoPregunta() {
             bgColor="principal.100"
             textColor="white"
             w={["100%", "100%", "250px"]}
+            _hover={{ backgroundColor: "fondo.100" }}
             display="flex"
             alignItems="center"
             borderRadius="18px"

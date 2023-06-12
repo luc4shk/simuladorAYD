@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Table,
   Thead,
@@ -11,22 +11,47 @@ import {
   Button,
   Icon,
   useEditable,
+  Switch,
+  FormLabel,
 } from "@chakra-ui/react";
 import { Link } from "wouter";
 import Boton from "../pure/Boton";
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { RiEdit2Fill } from "react-icons/ri";
+import { AppContext } from "../context/AppProvider";
+import axiosApi from "../../utils/config/axios.config";
+import { toast } from "react-hot-toast";
 export default function TablaCategoria({ columns, items, path, msg, showButton }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [indexI, setIndexI] = useState(0);
   const [indexF, setIndexF] = useState(5);
+  const [showActive, setShowActive] = useState(false);
   const itemsPerPage = 5;
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const { token } = useContext(AppContext);
+  const [categorias, setCategorias] = useState()
+  const currentItems = categorias && categorias.slice(indexOfFirstItem, indexOfLastItem);
 
-  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = categorias && Math.ceil(categorias.length / itemsPerPage);
 
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  const obtenerActivos = async (estado) => {
+    let response = await axiosApi.get(`/api/categoria/?estado=${estado}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    }).catch(() => {
+      toast.error("No se pueden obtener las categorías!")
+    })
+    setCategorias(response.data)
+    console.log(response)
+  }
+
+
+  useEffect(() => {
+    // Reiniciar currentPage a 0
+    obtenerActivos(1)
+  }, [])
 
   const handlePageChange = (selected) => {
     if (selected >= indexF) {
@@ -59,20 +84,29 @@ export default function TablaCategoria({ columns, items, path, msg, showButton }
   };
 
   return (
-    <div>
+    <Box >
       {showButton && (
-        <Boton
-          msg={msg}
-          leftIcon={<MdAdd />}
-          as={"link"}
-          path={path}
-          w={["100%", "250px"]}
-          radius={"8px"}
-        />
+        <Flex align={"center"} flexDir={["column", "column", "row"]} gap={"15px"} justifyContent={"space-between"}>
+          <Boton
+            msg={msg}
+            leftIcon={<MdAdd />}
+            as={"link"}
+            path={path}
+            w={["100%", "250px"]}
+            radius={"8px"}
+          />
+          <Flex align={"center"} gap={"5px"}>
+            <FormLabel id="switch" m={"0"}>Mostrar Inactivos</FormLabel>
+            <Switch id="switch" colorScheme="cyan" onChange={(e) => {
+              setCurrentPage(0)
+              setShowActive(!showActive)
+              showActive === true ? obtenerActivos(1) : obtenerActivos(0)
+            }} />
+          </Flex>
+        </Flex>
       )}
       <Box mb="15px" mt="20px" p="20px" borderRadius="8px" bgColor="white">
         <Flex
-          // w={["190px", "350px", "510px", "700px"]}
           w={{
             base: "240px",
             sm: "310px",
@@ -105,19 +139,19 @@ export default function TablaCategoria({ columns, items, path, msg, showButton }
                 </Tr>
               </Thead>
               <Tbody>
-                {currentItems.map((item, index) => (
-                    
-                    <Tr key={item.id}>
-                      <Td>{item.id}</Td>
-                      <Td>{item.nombre}</Td>
-                      <Td>{item.estado ? "Activo" : "Inactivo"}</Td>
-                      <Td>{item.competencia.nombre}</Td>
-                      <Td>{
-                        <Button variant={"unstyled"} as={Link} to={`/editarCategoria/${item.id}`}>
-                        <Icon w={"20px"} h={"20px"} as={RiEdit2Fill}/>
-                        </Button>
-                        }</Td>
-                     </Tr>
+                {categorias && currentItems.map((item, index) => (
+
+                  <Tr key={item.id}>
+                    <Td>{item.id}</Td>
+                    <Td>{item.nombre}</Td>
+                    <Td>{item.estado ? "Activo" : "Inactivo"}</Td>
+                    <Td>{item.competencia.nombre}</Td>
+                    <Td>{
+                      <Button variant={"unstyled"} as={Link} to={`/editarCategoria/${item.id}`}>
+                        <Icon w={"20px"} h={"20px"} as={RiEdit2Fill} />
+                      </Button>
+                    }</Td>
+                  </Tr>
 
                 ))}
               </Tbody>
@@ -128,8 +162,8 @@ export default function TablaCategoria({ columns, items, path, msg, showButton }
       <Flex
         className="pagination"
         justifyContent={"center"}
-        // gap={"5px"}
-        // style={{ display: "flex", justifyContent: "center" }}
+      // gap={"5px"}
+      // style={{ display: "flex", justifyContent: "center" }}
       >
         <Boton
           isDisabled={currentPage === 0}
@@ -169,6 +203,6 @@ export default function TablaCategoria({ columns, items, path, msg, showButton }
           msg={<Icon as={MdChevronRight} boxSize={5} />}
         />
       </Flex>
-    </div>
+    </Box>
   );
 }

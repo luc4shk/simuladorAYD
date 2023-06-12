@@ -325,7 +325,7 @@ const actualizarDatos = async (nombre, apellido, direccion, email, documento, ce
           );
         }}
       </Formik>
-      <Toaster/>
+      
     </>
   );
 }

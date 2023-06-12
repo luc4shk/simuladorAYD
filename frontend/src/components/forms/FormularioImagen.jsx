@@ -45,7 +45,7 @@ const validationSchema = Yup.object().shape({
         return value.endsWith(".jfif") || value.endsWith(".png")
       }
       return true;
-    }).required("La avatar es requerida"),
+    }).required("El avatar es requerido"),
 });
 
 

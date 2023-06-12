@@ -63,7 +63,6 @@ import {
                 >
                   Buscar
                 </Button>
-                <Toaster position="bottom-right" />
               </Form>
             );
           }}

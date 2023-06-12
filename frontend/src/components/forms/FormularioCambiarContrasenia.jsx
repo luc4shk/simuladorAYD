@@ -142,7 +142,6 @@ export default function FormularioCambiarContraseña() {
               width="full"
               type={"submit"}
             /> */}
-              <Toaster position="top-center" />
             </Form>
           );
         }}

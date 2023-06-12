@@ -1,125 +1,8 @@
-// import { Box, Button, Center, Input, Textarea, Select, useEditable } from "@chakra-ui/react";
-// import {React, useContext, useEffect, useState}from "react";
-// import { Link } from "wouter";
-// import Boton from "../pure/Boton";
-// import axiosApi from "../../utils/config/axios.config";
-// import { AppContext } from "../context/AppProvider";
-
-// export default function FormularioCategoria() {
-
-//   const {token} = useContext(AppContext)
-//   const [competencia, setCompetencia] = useState()
-
-//   const obtenerCompetencias = async () =>{
-//     let response = await axiosApi.get("/api/competencia",{
-//       headers:{
-//         Authorization:"Bearer " + token,
-//       }
-//     }).catch((e)=>{
-//       toast.error("Fallo al traerlos las competencias")
-//     })
-
-    
-//     setCompetencia(response.data)
-//     setLoading(false)
-//   }
-
-//   useEffect(()=>{
-//     obtenerCompetencias()
-//   },[])
-
-
-//   const elementosActivos = competencia && competencia.filter(item => item.estado === true);
-//   console.log(elementosActivos)
-
-//   const competencias = ["Competencia 1", "Competencia 2", "Competencia 3"];
-//   return (
-//     <Box position="fixed">
-//       <Center h="100%">
-//         <Box
-//           p="40px"
-//           borderRadius="8px"
-//           bgColor="white"
-//           minW={["150px", "250px", "480px", "550px"]}
-//           overflow="hidden"
-//         >
-//           <Box
-//             display="flex"
-//             flexDirection="column"
-//             alignItems="center"
-//             textAlign="center"
-//             w={"100%"}
-//           >
-//             <Box display="flex" flexDirection="column" justifyContent="center">
-//               <label htmlFor="nombre">Nombre</label>
-//               <Input
-//                 mt="10px"
-//                 id="nombre"
-//                 name="nombre"
-//                 type="text"
-//                 maxW={["200px", "300px", "350px", "400px"]}
-//                 w="400px"
-//               />
-//             </Box>
-//             <Box
-//               mt="10px"
-//               display="flex"
-//               flexDirection="column"
-//               justifyContent="center"
-//             >
-//               <label htmlFor="descripcion">Descripción</label>
-//               <Textarea
-//                 mt="10px"
-//                 id="descripcion"
-//                 name="descripcion"
-//                 resize="vertical"
-//                 h="100px"
-//                 maxW={["200px", "300px", "350px", "400px"]}
-//                 w="400px"
-//               />
-//             </Box>
-//             <Box
-//               mt="20px"
-//               display="flex"
-//               flexDirection="column"
-//               justifyContent="center"
-//               w={["200px", "300px", "350px", "400px"]}
-//             >
-//               <label htmlFor="competencia">Competencia</label>
-//               <Select
-//                 id="competencia"
-//                 name="competencia"
-//                 maxW={["200px", "300px", "350px", "400px"]}
-//                 w="100%"
-//                 border="2px solid gray"
-//                 mt={"10px"}
-//               >
-//                 {competencia && competencia.map((competencia, index) => (
-//                   <option key={index} value={competencia.id}>
-//                     {competencia.nombre}
-//                   </option>
-//                 ))}
-//               </Select>
-//             </Box>
-//             <Boton
-//               as={"link"}
-//               path={"/categorias"}
-//               w={["200px", "300px", "350px", "400px"]}
-//               mt={"30px"}
-//               type={"submit"}
-//               msg={"Guardar"}
-//             />
-//           </Box>
-//         </Box>
-//       </Center>
-//     </Box>
-//   );
-// }
 
 import { Box, Button, Center, FormControl, FormErrorMessage, Input, Select, Textarea, Toast, defineStyleConfig, useEditable } from "@chakra-ui/react";
 import { Formik, Field, Form } from "formik";
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import * as Yup from "yup";
 import Boton from "../pure/Boton";
 import axiosApi from "../../utils/config/axios.config";
@@ -129,6 +12,7 @@ import { AppContext } from "../context/AppProvider";
 export default function FormularioCategoria() {
   const { token } = useContext(AppContext);
   const [competencia, setCompetencia] = useState([]);
+  const [loc, setLoc] = useLocation()
 
   const obtenerCompetencias = async () => {
     let response = await axiosApi.get("/api/competencia", {
@@ -158,13 +42,14 @@ export default function FormularioCategoria() {
       },
     }).catch((e)=>{
       toast.error(e.response.data.error)
+    }).finally(()=>{
+      setLoc("/categorias")
     })
 
     if(response.status===200){
       toast.success("¡Categoría agregada correctamente!")
     }
 
-    console.log(response)
   }
 
   useEffect(() => {
@@ -299,7 +184,7 @@ export default function FormularioCategoria() {
           </Formik>
         </Box>
       </Center>
-      <Toaster/>
+      
     </Box>
   );
 }
