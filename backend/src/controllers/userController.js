@@ -194,7 +194,7 @@ const createStudent =  async (req, res) => {
             apellido,
             codigo,
             email,
-            hashedPassword,
+            password: hashedPassword,
             tipo: 'estudiante',
             semestre,
             rol_id: 2
