@@ -25,6 +25,12 @@ router.get('/', [authJWT, isAdmin], competenciaController.getCompetencias);
 router.get('/:id', [authJWT, isAdmin], competenciaController.getCompetenciaById);
 
 
+// @desc Endpoint encargado de la obtención de las categorias activas asociadas a una competencia
+// @route GET /api/competencia/:id/categorias
+// @access solo Admin
+router.get('/:id/categorias', [authJWT, isAdmin], competenciaController.getCategoriasCompetencia);
+
+
 // @desc Endpoint encargado de la creación de una competencia
 // @route POST /api/competencia/create
 // @access solo Admin

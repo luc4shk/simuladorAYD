@@ -33,6 +33,48 @@ const getCompetencias = async (req, res) => {
 };
 
 
+/** -------- getCategoriasCompetencia function -------- */
+
+const getCategoriasCompetencia = async (req, res) => {
+
+    try {
+
+        // Obtenemos el id de la competencia a obtener
+        const {id} = req.params;
+
+        // Verificamos los datos de entrada
+        const regex = /^[0-9]+$/; // Expresión regular que controla solo la admición de numeros
+
+        if(!regex.test(id)){
+            return res.status(400).json({error: 'id no válido'});
+        }
+
+        // Obtenemos y verificamos la competencia
+        const competencia = await Competencia.findByPk(id, {
+            attributes: ['nombre'],
+            include: {
+                model: Categoria,
+                attributes: ['id', 'nombre'],
+                where: {
+                    estado: 1
+                }
+            }
+        });
+
+        if(!competencia){
+            return res.status(400).json({error: 'No se encuentra ninguna competencia con el id especificado'});
+        }
+
+        // Respondemos al usuario
+        res.status(200).json(competencia);
+
+    }catch(error){
+        return res.status(500).json({error: `Error al obtener las categorias de la competencia con el id especificado: ${err.message}`});
+    }
+
+};
+
+
 /* --------- getCompetenciaById function -------------- */
 
 const getCompetenciaById = async (req, res) => {
@@ -205,5 +247,6 @@ module.exports = {
     getCompetencias,
     getCompetenciaById,
     createCompetencia,
-    updateCompetencia
+    updateCompetencia,
+    getCategoriasCompetencia
 }
