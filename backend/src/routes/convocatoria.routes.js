@@ -35,7 +35,24 @@ router.post('/create', [authJWT, isAdmin, fileupload()], convocatoriaController.
 // @desc Endpoint encargado de la actualización de una convocatoria por su id
 // @route PUT /api/convocatoria/update/:id
 // @access solo Admin
-//router.put('/update/:id', [authJWT, isAdmin], convocatoriaController);
 router.put('/update/:id', [authJWT, isAdmin], convocatoriaController.updateConvocatoria);
+
+
+// @desc Endpoint encargado de la presentación de la prueba asociada a la convocatoria
+// @route PUT /api/convocatoria/:id/presentarPrueba
+// @access public
+router.post('/:id/presentarPrueba', [authJWT], convocatoriaController.presentarPrueba);
+
+
+// @desc Endpoint encargado de la obtención de todos los estudiantes asociados a una convocatoria
+// @route PUT /api/convocatoria/:id/getEstudiantes
+// @access solo Admin
+router.get('/:id/getEstudiantes', [authJWT, isAdmin], convocatoriaController.getEstudiantesConvocatoria);
+
+
+// @desc Endpoint encargado de la obtención de todos las preguntas asociadas a la prueba de una convocatoria
+// @route PUT /api/convocatoria/:id/getPreguntas
+// @access solo Admin
+router.get('/:id/getPreguntas', [authJWT, isAdmin], convocatoriaController.getPreguntasConvocatoria);
 
 module.exports = router;

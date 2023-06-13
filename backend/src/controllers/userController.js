@@ -12,12 +12,16 @@ const getStudents =  async (req, res) => {
 
     try {
 
+        // Estado
+        const state = req.query.estado || true;
+
         //Obtenemos los estudiantes
         const students = await Usuario.findAll({
             where: {
                 tipo: 'estudiante', 
-                estado: true
-            }
+                estado: state
+            },
+            attributes: ['id', 'nombre', 'apellido', 'email', 'semestre', 'codigo']
         });
 
         // Respondemos al usuario
