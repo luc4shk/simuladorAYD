@@ -1,17 +1,37 @@
-import React from 'react'
-import TablaCustom from './TablaCustom';
+import React,{useContext, useEffect, useState} from 'react'
+import TablaEstudiante from './TablaEstudiantes';
 import { Center } from '@chakra-ui/react';
 import { RiEdit2Fill, RiDeleteBin2Fill} from "react-icons/ri";
-
+import axiosApi from "../../utils/config/axios.config";
+import { AppContext } from "../context/AppProvider";
+import { toast } from 'react-hot-toast';
 export default function EstudianteBody() {
-  const columns = [
-    "Nombres",
+  const {token} = useContext(AppContext)
+  const [estudiantes, setEstudiantes] = useState()
+  const columns = [ "Nombres",
     "Apellidos",
     "Correo",
+    "Estado",
     "Semestre",
     "Código",
     "Editar",
   ];
+
+  const obtenerEstudiantes = async ( ) =>{
+    let response = await axiosApi.get("/api/user/student",{
+      headers:{
+        Authorization:"Bearer " + token,
+      }
+    }).catch((e)=>{
+        toast.error(e.response.data.error)
+     })
+     setEstudiantes(response.data)
+  }
+
+ useEffect(()=>{
+  obtenerEstudiantes()
+ },[]) 
+
   const items = [
     [
       "Jennifer Dayana",
@@ -94,7 +114,12 @@ export default function EstudianteBody() {
       </Center>,
     ],
   ];
+
+  if(!estudiantes){
+    return <div>Cargando...</div>
+  }
+
   return (
-      <TablaCustom columns={columns} items={items} path={""} msg={"Agregar Pregunta"} />
+      <TablaEstudiante columns={columns} items={estudiantes} path={""} msg={"Agregar Pregunta"} />
     )
 }

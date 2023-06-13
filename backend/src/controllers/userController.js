@@ -21,7 +21,7 @@ const getStudents =  async (req, res) => {
                 tipo: 'estudiante', 
                 estado: state
             },
-            attributes: ['id', 'nombre', 'apellido', 'email', 'semestre', 'codigo']
+            attributes: ['id', 'nombre', 'apellido', 'email', 'semestre', 'codigo', 'estado']
         });
 
         // Respondemos al usuario
@@ -276,10 +276,10 @@ const updateStudentDataDir = async (req, res) => {
         });
 
         // Respondemos a la petición
-        res.status(200).json(student);
+        return res.status(200).json(student);
 
     } catch (error) {
-        return res.status(500).json({error: `Error al actualizar los datos del estudiante: ${error.message}`});
+        return res.status(500).json({error: `Error al actualizar los datos del estudiante: ${error.message}`})
     }
 }
 
