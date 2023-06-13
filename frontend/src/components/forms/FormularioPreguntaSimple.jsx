@@ -10,23 +10,44 @@ import {
   Text,
   color,
   FormControl,
+  FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Boton from "../pure/Boton";
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import axiosApi from "../../utils/config/axios.config";
 import { AppContext } from "../context/AppProvider";
 import { toast } from "react-hot-toast";
 import * as Yup from "yup";
+import useLocation from "wouter/use-location";
 const categorias = ["Inglés", "Español", "Análisis", "Matemáticas"];
 
 export default function FormularioSimple() {
   const [archivo, setArchivo] = useState(null);
   const archivoInputRef = useRef(null);
-  const inputRef = useRef()
+  const inputRef = useRef();
+  const ARef = useRef();
+  const BRef = useRef();
+  const CRef = useRef();
+  const DRef = useRef();
+  const [loc, setLoc] = useLocation()
+  const [categorias, setCategorias] = useState()
 
   const { token } = useContext(AppContext);
+
+    const obtenerCategorias = async () => {
+    let response = await axiosApi
+      .get("api/categoria/?estado=1", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .catch((e) => {
+        toast.error(e.response.data.error);
+      });
+    setCategorias(response.data);
+  };
 
   const procesarArchivo = async (file) => {
     const formData = new FormData();
@@ -48,39 +69,68 @@ export default function FormularioSimple() {
   };
 
   const handleArchivoSeleccionado = (e, setFieldValue) => {
-      
-      setFieldValue("archivo",  inputRef.current.files[0]);
-      
-
+    setFieldValue("archivo", inputRef.current.files[0]);
   };
 
-  const handleGuardar = (values) => {
-    // Aquí puedes agregar la lógica para guardar los datos del formulario
-    console.log(values);
+  const agregarPregunta = async (texto_pregunta, semestre, A, B, C, D, respuesta, categoria_id) => {
+    let body = {
+      texto_pregunta: texto_pregunta,
+      semestre: semestre,
+      A: A,
+      B: B,
+      C: C,
+      D: D,
+      respuesta: respuesta,
+      categoria_id: categoria_id,
+    };
+    let response = await axiosApi.post("/api/question/createQuestion",body,{
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }).catch((e) => {
+      toast.error(e.response.data.error);
+    }).finally(()=>{
+      setLoc("/preguntas");
+    });
+
+    if (response.status === 200) {
+      toast.success("¡Pregunta agregada correctamente!");
+    };
   };
 
   const validationSchema = Yup.object().shape({
-    enunciado: Yup.string().required("El enunciado es obligatorio"),
-    semestre: Yup.string().required("El semestre es obligatorio"),
-    opcionCorrecta: Yup.string().required("La opción correcta es obligatoria"),
-    categoria: Yup.string().required("La categoría es obligatoria"),
-    opciones: Yup.string().required("Las opciones son obligatorias"),
+    enunciado: Yup.string().required("El enunciado es requerido"),
+    opcionA: Yup.string().required("La opción A es requerida"),
+    opcionB: Yup.string().required("La opción B es requerida"),
+    opcionC: Yup.string().required("La opción C es requerida"),
+    opcionD: Yup.string().required("La opción D es requerida"),
+    respuesta: Yup.string()
+    .required("La respuesta es requerida")
+    .test("opcion-valid", "La respuesta debe estar dentro de las opciones escogidas", function (value) {
+      return value.toString() === this.resolve(Yup.ref("opcionA")) || value.toString() === this.resolve(Yup.ref("opcionB")) || value.toString() === this.resolve(Yup.ref("opcionC")) || value.toString() === this.resolve(Yup.ref("opcionD"));
+    }),
+    semestre: Yup.string().required("El semestre es requerido"),
+    categoria: Yup.string().required("La categoría es requerida"),
   });
 
-
   const initialValues2 = {
-    archivo: null
-  }
+    archivo: null,
+  };
 
   const validationSchema2 = Yup.object().shape({
-  archivo: Yup.mixed()
-    .test("file-type", "El tipo de archivo es XLSX", (value) => {
-      if (value) {
-        return value.endsWith(".xlsx")
-      }
-      return true;
-    }).required("El archivo es requerido"),
-});
+    archivo: Yup.mixed()
+      .test("file-type", "El tipo de archivo es XLSX", (value) => {
+        if (value) {
+          return value.endsWith(".xlsx");
+        }
+        return true;
+      })
+      .required("El archivo es requerido"),
+  });
+
+  useEffect(()=>{
+    obtenerCategorias()
+  })
 
   return (
     <Box>
@@ -100,138 +150,143 @@ export default function FormularioSimple() {
         <Formik
           initialValues={{
             enunciado: "",
+            opcionA: "",
+            opcionB: "",
+            opcionC: "",
+            opcionD: "",
+            respuesta: "",
             semestre: "",
-            opcionCorrecta: "",
             categoria: "",
-            opciones: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={handleGuardar}
+          onSubmit={({enunciado,opcionA,opcionB,opcionC,opcionD,respuesta,semestre,categoria}) => {
+            agregarPregunta(enunciado,semestre,opcionA,opcionB,opcionC,opcionD,respuesta,categoria)
+          }}
         >
           {(props) => {
             const { errors, setFieldValue, touched } = props;
             return (
               <Form>
-                <Grid
-                  templateColumns={{ base: "1fr", md: "1fr 1fr" }}
-                  gap="20px"
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <GridItem>
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
-                    >
-                      <label htmlFor="enunciado">Enunciado</label>
-                      <Field
-                        as={Input}
-                        mt="10px"
-                        id="enunciado"
-                        name="enunciado"
-                      />
-                      <ErrorMessage
-                        name="enunciado"
-                        component={Text}
-                        color="red.500"
-                        mt="2"
-                      />
-                    </Box>
-                    <Box
+                  <FormLabel htmlFor="enunciado">Enunciado</FormLabel>
+                  <FormControl
+                    isInvalid={touched.enunciado && errors.enunciado}
+                  >
+                    <Field
+                      as={Textarea}
                       mt="10px"
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
+                      id="enunciado"
+                      name="enunciado"
+                      resize={"none"}
+                    />
+                    <FormErrorMessage>{errors.enunciado}</FormErrorMessage>
+                  </FormControl>
+                </Box>
+                <Box
+                  display="flex"
+                  flexDirection={["column", "column", "row"]}
+                  mt={"30px"}
+                  width={"100%"}
+                  alignItems={"center"}
+                  gap={"20px"}
+                >
+                  <Box w={"100%"}>
+                    <FormLabel htmlFor="semestre">Semestre</FormLabel>
+                    <FormControl
+                      isInvalid={touched.semestre && errors.semestre}
                     >
-                      <label htmlFor="opcionCorrecta">Opción correcta</label>
-                      <Field
-                        as={Input}
-                        mt="10px"
-                        id="opcionCorrecta"
-                        name="opcionCorrecta"
-                      />
-                      <ErrorMessage
-                        name="opcionCorrecta"
-                        component={Text}
-                        color="red.500"
-                        mt="2"
-                      />
-                    </Box>
-                  </GridItem>
-                  <GridItem>
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
+                      <Field as={Input} id="semestre" name="semestre" />
+                      <FormErrorMessage>{errors.semestre}</FormErrorMessage>
+                    </FormControl>
+                  </Box>
+                  <Box w={"100%"}>
+                    <FormLabel htmlFor="categoria">Categoría</FormLabel>
+                    <FormControl
+                      isInvalid={touched.categoria && errors.categoria}
                     >
-                      <label htmlFor="semestre">Semestre</label>
-                      <Field
-                        as={Input}
-                        mt="10px"
-                        id="semestre"
-                        name="semestre"
-                      />
-                      <ErrorMessage
-                        name="semestre"
-                        component={Text}
-                        color="red.500"
-                        mt="2"
-                      />
-                    </Box>
-                    <Box
-                      mt="10px"
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
-                      w="100%"
-                    >
-                      <label htmlFor="categoria">Categoría</label>
                       <Field
                         as={Select}
                         id="categoria"
                         name="categoria"
                         border="2px solid gray"
-                        mt="10px"
                       >
-                        <option>Seleccionar Categoria</option>
-                        {categorias.map((categoria, index) => (
-                          <option key={index} value={categoria}>
-                            {categoria}
-                          </option>
-                        ))}
+                        <option>Seleccione una categoria</option>
+                        {categorias &&
+                          categorias.map((categoria, index) => (
+                            <option key={categoria.id} value={categoria.id}>
+                              {categoria.nombre}
+                            </option>
+                          ))}
                       </Field>
-                      <ErrorMessage
-                        name="categoria"
-                        component={Text}
-                        color="red.500"
-                        mt="2"
-                      />
-                    </Box>
-                  </GridItem>
-                </Grid>
+                      <FormErrorMessage>{errors.categoria}</FormErrorMessage>
+                    </FormControl>
+                  </Box>
+                </Box>
                 <Box
                   mt="10px"
                   display="flex"
                   flexDirection="column"
                   justifyContent="center"
                 >
-                  <label htmlFor="opciones">Opciones</label>
-                  <Field
-                    as={Textarea}
-                    mt="10px"
-                    id="opciones"
-                    name="opciones"
-                    resize="vertical"
-                    h="170px"
-                  />
-                  <ErrorMessage
-                    name="opciones"
-                    component={Text}
-                    color="red.500"
-                    mt="2"
-                  />
+                  <Flex flexDir={["column", "column", "row"]} gap={"20px"}>
+                    <FormControl isInvalid={errors.opcionA && touched.opcionA}>
+                      <FormLabel htmlFor="opcionA">Opción A</FormLabel>
+                      <Field
+                        id="opcionA"
+                        name="opcionA"
+                        as={Textarea}
+                        resize={"none"}
+                      />
+                      <FormErrorMessage>{errors.opcionA}</FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.opcionB && touched.opcionB}>
+                      <FormLabel htmlFor="opcionB">Opción B</FormLabel>
+                      <Field
+                        id="opcionB"
+                        name="opcionB"
+                        as={Textarea}
+                        resize={"none"}
+                      />
+                      <FormErrorMessage>{errors.opcionB}</FormErrorMessage>
+                    </FormControl>
+                  </Flex>
+                  <Flex flexDir={["column", "column", "row"]} gap={"20px"}>
+                    <FormControl isInvalid={errors.opcionC && touched.opcionC}>
+                      <FormLabel htmlFor="opcionC">Opción C</FormLabel>
+                      <Field
+                        id="opcionC"
+                        name="opcionC"
+                        as={Textarea}
+                        resize={"none"}
+                      />
+                      <FormErrorMessage>{errors.opcionC}</FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.opcionD && touched.opcionD}>
+                      <FormLabel htmlFor="opcionD">Opción D</FormLabel>
+                      <Field
+                        id="opcionD"
+                        name="opcionD"
+                        as={Textarea}
+                        resize={"none"}
+                      />
+                      <FormErrorMessage>{errors.opcionD}</FormErrorMessage>
+                    </FormControl>
+                  </Flex>
+                  <FormControl
+                    isInvalid={errors.respuesta && touched.respuesta}
+                  >
+                    <FormLabel htmlFor="respuesta">Respuesta</FormLabel>
+                    <Field id="respuesta" name="respuesta" as={Input} />
+                    <FormErrorMessage>{errors.respuesta}</FormErrorMessage>
+                  </FormControl>
                 </Box>
-                <Box display="flex" justifyContent="center">
-                </Box>
+
                 <Button
                   w={"100%"}
                   bgColor={"principal.100"}
@@ -240,12 +295,8 @@ export default function FormularioSimple() {
                   type="sumbit"
                   _hover={{ backgroundColor: "fondo.100" }}
                 >
-                    Guardar
+                  Guardar
                 </Button>
-                {/* //---------- -----------------------------------------------*/}
-                <Box mt="30px">
-                  
-                </Box>
               </Form>
             );
           }}
@@ -253,21 +304,20 @@ export default function FormularioSimple() {
         <Formik
           initialValues={initialValues2}
           validationSchema={validationSchema2}
-          onSubmit={()=>{
-            procesarArchivo(inputRef.current.files[0])
+          onSubmit={() => {
+            procesarArchivo(inputRef.current.files[0]);
           }}
         >
-          {
-            (props)=>{
-              const {errors, touched, setFieldValue} = props
-              return(
-                <Form>
-                  <Flex
-                    direction={{ base: "column", md: "row" }}
-                    justify={"space-between"}
-                  >
-                    <FormControl isInvalid={errors.archivo && touched.archivo}>
-                     <Field id="archivo" name="archivo">
+          {(props) => {
+            const { errors, touched, setFieldValue } = props;
+            return (
+              <Form>
+                <Flex
+                  direction={{ base: "column", md: "row" }}
+                  justify={"space-between"}
+                >
+                  <FormControl isInvalid={errors.archivo && touched.archivo}>
+                    <Field id="archivo" name="archivo">
                       {({ field }) => (
                         <Input
                           type="file"
@@ -277,12 +327,12 @@ export default function FormularioSimple() {
                           mb="10px"
                           mt="10px"
                           w={{
-                        sm: "100%",
-                        md: "200px",
-                        lg: "250px",
-                        tableBreakpoint: "340px",
-                       }}
-                        cursor={"pointer"}
+                            sm: "100%",
+                            md: "200px",
+                            lg: "250px",
+                            tableBreakpoint: "340px",
+                          }}
+                          cursor={"pointer"}
                           onChange={(event) => {
                             handleArchivoSeleccionado(event, setFieldValue);
                           }}
@@ -291,29 +341,27 @@ export default function FormularioSimple() {
                       )}
                     </Field>
                     <FormErrorMessage>{errors.archivo}</FormErrorMessage>
-                    </FormControl>
-                    <Button
-                      bgColor="principal.100"
-                      textColor="white"
-                      w={{
-                        sm: "100%",
-                        md: "200px",
-                        lg: "250px",
-                        tableBreakpoint: "340px",
-                      }}
-                      _hover={{ backgroundColor: "fondo.100" }}
-                      mb="10px"
-                      mt="10px"
-                      type="submit"
-                    >
-                      Guardar
-                    </Button>
-                  </Flex>
-                    </Form>
-              )
-            }
-            
-          }
+                  </FormControl>
+                  <Button
+                    bgColor="principal.100"
+                    textColor="white"
+                    w={{
+                      sm: "100%",
+                      md: "200px",
+                      lg: "250px",
+                      tableBreakpoint: "340px",
+                    }}
+                    _hover={{ backgroundColor: "fondo.100" }}
+                    mb="10px"
+                    mt="10px"
+                    type="submit"
+                  >
+                    Guardar
+                  </Button>
+                </Flex>
+              </Form>
+            );
+          }}
         </Formik>
       </Box>
     </Box>

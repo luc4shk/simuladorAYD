@@ -37,7 +37,7 @@ export default function FormularioCambiarContraseña() {
     if(response.status === 200){
       toast.success(`¡${response.data.message}!`)
     }
-    console.log(response)
+    "" 
   }
 
   const initialValues = {

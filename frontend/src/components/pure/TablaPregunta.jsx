@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext} from "react";
 import {
   Table,
   Thead,
@@ -11,46 +11,31 @@ import {
   Button,
   Icon,
   useEditable,
-  Switch,
   FormLabel,
+  Switch
 } from "@chakra-ui/react";
 import { Link } from "wouter";
 import Boton from "../pure/Boton";
-import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
-import { RiEdit2Fill } from "react-icons/ri";
 import { AppContext } from "../context/AppProvider";
 import axiosApi from "../../utils/config/axios.config";
 import { toast } from "react-hot-toast";
-export default function TablaCategoria({ columns, items, path, msg, showButton }) {
+import { RiEdit2Fill } from "react-icons/ri";
+import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
+
+export default function TablaPregunta({ columns, items, path, msg, showButton }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [indexI, setIndexI] = useState(0);
   const [indexF, setIndexF] = useState(5);
-  const [showActive, setShowActive] = useState(false);
   const itemsPerPage = 5;
+  const { token } = useContext(AppContext);
+  const [preguntas, setPreguntas] = useState()
+  const [showActive, setShowActive] = useState(false);
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const { token } = useContext(AppContext);
-  const [categorias, setCategorias] = useState()
-  const currentItems = categorias && categorias.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = categorias && Math.ceil(categorias.length / itemsPerPage);
+  const currentItems = preguntas && preguntas.slice(indexOfFirstItem, indexOfLastItem);
 
-  const obtenerActivos = async (estado) => {
-    let response = await axiosApi.get(`/api/categoria/?estado=${estado}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      }
-    }).catch(() => {
-      toast.error("No se pueden obtener las categorías!")
-    })
-    setCategorias(response.data)
-    "" 
-  }
-
-
-  useEffect(() => {
-    obtenerActivos(1)
-  }, [])
+  const totalPages = preguntas && Math.ceil(preguntas.length / itemsPerPage);
 
   const handlePageChange = (selected) => {
     if (selected >= indexF) {
@@ -59,6 +44,19 @@ export default function TablaCategoria({ columns, items, path, msg, showButton }
     }
     setCurrentPage(selected);
   };
+
+   const obtenerActivos = async (estado) => {
+    let response = await axiosApi.get(`/api/question/?estado=${estado}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    }).catch(() => {
+      toast.error("No se pueden obtener las preguntas!")
+    })
+    setPreguntas(response.data)
+    "" 
+  }
+
 
   const atrasPage = () => {
     currentPage <= indexI && indexI != 0 ? paginacionAtras() : null;
@@ -82,7 +80,11 @@ export default function TablaCategoria({ columns, items, path, msg, showButton }
     setIndexF(indexF - 5);
   };
 
-  return (
+   useEffect(() => {
+    obtenerActivos(1)
+  }, [])
+
+   return (
     <Box >
       {showButton && (
         <Flex align={"center"} flexDir={["column", "column", "row"]} gap={"15px"} justifyContent={"space-between"}>
@@ -138,15 +140,22 @@ export default function TablaCategoria({ columns, items, path, msg, showButton }
                 </Tr>
               </Thead>
               <Tbody>
-                {categorias && currentItems.map((item, index) => (
+                {preguntas && currentItems.map((item, index) => (
 
                   <Tr key={item.id}>
                     <Td>{item.id}</Td>
-                    <Td>{item.nombre}</Td>
+                    <Td
+                        maxW={"300px"}
+                        textOverflow={"ellipsis"}
+                        overflow={"hidden"}
+                        whiteSpace={"nowrap"}
+                       
+                    >{item.texto_pregunta}</Td>
+                    <Td>{item.semestre}</Td>
                     <Td>{item.estado ? "Activo" : "Inactivo"}</Td>
-                    <Td>{item.competencia.nombre}</Td>
+                    <Td>{item.categoria.nombre}</Td>
                     <Td>{
-                      <Button variant={"unstyled"} as={Link} to={`/editarCategoria/${item.id}`}>
+                      <Button variant={"unstyled"} as={Link} to={`/editarPregunta/${item.id}`}>
                         <Icon w={"20px"} h={"20px"} as={RiEdit2Fill} />
                       </Button>
                     }</Td>

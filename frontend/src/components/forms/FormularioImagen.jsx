@@ -25,7 +25,7 @@ const actualizaravatar = async (file) =>{
         },
   }).catch((e)=>alert("ERRORRRRR"))
 
-  console.log(response)
+  "" 
   localStorage.setItem("imagen",response.data.imageFile)
   setImagen(localStorage.getItem("imagen"))
   console.log(user)

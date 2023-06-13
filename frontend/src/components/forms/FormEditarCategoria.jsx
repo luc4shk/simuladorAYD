@@ -71,7 +71,7 @@ export default function FormularioEditarCategoria() {
       toast.success("¡Categoría actualizada correctamente!");
     }
 
-    console.log(response);
+    "" ;
   };
 
 

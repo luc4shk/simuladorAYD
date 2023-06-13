@@ -64,7 +64,7 @@ const actualizarDatos = async (nombre, apellido, direccion, email, documento, ce
       toast.success("¡Datos Actualizados!")
     }
 
-    console.log(response)
+    "" 
 }
 
 

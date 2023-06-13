@@ -23,6 +23,7 @@ import EditarCategoria from "../pages/Admin/categorias/EditarCategoria";
 import Login from "../pages/Inicios/Login";
 import { AppContext } from "../components/context/AppProvider";
 import { Toaster } from "react-hot-toast";
+import EditarPregunta from "../pages/Admin/preguntas/EditarPregunta";
 export default function AppRouter() {
 
   const { user, token, setToken} = useContext(AppContext)
@@ -59,6 +60,7 @@ export default function AppRouter() {
             <Route path="/editarInformacion" component={EditarInformacion} />
             <Route path="/editarCompetencia/:id" component={EditarCompetencia} />
             <Route path="/editarCategoria/:id" component={EditarCategoria} />
+            <Route path="/editarPregunta/:id" component={EditarPregunta} />
             <Route component={ErrorPage} />
           </Switch>
         </>

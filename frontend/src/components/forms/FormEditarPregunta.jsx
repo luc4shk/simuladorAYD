@@ -1,48 +1,48 @@
 import {
   Box,
-  Grid,
-  GridItem,
-  Input,
-  Textarea,
-  Select,
   Button,
-  Flex,
-  Text,
-  Stack,
+  Select,
+  Center,
+  Textarea,
+  Input,
   FormControl,
   FormErrorMessage,
-  FormLabel
+  FormLabel,
+  Flex,
+  Image
 } from "@chakra-ui/react";
-import { Formik, Form, Field} from "formik";
-import { useRef, useState, useEffect, useContext } from "react";
+import { Formik, Field, Form } from "formik";
+import { React, useContext, useEffect, useRef, useState } from "react";
+import { Link, useRoute, useLocation } from "wouter";
+import * as Yup from "yup";
+import Boton from "../pure/Boton";
+import { toast } from "react-hot-toast";
 import axiosApi from "../../utils/config/axios.config";
 import { AppContext } from "../context/AppProvider";
-import { toast } from "react-hot-toast";
-import useLocation from "wouter/use-location";
-import * as Yup from "yup";
+import { BiObjectsVerticalCenter } from "react-icons/bi";
+import axios from "axios";
 
-
-export default function FormularioPreguntaImagen() {
-
-
-  const {token} = useContext(AppContext)
-  const [categorias, setCategorias] = useState(null);
-  const inputRef = useRef();
+export default function FormEditarPregunta() {
+  const [match, params] = useRoute("/editarPregunta/:id");
+  const { token } = useContext(AppContext);
+  const [imagen, setImagen] = useState()
+  const [initialValues, setInitialValues] = useState();
+  const [categorias, setCategorias] = useState();
+  const inputRef = useRef()
   const [loc, setLoc] = useLocation()
 
-  const initialValues = {
-    enunciado: "",
-    opcionA: "",
-    opcionB: "",
-    opcionC: "",
-    opcionD: "",
-    respuesta: "",
-    semestre: "",
-    categoria: "",
-    imagen: null,
-  };
+  const cambiarImagen = () =>{
+     const file = inputRef.current && inputRef.current.files[0];
+      if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagen(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
-   const obtenerCategorias = async () => {
+  const obtenerCategorias = async () => {
     let response = await axiosApi
       .get("api/categoria/?estado=1", {
         headers: {
@@ -55,7 +55,12 @@ export default function FormularioPreguntaImagen() {
     setCategorias(response.data);
   };
 
-  const agregarPreguntaImagen = async (texto_pregunta, semestre,A,B,C,D,respuesta,categoria_id,imagen) =>{
+
+  useEffect(()=>{
+    cambiarImagen() 
+  },[imagen])
+
+  const actualizarPregunta = async (id,imagen,texto_pregunta,semestre,A,B,C,D,respuesta,categoria_id,estado) =>{
     const formData = new FormData();
     formData.append("imagen", imagen);
     formData.append("texto_pregunta", texto_pregunta);
@@ -65,10 +70,10 @@ export default function FormularioPreguntaImagen() {
     formData.append("C", C);
     formData.append("D", D);
     formData.append("respuesta", respuesta);
+    formData.append("estado", estado);
     formData.append("categoria_id", categoria_id);
-       
-    let response = await axiosApi.post("/api/question/createImageQuestion",formData,{
-       headers: {
+    let response = await axiosApi.put(`/api/question/update/${id}`,formData,{
+      headers: {
         "Content-Type": "multipart/form-data",
         Authorization: "Bearer " + token,
       },
@@ -78,69 +83,101 @@ export default function FormularioPreguntaImagen() {
       setLoc("/preguntas");
     });
 
-    if (response.status === 200) {
-      toast.success("¡Pregunta agregada correctamente!");
+    console.log("res",response)
+    if(response.status === 200){
+      toast.success("¡Pregunta actualizada correctamente!")
     }
   }
 
+  const obtenerPreguntaPorId = async (id) => {
+    let response = await axiosApi
+      .get(`/api/question/${id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .catch((e) => {
+        toast.error(e.response.data.error);
+      });
+
+    const categoriaEncontrada = categorias && categorias.find(
+      (categoria) => categoria.nombre === response.data.categoria
+    );
+
+    console.log(categoriaEncontrada)
+    setInitialValues({
+      enunciado: response.data.enunciado,
+      semestre: response.data.semestre,
+      estado: response.data.estado.toString(),
+      categoria: categoriaEncontrada ? categoriaEncontrada.id : null,
+      // imagen: response.data.imageFile ? response.data.imageFile : null,
+      imagen:"",
+      opcionA: response.data.opciones[0],
+      opcionB: response.data.opciones[1],
+      opcionC: response.data.opciones[2],
+      opcionD: response.data.opciones[3],
+      respuesta: response.data.respuesta,
+    });
+
+    setImagen(response.data.imageFile)
+    
+    console.log(response);
+    // console.log("vals",initialValues)
+  };
+
   const validationSchema = Yup.object().shape({
     enunciado: Yup.string().required("El enunciado es requerido"),
-    opcionA:  Yup.string().required("La opción A es requerida"),
-    opcionB:  Yup.string().required("La opción B es requerida"),
-    opcionC:  Yup.string().required("La opción C es requerida"),
-    opcionD:  Yup.string().required("La opción D es requerida"),
+    semestre: Yup.string().required("El semestre es requerido"),
+    estado: Yup.string().required("El estado es requerido"),
+    categoria: Yup.string().nullable(),
+    imagen: Yup.string().nullable(),
+    opcionA: Yup.string().required("La opción A es requerida"),
+    opcionB: Yup.string().required("La opción B es requerida"),
+    opcionC: Yup.string().required("La opción C es requerida"),
+    opcionD: Yup.string().required("La opción D es requerida"),
     respuesta: Yup.string()
     .required("La respuesta es requerida")
     .test("opcion-valid", "La respuesta debe estar dentro de las opciones escogidas", function (value) {
       return value.toString() === this.resolve(Yup.ref("opcionA")) || value.toString() === this.resolve(Yup.ref("opcionB")) || value.toString() === this.resolve(Yup.ref("opcionC")) || value.toString() === this.resolve(Yup.ref("opcionD"));
     }),
-    semestre: Yup.string().required("El semestre es requerido"),
-    categoria: Yup.string().required("La categoría es requerida"),
-    imagen: Yup.mixed()
-      .test("file-type", "El tipo de archivo es PNG/JPEG", (value) => {
-        if (value) {
-          return value.endsWith(".jfif") || value.endsWith(".png");
-        }
-        return true;
-      })
-      .required("La imagen es requerida"),
   });
 
-  const handleFileChange = (e, setFieldValue) => {
-    setFieldValue("imagen",inputRef.current.files[0])
-  };
+  useEffect(() => {
+    obtenerCategorias();
+    
+  }, []);
 
-  useEffect(()=>{
-    obtenerCategorias()
-  },[])
+    useEffect(() => {
+    if (categorias && categorias.length > 0) {
+      obtenerPreguntaPorId(params.id);
+    }
+  }, [categorias]);
+
+   if (!initialValues) {
+    return <div>Cargando...</div>;
+  }
 
   return (
     <Box>
-      <Box
-        bg="white"
-        p="40px"
-        borderRadius="8px"
-        w={{
-          base: "270px",
-          sm: "390px",
-          md: "540px",
-          lg: "640px",
-          tableBreakpoint: "800px",
-        }}
-        overflow="hidden"
-      >
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={({enunciado,semestre,opcionA,opcionB,opcionC,opcionD,respuesta,categoria})=>{
-            console.log(enunciado,semestre,opcionA,opcionB,opcionC,opcionD,respuesta,categoria,inputRef.current.files[0])
-            agregarPreguntaImagen(enunciado,semestre,opcionA,opcionB,opcionC,opcionD,respuesta,categoria,inputRef.current.files[0])
-          }}
+      <Center h="100%">
+        <Box
+          p="40px"
+          borderRadius="8px"
+          bgColor="white"
+          minW={["150px", "250px", "480px", "550px"]}
+          overflow="hidden"
         >
-          {(props) => {
-            const { errors, touched, setFieldValue } = props;
-            return (
-              <Form>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={({enunciado, semestre,respuesta,estado,categoria,opcionA,opcionB,opcionC,opcionD})=>{
+              actualizarPregunta(params.id,inputRef.current.files[0],enunciado,semestre,opcionA,opcionB,opcionC,opcionD,respuesta,categoria,estado)
+            }}
+          >
+            {(props) => {
+              const { errors, touched, setFieldValue } = props;
+              return (
+                  <Form>
                     <Box
                       display="flex"
                       flexDirection="column"
@@ -188,7 +225,7 @@ export default function FormularioPreguntaImagen() {
                             ref={inputRef}
                             variant="unstyled"
                             onChange={(event) => {
-                              handleFileChange(event, setFieldValue);
+                              cambiarImagen();
                             }}
                             {...field}
                           />
@@ -230,7 +267,6 @@ export default function FormularioPreguntaImagen() {
                           border="2px solid gray"
                           mt="10px"
                         >
-                          <option>Seleccione una categoria</option>
                           {categorias && categorias.map((categoria, index) => (
                             <option key={categoria.id} value={categoria.id}>
                               {categoria.nombre}
@@ -240,18 +276,36 @@ export default function FormularioPreguntaImagen() {
                         <FormErrorMessage>{errors.categoria}</FormErrorMessage>
                       </FormControl>
                     </Box>
+                    <Box
+                      mt="10px"
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="center"
+                      w="100%"
+                    >
+                      <FormLabel htmlFor="estado">Estado</FormLabel>
+                      <FormControl
+                        isInvalid={touched.estado && errors.estado}
+                      >
+                        <Field
+                          as={Select}
+                          id="estado"
+                          name="estado"
+                          border="2px solid gray"
+                          mt="10px"
+                        >
+                          <option value={"true"}>Activo</option>
+                          <option value={"false"}>Inactivo</option>
+                        </Field>
+                        <FormErrorMessage>{errors.estado}</FormErrorMessage>
+                      </FormControl>
+                    </Box>
                 <Box
                   mt="10px"
                   display="flex"
                   flexDirection="column"
                   justifyContent="center"
                 >
-                  <Stack
-                    direction={{ base: "column", sm: "row" }}
-                    spacing="3"
-                    alignItems="center"
-                  >
-                  </Stack>
                 </Box>
                 <Box
                   mt="10px"
@@ -300,13 +354,14 @@ export default function FormularioPreguntaImagen() {
                     w={"100%"}
                     bgColor={"principal.100"}
                     textColor={"white"}
-                  >Agregar</Button>
+                  >Guardar</Button>
                 </Box>
-              </Form>
-            );
-          }}
-        </Formik>
-      </Box>
+                </Form>  
+              );
+            }}
+          </Formik>
+        </Box>
+      </Center>
     </Box>
   );
 }

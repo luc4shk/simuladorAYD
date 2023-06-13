@@ -43,7 +43,7 @@ export default function TablaCompetencia({ columns, items, path, msg, showButton
       toast.error("No se pueden obtener las categorías!")
     })
     setCategorias(response.data)
-    console.log(response)
+    "" 
   }
 
   const handlePageChange = (selected) => {
