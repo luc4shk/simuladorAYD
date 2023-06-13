@@ -24,10 +24,11 @@ import Login from "../pages/Inicios/Login";
 import { AppContext } from "../components/context/AppProvider";
 import { Toaster } from "react-hot-toast";
 import EditarPregunta from "../pages/Admin/preguntas/EditarPregunta";
+import EditarEstudiante from "../pages/Admin/estudiantes/EditarEstudiante";
 export default function AppRouter() {
 
   const { user, token, setToken} = useContext(AppContext)
-  const [location, setLocation] = useLocation(window.location.href)
+  const [location, setLocation] = useLocation()
   // const [token, setToken] = useState()
 
   // useEffect(() => {
@@ -61,11 +62,13 @@ export default function AppRouter() {
             <Route path="/editarCompetencia/:id" component={EditarCompetencia} />
             <Route path="/editarCategoria/:id" component={EditarCategoria} />
             <Route path="/editarPregunta/:id" component={EditarPregunta} />
+            <Route path="/editarEstudiante/:id" component={EditarEstudiante} />
             <Route component={ErrorPage} />
           </Switch>
         </>
       ) : (
           <Switch>
+            {/* {setLocation("/login")} */}
           <Route path="/login">
             {token ? 
               <Redirect to="/"/> 
