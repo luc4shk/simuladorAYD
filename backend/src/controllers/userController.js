@@ -28,7 +28,7 @@ const getStudents =  async (req, res) => {
         res.status(200).json(students);
 
     } catch (error) {
-        res.status(500).json({message: error.message});
+        return res.status(500).json({ error: `Error al obtener los estudiantes: ${error.message}` });
     }
     
 };
@@ -66,7 +66,7 @@ const getStudentById = async (req, res) => {
         res.status(200).json(student);
 
     } catch (error) {
-        res.status(500).json({message: error.message});
+        return res.status(500).json({ error: `Error al obtener el estudiante especificado: ${error.message}` });
     }
 
 };
@@ -120,7 +120,7 @@ const updateStudentData = async (req, res) => {
         res.status(200).json(student);
 
     } catch (error) {
-        res.status(500).json({error: error.message});
+        return res.status(500).json({ error: `Error al actualizar los datos: ${error.message}` });
     }
 }
 
@@ -207,7 +207,7 @@ const createStudent =  async (req, res) => {
         res.status(200).json(student);
 
     } catch (error) {
-        res.status(500).json({message: error.message});
+        return res.status(500).json({error: `Error al crear el estudiante: ${error.message}`});
     }
 
 };
@@ -261,8 +261,8 @@ const updateStudentDataDir = async (req, res) => {
             }
         })
 
-        if(studentExist){
-            res.status(400).json({error: "El codigo y email de el estudiante debe ser unico"});
+        if(studentExist && studentExist.nombre.toLowerCase() !== student.nombre.toLowerCase()){
+            return res.status(400).json({error: "El codigo y email de el estudiante debe ser unico"});
         }
 
         // Actualizamos el estudiante
@@ -279,7 +279,7 @@ const updateStudentDataDir = async (req, res) => {
         res.status(200).json(student);
 
     } catch (error) {
-        res.status(500).json({error: error.message});
+        return res.status(500).json({error: `Error al actualizar los datos del estudiante: ${error.message}`});
     }
 }
 
@@ -299,7 +299,7 @@ const getDirectors =  async (req, res) => {
         res.status(200).json(directors);
 
     } catch (error) {
-        res.status(500).json({message: error.message});
+        return res.status(500).json({error: `Error al obtener los directores: ${error.message}`});
     }
 };
 
