@@ -67,7 +67,6 @@ app.use(errorHandler);
 
 // Corremos el servidor
 sequelize.sync().then(() => {
-    console.log('Connected to ufps_pro');
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }).catch((err) => {
     console.log(err);
