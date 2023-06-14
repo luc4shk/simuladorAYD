@@ -10,30 +10,42 @@ const createAdminUser = async () => {
 
         await sequelize.transaction(async (t) => {
 
-            // Obtenemos el rol de administrador 
-            const adminRole = await Rol.findOne({
-                where: {nombre: 'Administrador'}
+            // Verificamos que el admin no exista
+            const admin = await Usuario.findOne({
+                where: {
+                    email: 'jaidergustavoolmo@ufps.edu.co'
+                }
             });
 
-            const getSalt = await bcrypt.genSalt(11);
-            const hashed = await bcrypt.hash('Director1234', getSalt);
+            if(!admin){
 
-            // Creamos el usuario
-            const user  = await Usuario.create({
-                nombre: 'Jaider',
-                apellido: 'Oliveros',
-                codigo: '1152031',
-                email: 'jaidergustavoolmo@ufps.edu.co',
-                password: hashed,
-                tipo: 'director',
-                telefono: '5555555',
-                direccion: 'Mi hogar mi casa al lado de mi vecino',
-                documento: '1004758624',
-                celular: '3135687982',
-                rol_id: adminRole.id
-            }, {transaction: t});
+                // Obtenemos el rol de administrador 
+                const adminRole = await Rol.findOne({
+                    where: {nombre: 'Administrador'}
+                });
 
-            console.log('Usuario administrador creado correctamente');
+                const getSalt = await bcrypt.genSalt(11);
+                const hashed = await bcrypt.hash('Director1234', getSalt);
+
+                // Creamos el usuario
+                const user  = await Usuario.create({
+                    nombre: 'Jaider',
+                    apellido: 'Oliveros',
+                    codigo: '1152031',
+                    email: 'jaidergustavoolmo@ufps.edu.co',
+                    password: hashed,
+                    tipo: 'director',
+                    telefono: '5555555',
+                    direccion: 'Mi hogar mi casa al lado de mi vecino',
+                    documento: '1004758624',
+                    celular: '3135687982',
+                    rol_id: adminRole.id
+                }, {transaction: t});
+
+                console.log('Usuario administrador creado correctamente');
+
+            }
+
 
         });
 

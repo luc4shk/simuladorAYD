@@ -1,13 +1,25 @@
 const Rol = require('../models/Rol');
 
-// Definimos los roles a insertar
-const predefinedRoles = [
-    {nombre: 'Administrador'},
-    {nombre: 'Estudiante'}
-];
+// Verificar si los roles ya existen en la BD
+Rol.findAndCountAll().then(result => {
 
-// Creamos los roles
-Rol.bulkCreate(predefinedRoles).then(() => {
-    console.log('Predefined roles created successfully');
-})
-.catch((err) => console.error('Error creating predefined roles', err.message));
+    const count = result.count;
+
+    if(count === 0) {
+
+        // Definimos los roles a insertar
+        const predefinedRoles = [
+            {nombre: 'Administrador'},
+            {nombre: 'Estudiante'}
+        ];
+
+
+        // Creamos los roles
+        Rol.bulkCreate(predefinedRoles).then(() => {
+            console.log('Predefined roles created successfully');
+        })
+        .catch((err) => console.error('Error creating predefined roles', err.message));
+
+    }
+
+}).catch((err) => console.error('Error checking roles existence', err.message));
