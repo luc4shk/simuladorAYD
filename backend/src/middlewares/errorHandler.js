@@ -1,4 +1,4 @@
-const {logEvents} = require('./logger');
+//const {logEvents} = require('./logger');
 const multer = require('multer');
 
 
@@ -18,7 +18,7 @@ const errorHandler = (err, req, res, next) => {
     } else if (err) {
         
         // Definimos el contenido del log
-        logEvents(`${err.name}: ${err.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        //logEvents(`${err.name}: ${err.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
 
         console.error(err.stack);
 
