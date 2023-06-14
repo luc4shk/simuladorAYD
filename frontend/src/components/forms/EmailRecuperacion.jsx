@@ -7,7 +7,7 @@ import {
   } from "@chakra-ui/react";
   import * as Yup from "yup";
   import { Formik, Field, Form } from "formik";
-  import toast, { Toaster } from "react-hot-toast";
+  import toast from "react-hot-toast";
   import CardLogo from "../pure/CardLogo";
   import React from "react";
 import axiosApi from "../../utils/config/axios.config";
@@ -20,18 +20,19 @@ import axiosApi from "../../utils/config/axios.config";
   const requestPassword = async (email, url) =>{
     let body={
       email:email,
-      url:url
+      redirectURL:url
     }
-    let response = axiosApi.post("/api/auth/requestPasswordReset",body,{
+    let response = await axiosApi.post("/api/auth/requestPasswordReset",body,{
 
     }).catch((e)=>{
       toast.error(e.response.data.error)
     })
-  }
 
-    const notify = (values = "Va") => {
-      toast.success("Revisa tu correo para cambiar la contraseña");
-    };
+    if(response.status === 200){
+      toast.success("¡Mensaje enviado correctamente!")
+    }
+    console.log(response)
+  }
   
     const validationSchema = Yup.object().shape({
       email: Yup.string().email("Correo Inválido").required("Correo requerido"),
@@ -44,7 +45,7 @@ import axiosApi from "../../utils/config/axios.config";
           validationSchema={validationSchema}
           enableReinitialize={true}
           onSubmit={({email}) => {
-            requestPassword(email, "/")
+            requestPassword(email, "http://localhost:5173/newPassword")
           }}
         >
           {(props) => {
