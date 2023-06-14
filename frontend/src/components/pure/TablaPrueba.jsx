@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Table,
   Thead,
@@ -10,32 +10,29 @@ import {
   Box,
   Button,
   Icon,
-  Switch,
   useEditable,
-  FormLabel
+  Text
 } from "@chakra-ui/react";
 import { Link } from "wouter";
 import Boton from "../pure/Boton";
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
-import { RiEdit2Fill } from "react-icons/ri";
 import axiosApi from "../../utils/config/axios.config";
 import { AppContext } from "../context/AppProvider";
-import { toast } from 'react-hot-toast';
-export default function TablaEstudiantes({ columns, items, path, msg, showButton }) {
+import { RiEdit2Fill } from "react-icons/ri";
+
+export default function TablaPrueba({ columns, items, path, msg, showButton }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [indexI, setIndexI] = useState(0);
   const [indexF, setIndexF] = useState(5);
-  const [estudiantes, setEstudiantes] = useState()
+  const [pruebas,setPruebas] = useState();
+  const {token} = useContext(AppContext)
   const itemsPerPage = 5;
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const [showActive,setShowActive] = useState(false);
 
-  const {token} = useContext(AppContext)
+  const currentItems = pruebas && pruebas.slice(indexOfFirstItem, indexOfLastItem);
 
-  const currentItems = estudiantes && estudiantes.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = estudiantes && Math.ceil(estudiantes.length / itemsPerPage);
+  const totalPages = pruebas && Math.ceil(pruebas.length / itemsPerPage);
 
   const handlePageChange = (selected) => {
     if (selected >= indexF) {
@@ -67,31 +64,34 @@ export default function TablaEstudiantes({ columns, items, path, msg, showButton
     setIndexF(indexF - 5);
   };
 
-  const obtenerEstudiantes = async ( id ) =>{
-    let response = await axiosApi.get(`/api/user/student?estado=${id}`,{
-      headers:{
+  const obtenerPruebas = async () =>{
+    let response = await axiosApi.get(`/api/prueba`,{
+        headers:{
         Authorization:"Bearer " + token,
       }
     }).catch((e)=>{
         toast.error(e.response.data.error)
      })
-     setEstudiantes(response.data)
+     setPruebas(response.data)
+    
   }
 
- useEffect(()=>{
-  obtenerEstudiantes(1)
- },[]) 
+  useEffect(()=>{
+    obtenerPruebas()
+  })
 
   return (
     <div>
-       <Flex align={"center"} gap={"5px"}>
-        <FormLabel id="switch" m={"0"}>Mostrar Inactivos</FormLabel> 
-        <Switch id="switch" colorScheme="cyan"  onChange={(e)=>{
-            setCurrentPage(0)
-            setShowActive(!showActive)
-            showActive===true ? obtenerEstudiantes(1) : obtenerEstudiantes(0)
-        }}/>
-        </Flex>
+      {showButton && (
+        <Boton
+          msg={msg}
+          leftIcon={<MdAdd />}
+          as={"link"}
+          path={path}
+          w={["100%", "250px"]}
+          radius={"8px"}
+        />
+      )}
       <Box mb="15px" mt="20px" p="20px" borderRadius="8px" bgColor="white">
         <Flex
           // w={["190px", "350px", "510px", "700px"]}
@@ -127,19 +127,16 @@ export default function TablaEstudiantes({ columns, items, path, msg, showButton
                 </Tr>
               </Thead>
               <Tbody>
-                {estudiantes && estudiantes.map((item, index) => (
+                {pruebas && currentItems.map((item, index) => (
                   <Tr key={index}>
-                      <Td>{item.nombre}</Td>
-                      <Td>{item.apellido}</Td>
-                      <Td>{item.email}</Td>
-                      <Td>{item.estado ? "Activo" : "Inactivo"}</Td>
-                      <Td>{item.semestre}</Td>
-                      <Td>{item.codigo}</Td>
+                    <Td>{item.nombre}</Td>
+                    <Td>{item.semestre}</Td>
                     <Td>{
-                        <Button variant={"unstyled"} as={Link} to={`/editarEstudiante/${item.id}`}>
-                        <Icon w={"20px"} h={"20px"} as={RiEdit2Fill}/>
-                        </Button>
-                        }</Td>
+                        item.competencias.map((data,index)=>(
+                            <Text>{data.nombre}</Text>
+                        ))
+                    }
+                    </Td>
                   </Tr>
                 ))}
               </Tbody>

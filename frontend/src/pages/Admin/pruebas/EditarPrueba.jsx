@@ -4,7 +4,7 @@ import FormularioCompetencia from '../../../components/forms/FormularioCompetenc
 import { AppContext } from '../../../components/context/AppProvider'
 import FormularioPrueba from '../../../components/forms/FormularioPrueba'
 
-export default function AgregarPrueba() {
+export default function EditarPrueba() {
   const {open, change} = useContext(AppContext)
   return (
     <Page changeOpen={change} isOpen={open} componente={<FormularioPrueba/>} msg={"Pruebas"} />

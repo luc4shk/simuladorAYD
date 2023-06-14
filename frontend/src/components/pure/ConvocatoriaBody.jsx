@@ -3,6 +3,7 @@ import TablaCustom from "./TablaCustom";
 import { Center } from "@chakra-ui/react";
 import { RiEdit2Fill, RiDeleteBin2Fill, RiEyeFill } from "react-icons/ri";
 import { BsFillFileEarmarkBarGraphFill } from "react-icons/bs";
+import TablaConvocatoria from "./TablaConvocatoria";
 
 export default function ConvocatoriaBody() {
   const columns = [
@@ -579,10 +580,10 @@ export default function ConvocatoriaBody() {
   ];
 
   return (
-    <TablaCustom
+    <TablaConvocatoria
       columns={columns}
       items={items}
-      path={""}
+      path={"/formularioConvocatoria"}
       msg={"Agregar Convocatoria"}
       showButton={true}
     />
