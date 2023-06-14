@@ -28,8 +28,6 @@ const actualizaravatar = async (file) =>{
   "" 
   localStorage.setItem("imagen",response.data.imageFile)
   setImagen(localStorage.getItem("imagen"))
-  console.log(user)
-  console.log(token)
 
   window.location.reload()
   // navigation("/")

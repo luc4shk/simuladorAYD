@@ -133,7 +133,6 @@ export default function FormularioPreguntaImagen() {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={({enunciado,semestre,opcionA,opcionB,opcionC,opcionD,respuesta,categoria})=>{
-            console.log(enunciado,semestre,opcionA,opcionB,opcionC,opcionD,respuesta,categoria,inputRef.current.files[0])
             agregarPreguntaImagen(enunciado,semestre,opcionA,opcionB,opcionC,opcionD,respuesta,categoria,inputRef.current.files[0])
           }}
         >

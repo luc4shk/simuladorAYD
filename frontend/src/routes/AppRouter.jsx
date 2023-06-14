@@ -26,15 +26,18 @@ import { Toaster } from "react-hot-toast";
 import EditarPregunta from "../pages/Admin/preguntas/EditarPregunta";
 import EditarEstudiante from "../pages/Admin/estudiantes/EditarEstudiante";
 import AgregarConvocatoria from "../pages/Admin/convocatorias/AgregarConvocatoria";
+import EditarConvocatoria from "../pages/Admin/convocatorias/EditarConvocatoria";
 export default function AppRouter() {
 
-  const { user, token, setToken} = useContext(AppContext)
+  const { token} = useContext(AppContext)
   const [location, setLocation] = useLocation()
-  // const [token, setToken] = useState()
-
-  // useEffect(() => {
-  //   setToken(localStorage.getItem("token"))
-  // }, []);
+  
+  
+  useEffect(() => {
+    if (!token && location !== "/") {
+      navigate("/");
+    }
+  }, [token, location]);
 
 
   return (
@@ -44,7 +47,7 @@ export default function AppRouter() {
         <>
           <SideBar />
           <Switch>
-            <Route path="/" component={PrincipalPage} />
+            <Route path="/home" component={PrincipalPage} />
             <Route path="/competencias" component={Competencias} />
             <Route path="/categorias" component={Categorias} />
             <Route path="/pruebas" component={Pruebas} />
@@ -66,15 +69,15 @@ export default function AppRouter() {
             <Route path="/editarPregunta/:id" component={EditarPregunta} />
             <Route path="/editarEstudiante/:id" component={EditarEstudiante} />
             <Route path="/editarPrueba/:id" component={EditarEstudiante} />
+            <Route path="/editarConvocatoria/:id" component={EditarConvocatoria} />
             <Route component={ErrorPage} />
           </Switch>
         </>
       ) : (
           <Switch>
-            {/* {setLocation("/login")} */}
-          <Route path="/login">
+          <Route path="/">
             {token ? 
-              <Redirect to="/"/> 
+              <Redirect to="/home"/> 
               : 
               <Login/>
             }

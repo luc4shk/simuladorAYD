@@ -1,52 +1,46 @@
 import {
   Box,
-  Grid,
-  GridItem,
   Input,
   Textarea,
   Select,
   Button,
   Flex,
-  Text,
-  color,
   FormControl,
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import Boton from "../pure/Boton";
+import { Formik, Form, Field} from "formik";
 import { useState, useRef, useContext, useEffect } from "react";
 import axiosApi from "../../utils/config/axios.config";
 import { AppContext } from "../context/AppProvider";
 import { toast } from "react-hot-toast";
 import * as Yup from "yup";
-import useLocation from "wouter/use-location";
+import { useLocation } from "wouter";
 
 export default function FormularioConvocatoria() {
-  const [archivo, setArchivo] = useState(null);
-  const archivoInputRef = useRef(null);
   const inputRef = useRef();
-  const ARef = useRef();
-  const BRef = useRef();
-  const CRef = useRef();
-  const DRef = useRef();
   const [loc, setLoc] = useLocation();
-  const [categorias, setCategorias] = useState();
+  const [pruebas, setPruebas] = useState();
 
   const { token } = useContext(AppContext);
 
-  const obtenerCategorias = async () => {
-    let response = await axiosApi
-      .get("api/categoria/?estado=1", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .catch((e) => {
-        toast.error(e.response.data.error);
-      });
-    setCategorias(response.data);
-  };
+ const obtenerPruebas = async () =>{
+    let response = await axiosApi.get(`/api/prueba`,{
+        headers:{
+        Authorization:"Bearer " + token,
+      }
+    }).catch((e)=>{
+        toast.error(e.response.data.error)
+     })
+     setPruebas(response.data)
+    
+  } 
+
+
+  useEffect(()=>{
+    obtenerPruebas()
+  },[])
+
 
   const handleArchivoSeleccionado = (e, setFieldValue) => {
     setFieldValue("archivo", inputRef.current.files[0]);
@@ -79,12 +73,13 @@ export default function FormularioConvocatoria() {
         toast.error(e.response.data.error);
       })
       .finally(() => {
-        setLoc("/preguntas");
+        setLoc("/convocatorias");
       });
 
     if (response.status === 200) {
-      toast.success("¡Pregunta agregada correctamente!");
+      toast.success("¡Convocatoria agregada correctamente!");
     }
+    setLoc("/convocatorias")
   };
 
   const validationSchema = Yup.object().shape({
@@ -101,25 +96,6 @@ export default function FormularioConvocatoria() {
         return true;
       })
       .required("El archivo es requerido"),
-  });
-
-  const initialValues2 = {
-    archivo: null,
-  };
-
-  const validationSchema2 = Yup.object().shape({
-    archivo: Yup.mixed()
-      .test("file-type", "El tipo de archivo es XLSX", (value) => {
-        if (value) {
-          return value.endsWith(".xlsx");
-        }
-        return true;
-      })
-      .required("El archivo es requerido"),
-  });
-
-  useEffect(() => {
-    obtenerCategorias();
   });
 
   return (
@@ -144,20 +120,11 @@ export default function FormularioConvocatoria() {
             fecha_inicio: "",
             fecha_fin: "",
             prueba_id: "",
-            archivo: ""
+            archivo: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={({
-            enunciado,
-            opcionA,
-            opcionB,
-            opcionC,
-            opcionD,
-            respuesta,
-            semestre,
-            categoria,
-          }) => {
-            
+          onSubmit={({nombre,descripcion,fecha_inicio,fecha_fin,prueba_id}) => {
+            agregarConvocatoria(nombre,descripcion,fecha_inicio,fecha_fin,prueba_id,inputRef.current.files[0])
           }}
         >
           {(props) => {
@@ -166,26 +133,25 @@ export default function FormularioConvocatoria() {
               <Form>
                 <Box
                   display="flex"
-                  flexDirection={["column","column","row"]}
+                  flexDirection={["column", "column", "row"]}
                   justifyContent="center"
-                  flexDir={["column", "column", "row"]} gap={"20px"}
+                  flexDir={["column", "column", "row"]}
+                  gap={"20px"}
                 >
-                    <Box w={"100%"}>
-                  <FormLabel htmlFor="enunciado">Nombre</FormLabel>
-                  <FormControl
-                    isInvalid={touched.nombre && errors.nombre}
-                  >
-                    <Field
-                      as={Input}
-                      id="nombre"
-                      name="nombre"
-                      resize={"none"}
-                    />
-                    <FormErrorMessage>{errors.nombre}</FormErrorMessage>
-                  </FormControl>
+                  <Box w={"100%"}>
+                    <FormLabel htmlFor="enunciado">Nombre</FormLabel>
+                    <FormControl isInvalid={touched.nombre && errors.nombre}>
+                      <Field
+                        as={Input}
+                        id="nombre"
+                        name="nombre"
+                        resize={"none"}
+                      />
+                      <FormErrorMessage>{errors.nombre}</FormErrorMessage>
+                    </FormControl>
                   </Box>
                   <Box w={"100%"}>
-                  <FormLabel htmlFor="prueba_id">Prueba</FormLabel>
+                    <FormLabel htmlFor="prueba_id">Prueba</FormLabel>
                     <FormControl
                       isInvalid={touched.prueba_id && errors.prueba_id}
                     >
@@ -195,17 +161,17 @@ export default function FormularioConvocatoria() {
                         name="prueba_id"
                         border="2px solid gray"
                       >
-                        <option>Seleccione una categoria</option>
-                        {categorias &&
-                          categorias.map((categoria, index) => (
-                            <option key={categoria.id} value={categoria.id}>
-                              {categoria.nombre}
+                        <option value={""}>Seleccione una prueba</option>
+                        {pruebas &&
+                          pruebas.map((prueba, index) => (
+                            <option key={prueba.id} value={prueba.id}>
+                              {prueba.nombre}
                             </option>
                           ))}
                       </Field>
                       <FormErrorMessage>{errors.prueba_id}</FormErrorMessage>
                     </FormControl>
-                    </Box>
+                  </Box>
                 </Box>
                 <Box
                   display="flex"
@@ -215,37 +181,47 @@ export default function FormularioConvocatoria() {
                   alignItems={"center"}
                 >
                   <Box w={"100%"}>
-                    <FormLabel htmlFor="semestre">Semestre</FormLabel>
+                    <FormLabel htmlFor="descripcion">Descripción</FormLabel>
                     <FormControl
-                      isInvalid={touched.semestre && errors.semestre}
+                      isInvalid={touched.descripcion && errors.descripcion}
                     >
-                      <Field as={Input} width={"100%"} id="semestre" name="semestre" />
-                      <FormErrorMessage>{errors.semestre}</FormErrorMessage>
+                      <Field
+                        as={Input}
+                        width={"100%"}
+                        id="descripcion"
+                        name="descripcion"
+                      />
+                      <FormErrorMessage>{errors.descripcion}</FormErrorMessage>
                     </FormControl>
                   </Box>
                 </Box>
                 <Box
-                  mt="10px"
+                  mt="20px"
                   display="flex"
                   flexDirection="column"
                   justifyContent="center"
                 >
                   <Flex flexDir={["column", "column", "row"]} gap={"20px"}>
-                    <FormControl isInvalid={errors.fecha_inicio && touched.fecha_inicio}>
-                      <FormLabel htmlFor="opcionA">Fecha de inicio</FormLabel>
+                    <FormControl
+                      isInvalid={errors.fecha_inicio && touched.fecha_inicio}
+                    >
+                      <FormLabel htmlFor="fecha_inicio">
+                        Fecha de inicio
+                      </FormLabel>
                       <Field
                         id="fecha_inicio"
                         name="fecha_inicio"
                         as={Input}
-                        resize={"none"}
                         type={"date"}
                         cursor="pointer"
                       />
                       <FormErrorMessage>{errors.fecha_inicio}</FormErrorMessage>
                     </FormControl>
 
-                    <FormControl isInvalid={errors.fecha_fin && touched.fecha_fin}>
-                      <FormLabel htmlFor="opcionA">Fecha final</FormLabel>
+                    <FormControl
+                      isInvalid={errors.fecha_fin && touched.fecha_fin}
+                    >
+                      <FormLabel htmlFor="fecha_fin">Fecha final</FormLabel>
                       <Field
                         id="fecha_fin"
                         name="fecha_fin"
@@ -256,50 +232,33 @@ export default function FormularioConvocatoria() {
                       />
                       <FormErrorMessage>{errors.fecha_fin}</FormErrorMessage>
                     </FormControl>
-
                   </Flex>
-                  <Flex flexDir={["column", "column", "row"]} gap={"20px"}>
+                  <Flex
+                    mt={"20px"}
+                    flexDir={["column", "column", "row"]}
+                    gap={"20px"}
+                  >
                     <FormControl isInvalid={errors.archivo && touched.archivo}>
-                    <FormLabel>Archivo</FormLabel>
-                    <Field id="archivo" name="archivo">
-                      {({ field }) => (
-                        <Input
-                          type="file"
-                          ref={inputRef}
-                          name="archivo"
-                          variant="filled"
-                          mb="10px"
-                          mt="10px"
-                          w={"100%"}
-                          cursor={"pointer"}
-                          onChange={(event) => {
-                            handleArchivoSeleccionado(event, setFieldValue);
-                          }}
-                          {...field}
-                        />
-                      )}
-                    </Field>
-                    <FormErrorMessage>{errors.archivo}</FormErrorMessage>
-                  </FormControl>
-
-                    <FormControl isInvalid={errors.opcionD && touched.opcionD}>
-                      <FormLabel htmlFor="opcionD">Opción D</FormLabel>
-                      <Field
-                        id="opcionD"
-                        name="opcionD"
-                        as={Textarea}
-                        resize={"none"}
-                      />
-                      <FormErrorMessage>{errors.opcionD}</FormErrorMessage>
+                      <FormLabel htmlFor="archivo">Archivo</FormLabel>
+                      <Field id="archivo" name="archivo">
+                        {({ field }) => (
+                          <Input
+                            type="file"
+                            ref={inputRef}
+                            name="archivo"
+                            variant="filled"
+                            w={"100%"}
+                            cursor={"pointer"}
+                            onChange={(event) => {
+                              handleArchivoSeleccionado(event, setFieldValue);
+                            }}
+                            {...field}
+                          />
+                        )}
+                      </Field>
+                      <FormErrorMessage>{errors.archivo}</FormErrorMessage>
                     </FormControl>
                   </Flex>
-                  <FormControl
-                    isInvalid={errors.respuesta && touched.respuesta}
-                  >
-                    <FormLabel htmlFor="respuesta">Respuesta</FormLabel>
-                    <Field id="respuesta" name="respuesta" as={Input} />
-                    <FormErrorMessage>{errors.respuesta}</FormErrorMessage>
-                  </FormControl>
                 </Box>
 
                 <Button
@@ -316,68 +275,7 @@ export default function FormularioConvocatoria() {
             );
           }}
         </Formik>
-        <Formik
-          initialValues={initialValues2}
-          validationSchema={validationSchema2}
-          onSubmit={() => {
-            procesarArchivo(inputRef.current.files[0]);
-          }}
-        >
-          {(props) => {
-            const { errors, touched, setFieldValue } = props;
-            return (
-              <Form>
-                <Flex
-                  direction={{ base: "column", md: "row" }}
-                  justify={"space-between"}
-                >
-                  <FormControl isInvalid={errors.archivo && touched.archivo}>
-                    <Field id="archivo" name="archivo">
-                      {({ field }) => (
-                        <Input
-                          type="file"
-                          ref={inputRef}
-                          name="archivo"
-                          variant="filled"
-                          mb="10px"
-                          mt="10px"
-                          w={{
-                            sm: "100%",
-                            md: "200px",
-                            lg: "250px",
-                            tableBreakpoint: "340px",
-                          }}
-                          cursor={"pointer"}
-                          onChange={(event) => {
-                            handleArchivoSeleccionado(event, setFieldValue);
-                          }}
-                          {...field}
-                        />
-                      )}
-                    </Field>
-                    <FormErrorMessage>{errors.archivo}</FormErrorMessage>
-                  </FormControl>
-                  <Button
-                    bgColor="principal.100"
-                    textColor="white"
-                    w={{
-                      sm: "100%",
-                      md: "200px",
-                      lg: "250px",
-                      tableBreakpoint: "340px",
-                    }}
-                    _hover={{ backgroundColor: "fondo.100" }}
-                    mb="10px"
-                    mt="10px"
-                    type="submit"
-                  >
-                    Guardar
-                  </Button>
-                </Flex>
-              </Form>
-            );
-          }}
-        </Formik>
+        
       </Box>
     </Box>
   );

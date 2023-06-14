@@ -74,7 +74,6 @@ export default function TablaCategoria({ columns, items, path, msg, showButton }
   const paginacionAdelante = () => {
     setIndexI(indexI + 5);
     setIndexF(indexF + 5);
-    console.log("se ejecuto paginación");
   };
 
   const paginacionAtras = () => {
@@ -178,7 +177,6 @@ export default function TablaCategoria({ columns, items, path, msg, showButton }
                 key={index}
                 onClick={() => {
                   handlePageChange(index);
-                  console.log(index);
                 }}
                 bgColor={currentPage === index ? "white" : "principal.100"}
                 textColor={currentPage === index ? "black" : "white"}

@@ -70,7 +70,7 @@ const actualizarDatos = async (nombre, apellido, direccion, email, documento, ce
 
  const getAdminById = async (id) =>{
      const data = await getAdministratorById(id)
-     console.log(data)
+     
      setData({
         nombre:data.nombre,
         apellido:data.apellido,
@@ -81,7 +81,7 @@ const actualizarDatos = async (nombre, apellido, direccion, email, documento, ce
         telefono: data.telefono,
         codigo: data.codigo
      })
-     console.log(data)
+     
      setIsLoading(false)
   }
 
@@ -136,7 +136,6 @@ const actualizarDatos = async (nombre, apellido, direccion, email, documento, ce
         initialValues={data}
         validationSchema={validationSchema}
         onSubmit={( {nombre, apellido, direccion, email, documento, celular, telefono, codigo } ) => {
-          console.log(typeof(documento))
           actualizarDatos(nombre, apellido, direccion, email, documento, celular, telefono, codigo)
           setTimeout(()=>{
               navigation("/")

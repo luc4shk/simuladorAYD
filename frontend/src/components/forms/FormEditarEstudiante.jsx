@@ -72,7 +72,6 @@ export default function FormEditarEstudiante() {
         estado:response.data.estado.toString()
     })
     setLoading(false)
-    console.log(response.data)
 
 
   }
@@ -183,7 +182,7 @@ export default function FormEditarEstudiante() {
                         <FormErrorMessage>{errors.estado}</FormErrorMessage>
                       </FormControl>
                       <FormControl display="flex" flexDirection="column" justifyContent="center" isInvalid={errors.codigo && touched.codigo}>
-                        <FormLabel htmlFor="codigo">Descripción</FormLabel>
+                        <FormLabel htmlFor="codigo">Código</FormLabel>
                         <Field
                           name="codigo"
                           as={Input}
@@ -201,7 +200,7 @@ export default function FormEditarEstudiante() {
                       justifyContent="center"
                     >
                       <FormControl display="flex" flexDirection="column" justifyContent="center" isInvalid={errors.email && touched.email}>
-                        <FormLabel htmlFor="email">Descripción</FormLabel>
+                        <FormLabel htmlFor="email">Correo</FormLabel>
                         <Field
                           name="email"
                           as={Input}

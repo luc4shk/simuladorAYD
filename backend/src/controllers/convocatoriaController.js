@@ -456,6 +456,7 @@ const getEstudiantesConvocatoria = async (req, res) => {
         return res.status(200).json(estudiantes);
 
     }catch(error){
+        console.log(error)
         return res.status(500).json({error: `Error al obtener los estudiantes de la convocatoria: ${error.message}`});
     }
 

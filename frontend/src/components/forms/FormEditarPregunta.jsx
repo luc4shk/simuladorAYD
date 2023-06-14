@@ -83,7 +83,6 @@ export default function FormEditarPregunta() {
       setLoc("/preguntas");
     });
 
-    console.log("res",response)
     if(response.status === 200){
       toast.success("¡Pregunta actualizada correctamente!")
     }
@@ -104,7 +103,6 @@ export default function FormEditarPregunta() {
       (categoria) => categoria.nombre === response.data.categoria
     );
 
-    console.log(categoriaEncontrada)
     setInitialValues({
       enunciado: response.data.enunciado,
       semestre: response.data.semestre,
@@ -121,8 +119,6 @@ export default function FormEditarPregunta() {
 
     setImagen(response.data.imageFile)
     
-    console.log(response);
-    // console.log("vals",initialValues)
   };
 
   const validationSchema = Yup.object().shape({

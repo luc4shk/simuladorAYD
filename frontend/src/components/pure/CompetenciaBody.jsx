@@ -20,7 +20,6 @@ export default function CompetenciaBody() {
       toast.error("Fallo al traerlos las competencias")
     })
 
-    console.log(response.data)
     setItems(response.data)
     setLoading(false)
   }
