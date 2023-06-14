@@ -98,7 +98,7 @@ export default function Login() {
                 <FormErrorMessage>{errors.password}</FormErrorMessage>
               </FormControl>
               <Box mt={4} textAlign="center">
-                <Link color="blue.400" href="#" _hover="none">
+                <Link color="blue.400" href="/recuperarEmail" _hover="none">
                   Olvidé mi contraseña
                 </Link>
               </Box>

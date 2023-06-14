@@ -10,12 +10,25 @@ import {
   import toast, { Toaster } from "react-hot-toast";
   import CardLogo from "../pure/CardLogo";
   import React from "react";
+import axiosApi from "../../utils/config/axios.config";
   
-  export default function recuperacion() {
+  export default function EmailRecuperación() {
     const initialValues = {
       email: "",
     };
   
+  const requestPassword = async (email, url) =>{
+    let body={
+      email:email,
+      url:url
+    }
+    let response = axiosApi.post("/api/auth/requestPasswordReset",body,{
+
+    }).catch((e)=>{
+      toast.error(e.response.data.error)
+    })
+  }
+
     const notify = (values = "Va") => {
       toast.success("Revisa tu correo para cambiar la contraseña");
     };
@@ -30,8 +43,8 @@ import {
           initialValues={initialValues}
           validationSchema={validationSchema}
           enableReinitialize={true}
-          onSubmit={(values) => {
-            notify();
+          onSubmit={({email}) => {
+            requestPassword(email, "/")
           }}
         >
           {(props) => {

@@ -27,7 +27,7 @@ export default function SideItem({icon, msg, active, index, tamanio, path}) {
             if(index===10000){
                 setToken(localStorage.removeItem("token"))
                 localStorage.removeItem("token")
-                setLoc("/login")
+                setLoc("/")
             } 
         }} 
     >
