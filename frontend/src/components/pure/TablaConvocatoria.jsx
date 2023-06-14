@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -11,28 +11,22 @@ import {
   Button,
   Icon,
   useEditable,
-  Text
 } from "@chakra-ui/react";
 import { Link } from "wouter";
 import Boton from "../pure/Boton";
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
-import axiosApi from "../../utils/config/axios.config";
-import { AppContext } from "../context/AppProvider";
-import { RiEdit2Fill } from "react-icons/ri";
 
-export default function TablaPrueba({ columns, items, path, msg, showButton }) {
+export default function TablaConvocatoria({ columns, items, path, msg, showButton }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [indexI, setIndexI] = useState(0);
   const [indexF, setIndexF] = useState(5);
-  const [pruebas,setPruebas] = useState();
-  const {token} = useContext(AppContext)
   const itemsPerPage = 5;
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentItems = pruebas && pruebas.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = pruebas && Math.ceil(pruebas.length / itemsPerPage);
+  const totalPages = Math.ceil(items.length / itemsPerPage);
 
   const handlePageChange = (selected) => {
     if (selected >= indexF) {
@@ -63,22 +57,6 @@ export default function TablaPrueba({ columns, items, path, msg, showButton }) {
     setIndexI(indexI - 5);
     setIndexF(indexF - 5);
   };
-
-  const obtenerPruebas = async () =>{
-    let response = await axiosApi.get(`/api/prueba`,{
-        headers:{
-        Authorization:"Bearer " + token,
-      }
-    }).catch((e)=>{
-        toast.error(e.response.data.error)
-     })
-     setPruebas(response.data)
-    
-  }
-
-  useEffect(()=>{
-    obtenerPruebas()
-  })
 
   return (
     <div>
@@ -127,16 +105,24 @@ export default function TablaPrueba({ columns, items, path, msg, showButton }) {
                 </Tr>
               </Thead>
               <Tbody>
-                {pruebas && currentItems.map((item, index) => (
+                {currentItems.map((item, index) => (
                   <Tr key={index}>
-                    <Td>{item.nombre}</Td>
-                    <Td>{item.semestre}</Td>
-                    <Td>{
-                        item.competencias.map((data,index)=>(
-                            <Text>{data.nombre}</Text>
-                        ))
-                    }
-                    </Td>
+                    {item.map((data, dataIndex) => (
+                      <Td
+                        textAlign="center"
+                        key={dataIndex}
+                        isNumeric={typeof data === "number"}
+                        style={{
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          maxWidth: "200px",
+                          borderBottom: "1px solid #E7ADA2",
+                        }}
+                      >
+                        {data}
+                      </Td>
+                    ))}
                   </Tr>
                 ))}
               </Tbody>

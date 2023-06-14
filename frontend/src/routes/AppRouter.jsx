@@ -25,6 +25,7 @@ import { AppContext } from "../components/context/AppProvider";
 import { Toaster } from "react-hot-toast";
 import EditarPregunta from "../pages/Admin/preguntas/EditarPregunta";
 import EditarEstudiante from "../pages/Admin/estudiantes/EditarEstudiante";
+import AgregarConvocatoria from "../pages/Admin/convocatorias/AgregarConvocatoria";
 export default function AppRouter() {
 
   const { user, token, setToken} = useContext(AppContext)
@@ -55,6 +56,7 @@ export default function AppRouter() {
             <Route path="/tipoPregunta" component={SeleccionarTipoPregunta} />
             <Route path="/formularioPreguntaSimple" component={PreguntaSimple}/>
             <Route path="/formularioPreguntaImagen" component={PreguntaImagen}/>
+            <Route path="/formularioConvocatoria" component={AgregarConvocatoria}/>
             <Route path="/crearPrueba" component={AgregarPrueba} />
             <Route path="/cambiarContrasenia" component={CambiarContrasenia} />
             <Route path="/cambiarImagen" component={CambiarImagen} />
@@ -63,6 +65,7 @@ export default function AppRouter() {
             <Route path="/editarCategoria/:id" component={EditarCategoria} />
             <Route path="/editarPregunta/:id" component={EditarPregunta} />
             <Route path="/editarEstudiante/:id" component={EditarEstudiante} />
+            <Route path="/editarPrueba/:id" component={EditarEstudiante} />
             <Route component={ErrorPage} />
           </Switch>
         </>

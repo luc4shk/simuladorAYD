@@ -81,6 +81,10 @@ export default function FormularioPrueba() {
   };
 
   useEffect(() => {
+     {toast("Este apartado no se encuentra funcional actualmente, tiene la libertad de probar el formulario, en su defecto contamos con pruebas ya creadas, gracias.", {
+      icon: '⚠️',
+      });}
+
     obtenerCompetencias();
     console.log(competencias);
     console.log(inputFields);
@@ -109,6 +113,7 @@ export default function FormularioPrueba() {
     ),
   });
 
+ 
   if (loading) {
     return <div>Cargando...</div>;
   }
@@ -321,168 +326,4 @@ export default function FormularioPrueba() {
   );
 }
 
-// import React from "react";
-// import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
-// import { Field, Form, Formik } from "formik";
-// import * as Yup from "yup";
-// import axios from "axios";
 
-// const initialValues = {
-//   nombre: "",
-//   descripcion: "",
-//   semestre: "",
-//   duracion: "",
-//   competencias: [],
-//   total_preguntas: "",
-//   valoresGenericas: [[]],
-// };
-
-// const validationSchema = Yup.object().shape({
-//   nombre: Yup.string().required("Nombre requerido"),
-//   descripcion: Yup.string().required("Descripción requerida"),
-//   semestre: Yup.number().required("Semestre requerido"),
-//   duracion: Yup.number().required("Duración requerida"),
-//   competencias: Yup.array().min(1, "Debes seleccionar al menos una competencia"),
-//   total_preguntas: Yup.number().required("El número total de preguntas es requerido"),
-// });
-
-// const handleSubmit = async (values, actions) => {
-//   try {
-//     const response = await axios.post("/api/your-endpoint", values);
-//     console.log(response.data); // Aquí puedes hacer algo con la respuesta del servidor
-//     actions.resetForm();
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-// const Formulario = () => {
-//   return (
-//     <Box
-//       bgColor={"white"}
-//       w={{
-//         base: "270px",
-//         sm: "390px",
-//         md: "540px",
-//         lg: "640px",
-//         tableBreakpoint: "800px",
-//       }}
-//       p={"40px"}
-//       borderRadius={"8px"}
-//     >
-//       <Formik
-//         initialValues={initialValues}
-//         validationSchema={validationSchema}
-//         onSubmit={handleSubmit}
-//       >
-//         {(props) => (
-//           <Form>
-//             <Field name="nombre">
-//               {({ field, form }) => (
-//                 <FormControl
-//                   isInvalid={form.errors.nombre && form.touched.nombre}
-//                   display={"flex"}
-//                   flexDir={"column"}
-//                   gap={"10px"}
-//                 >
-//                   <FormLabel htmlFor="nombre">Nombre</FormLabel>
-//                   <Input {...field} id="nombre" type="text" />
-//                   <FormErrorMessage>{form.errors.nombre}</FormErrorMessage>
-//                 </FormControl>
-//               )}
-//             </Field>
-//             <Field name="descripcion">
-//               {({ field, form }) => (
-//                 <FormControl
-//                   isInvalid={form.errors.descripcion && form.touched.descripcion}
-//                   display={"flex"}
-//                   flexDir={"column"}
-//                   gap={"10px"}
-//                 >
-//                   <FormLabel htmlFor="descripcion">Descripción</FormLabel>
-//                   <Input {...field} id="descripcion" type="text" />
-//                   <FormErrorMessage>{form.errors.descripcion}</FormErrorMessage>
-//                 </FormControl>
-//               )}
-//             </Field>
-//             <Field name="semestre">
-//               {({ field, form }) => (
-//                 <FormControl
-//                   isInvalid={form.errors.semestre && form.touched.semestre}
-//                   display={"flex"}
-//                   flexDir={"column"}
-//                   gap={"10px"}
-//                 >
-//                   <FormLabel htmlFor="semestre">Semestre</FormLabel>
-//                   <Input {...field} id="semestre" type="number" />
-//                   <FormErrorMessage>{form.errors.semestre}</FormErrorMessage>
-//                 </FormControl>
-//               )}
-//             </Field>
-//             <Field name="duracion">
-//               {({ field, form }) => (
-//                 <FormControl
-//                   isInvalid={form.errors.duracion && form.touched.duracion}
-//                   display={"flex"}
-//                   flexDir={"column"}
-//                   gap={"10px"}
-//                 >
-//                   <FormLabel htmlFor="duracion">Duración</FormLabel>
-//                   <Input {...field} id="duracion" type="number" />
-//                   <FormErrorMessage>{form.errors.duracion}</FormErrorMessage>
-//                 </FormControl>
-//               )}
-//             </Field>
-//             <Field name="competencias">
-//               {({ field, form }) => (
-//                 <FormControl
-//                   isInvalid={form.errors.competencias && form.touched.competencias}
-//                   display={"flex"}
-//                   flexDir={"column"}
-//                   gap={"10px"}
-//                 >
-//                   <FormLabel htmlFor="competencias">Competencias</FormLabel>
-//                   <Input {...field} id="competencias" type="text" />
-//                   <FormErrorMessage>{form.errors.competencias}</FormErrorMessage>
-//                 </FormControl>
-//               )}
-//             </Field>
-//             <Field name="total_preguntas">
-//               {({ field, form }) => (
-//                 <FormControl
-//                   isInvalid={form.errors.total_preguntas && form.touched.total_preguntas}
-//                   display={"flex"}
-//                   flexDir={"column"}
-//                   gap={"10px"}
-//                 >
-//                   <FormLabel htmlFor="total_preguntas">Total de Preguntas</FormLabel>
-//                   <Input {...field} id="total_preguntas" type="number" />
-//                   <FormErrorMessage>{form.errors.total_preguntas}</FormErrorMessage>
-//                 </FormControl>
-//               )}
-//             </Field>
-//             <Field name="valoresGenericas">
-//               {({ field, form }) => (
-//                 <FormControl
-//                   isInvalid={form.errors.valoresGenericas && form.touched.valoresGenericas}
-//                   display={"flex"}
-//                   flexDir={"column"}
-//                   gap={"10px"}
-//                 >
-//                   <FormLabel htmlFor="valoresGenericas">Valores Genéricos</FormLabel>
-//                   <Input {...field} id="valoresGenericas" type="text" />
-//                   <FormErrorMessage>{form.errors.valoresGenericas}</FormErrorMessage>
-//                 </FormControl>
-//               )}
-//             </Field>
-//             <Button mt={4} colorScheme="teal" isLoading={props.isSubmitting} type="submit">
-//               Enviar
-//             </Button>
-//           </Form>
-//         )}
-//       </Formik>
-//     </Box>
-//   );
-// };
-
-// export default Formulario;
