@@ -393,7 +393,7 @@ const updateConvocatoria = async (req, res) => {
 
 
         // Validamos que la fechas sean coherentes
-        const error_fecha = validarFechaCoherente(fecha_inicio.getTime(), fecha_fin.getTime());
+        const error_fecha = validarFechaCoherente(new Date(fecha_inicio), new Date(fecha_fin.getTime()));
 
         if (error_fecha) {
             return res.status(400).json({ error: error_fecha });
