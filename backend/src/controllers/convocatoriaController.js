@@ -26,9 +26,7 @@ const getConvocatorias = async (req, res) => {
             where: {
                 estado: state
             },
-            order: ['fecha_fin', 'DESC'],
-            limit,
-            offset
+            order: ['fecha_fin', 'DESC']
         });
 
         // Respondemos al usuario
