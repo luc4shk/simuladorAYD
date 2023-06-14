@@ -5,6 +5,7 @@ import axiosApi from "../../utils/config/axios.config";
 import { AppContext } from "../context/AppProvider";
 import { Box, FormControl, Input, Image, Button, Flex, FormErrorMessage } from "@chakra-ui/react";
 import { useLocation } from "wouter";
+import { toast } from "react-hot-toast";
 export default function Formularioavatar() {
   const {token, setToken,imagen, setImagen, user} = useContext(AppContext)
   const inputRef = useRef()
@@ -23,14 +24,19 @@ const actualizaravatar = async (file) =>{
             "Content-Type": "multipart/form-data",
             Authorization:"Bearer " + token
         },
-  }).catch((e)=>alert("ERRORRRRR"))
+  }).catch((e)=>toast.error("Error al actualizar el avatar"))
 
+  if(response.status === 200){
+    toast.success("Imagen actualizada correctamente")
+  }
   "" 
   localStorage.setItem("imagen",response.data.imageFile)
   setImagen(localStorage.getItem("imagen"))
 
+  const time = setTimeout(()=>{
   window.location.reload()
-  // navigation("/")
+  },2000)
+  // navigation("/home")
 }
 
 

@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Link,
   FormErrorMessage,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
@@ -14,7 +13,7 @@ import CardLogo from "../../components/pure/CardLogo";
 import {React, useContext} from "react";
 import { AppContext } from "../../components/context/AppProvider";
 import { login } from "../../services/user/axios.service";
-import { useLocation } from "wouter";
+import { Link, useLocation} from "wouter";
 
 export default function Login() {
   const initialValues = {
@@ -97,10 +96,12 @@ export default function Login() {
                 />
                 <FormErrorMessage>{errors.password}</FormErrorMessage>
               </FormControl>
-              <Box mt={4} textAlign="center">
-                <Link color="blue.400" href="/recuperarEmail" _hover="none">
+              <Box mt={4} textAlign="center" color={"blue.400"} textDecoration={"underline"}>
+                
+                {/* <Link color="blue.400" to="/recuperarEmail" _hover="none">
                   Olvidé mi contraseña
-                </Link>
+                </Link> */}
+                <Link to="/recuperarEmail"  _hover="none">Olvidé mi contraseña</Link>
               </Box>
               <Button
                 color="white"

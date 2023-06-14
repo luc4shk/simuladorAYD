@@ -10,17 +10,37 @@ import {
   import toast, { Toaster } from "react-hot-toast";
   import CardLogo from "../pure/CardLogo";
   import React from "react";
+  import { useLocation, useRoute } from "wouter";
+import axiosApi from "../../utils/config/axios.config";
   
   export default function NewPassword() {
     const initialValues = {
       password: "",
       passwordR: "",
     };
+
+    const [match, params] = useRoute("/newPassword/:id/:token")
+    const [loc, setLoc] = useLocation()
+  const actualizarContrasenia = async (user_id, resetString, newPassword) =>{
+    let body={
+      user_id:user_id,
+      resetString:resetString,
+      newPassword:newPassword
+    }
+    let response = await axiosApi.post("/api/auth/resetPassword",body)
+    .catch((e)=>{
+      toast.error(e.response.data.error)
+    }).finally(()=>{
+    })
+
+    if(response.status === 200 ){
+      toast.success(response.data.message)
+      setLoc("/")
+    }
+    console.log(response)
+  }
   
-    const notify = (values = "Va") => {
-      toast.success("Cambio exitoso!");
-    };
-  
+
     const validationSchema = Yup.object().shape({
       password: Yup.string()
         .required("Contraseña requerida")
@@ -38,7 +58,7 @@ import {
           validationSchema={validationSchema}
           enableReinitialize={true}
           onSubmit={(values) => {
-            notify();
+            actualizarContrasenia(params.id,params.token,values.passwordR)
           }}
         >
           {(props) => {

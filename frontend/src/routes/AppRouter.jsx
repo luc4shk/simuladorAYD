@@ -278,7 +278,7 @@ export default function AppRouter() {
           </Route>
           <Route path="/newPassword/:id/:token">
             {!token ? (
-              <EmailRecuperación/>
+              <NewPassword/>
             ) : (
               <Redirect to="/home"/>
             )}
