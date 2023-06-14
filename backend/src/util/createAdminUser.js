@@ -55,4 +55,4 @@ const createAdminUser = async () => {
 
 };
 
-createAdminUser();
+module.exports = createAdminUser;

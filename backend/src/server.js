@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const corsOptions = require('./util/corsOptions');
 const path = require('path');
+const generateRole = require('./util/generateRole');
+const createAdminUser = require('./util/createAdminUser');
 
 // Importamos las tablas a crear
 require('./database/associations');
@@ -68,6 +70,8 @@ app.use(errorHandler);
 // Corremos el servidor
 sequelize.sync().then(() => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    generateRole();
+    createAdminUser();
 }).catch((err) => {
     console.log(err);
     logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, 'databaseErrLog.log');
