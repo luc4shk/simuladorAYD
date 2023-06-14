@@ -35,7 +35,7 @@ export default function Login() {
   const ingresar = async (email, password) =>{
     const data = await login(email,password)
     // document.cookie = data.accessToken
-    console.log(data)
+    
     localStorage.setItem("token",data.accessToken)
     setToken(localStorage.getItem("token"))
     localStorage.setItem("username", data.username)
@@ -44,7 +44,6 @@ export default function Login() {
       username: localStorage.getItem("username"),
       role: localStorage.getItem("role")
     })
-    console.log(user)
     navigate("/") 
   } 
 

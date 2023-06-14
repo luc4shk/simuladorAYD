@@ -86,8 +86,6 @@ export default function FormularioPrueba() {
       });}
 
     obtenerCompetencias();
-    console.log(competencias);
-    console.log(inputFields);
   },[]);
 
   const initialValues = {
@@ -255,7 +253,6 @@ export default function FormularioPrueba() {
                               )
                             );
                           }
-                          console.log(checked);
                           setLoading2(false);
                         }}
                         key={index}

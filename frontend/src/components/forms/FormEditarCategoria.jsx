@@ -133,7 +133,6 @@ export default function FormularioEditarCategoria() {
             enableReinitialize={true}
             validationSchema={validationSchema}
             onSubmit={({ nombre, descripcion, estado, competencia }) => {
-              console.log(nombre, descripcion, estado, competencia, params.id);
               actualizarCategoria(
                 nombre,
                 descripcion,

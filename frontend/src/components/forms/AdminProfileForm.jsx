@@ -36,7 +36,7 @@ export default function AdminProfileForm() {
 
   const getAdminById = async (id) =>{
      const data = await getAdministratorById(id)
-     console.log(data)
+     
      setData({
         nombre:data.nombre,
         apellido:data.apellido,

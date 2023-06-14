@@ -62,7 +62,6 @@ export default function FormularioCompetencia() {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={({nombre, descripcion}) => {
-              console.log(token)
               AgregarCompetencia(nombre, descripcion)
             }}
           >

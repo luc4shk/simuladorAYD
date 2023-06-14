@@ -17,7 +17,6 @@ export const login = async (email,password) =>{
     }).catch(()=>{
         toast.error("Credenciales Incorrectas")
     })
-    console.log(response.data)
     return response.data
 }
 
@@ -28,7 +27,6 @@ export const getAdministratorById = async (id) =>{
     let response = await axiosJWT.get(`/admin/${id}`,{
         headers:{ Authorization:"Bearer " + user.accesToken},
     })
-    console.log(response.data)
     return response.data
     
 }

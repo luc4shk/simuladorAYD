@@ -393,7 +393,7 @@ const updateConvocatoria = async (req, res) => {
 
 
         // Validamos que la fechas sean coherentes
-        const error_fecha = validarFechaCoherente(new Date(fecha_inicio), new Date(fecha_fin.getTime()));
+        const error_fecha = validarFechaCoherente(new Date(fecha_inicio), new Date(fecha_fin));
 
         if (error_fecha) {
             return res.status(400).json({ error: error_fecha });
@@ -456,6 +456,7 @@ const getEstudiantesConvocatoria = async (req, res) => {
         return res.status(200).json(estudiantes);
 
     }catch(error){
+        console.log(error)
         return res.status(500).json({error: `Error al obtener los estudiantes de la convocatoria: ${error.message}`});
     }
 

@@ -80,10 +80,7 @@ export default function FormularioEditarCompetencia() {
     descripcion: Yup.string().required("La descripción es requerida").max(200, "Máximo 200 caracteres").min(10, "Mínimo 10 caracteres")
   });
 
-  const handleSubmit = (values) => {
-    // Lógica para enviar el formulario
-    console.log(values);
-  };
+
 
   if (loading) {
     return <div>Cargando...</div>;
@@ -104,7 +101,6 @@ export default function FormularioEditarCompetencia() {
             validationSchema={validationSchema}
             onSubmit={({ nombre, descripcion, estado }, { setFieldValue }) => {
               const estadoValue = estado === "true";
-              console.log("nombre: ", nombre, "descripcion: ", descripcion, "estado: ", estadoValue);
               actualizarCompetencia(nombre, descripcion, estadoValue, params.id);
               setFieldValue("estado", estadoValue);
             }}

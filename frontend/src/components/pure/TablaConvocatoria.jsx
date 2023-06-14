@@ -14,6 +14,11 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "wouter";
 import Boton from "../pure/Boton";
+import { useRef, useContext } from "react";
+import axiosApi from "../../utils/config/axios.config";
+import { AppContext } from "../context/AppProvider";
+import { toast } from "react-hot-toast";
+import { RiEdit2Fill } from "react-icons/ri";
 import { MdAdd, MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 export default function TablaConvocatoria({ columns, items, path, msg, showButton }) {
@@ -21,12 +26,32 @@ export default function TablaConvocatoria({ columns, items, path, msg, showButto
   const [indexI, setIndexI] = useState(0);
   const [indexF, setIndexF] = useState(5);
   const itemsPerPage = 5;
+  const [convocatorias,setConvocatorias] = useState()
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const { token } = useContext(AppContext);
 
-  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = convocatorias && convocatorias.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  const totalPages = convocatorias && Math.ceil(convocatorias.length / itemsPerPage);
+
+
+  const getConvocatorias = async () =>{
+    let response = await axiosApi.get("/api/convocatoria",{
+       headers:{
+        Authorization:"Bearer " + token,
+      }
+    }).catch(()=>{
+      toast.error("No se pueden obtener las convocatorias!")
+    })
+    setConvocatorias(response.data)
+    console.log(response)
+  }
+
+  useEffect(()=>{
+    getConvocatorias()
+  },[])
+
 
   const handlePageChange = (selected) => {
     if (selected >= indexF) {
@@ -50,7 +75,6 @@ export default function TablaConvocatoria({ columns, items, path, msg, showButto
   const paginacionAdelante = () => {
     setIndexI(indexI + 5);
     setIndexF(indexF + 5);
-    console.log("se ejecuto paginación");
   };
 
   const paginacionAtras = () => {
@@ -105,24 +129,30 @@ export default function TablaConvocatoria({ columns, items, path, msg, showButto
                 </Tr>
               </Thead>
               <Tbody>
-                {currentItems.map((item, index) => (
+                {convocatorias && currentItems.map((item, index) => (
                   <Tr key={index}>
-                    {item.map((data, dataIndex) => (
-                      <Td
-                        textAlign="center"
-                        key={dataIndex}
-                        isNumeric={typeof data === "number"}
-                        style={{
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          maxWidth: "200px",
-                          borderBottom: "1px solid #E7ADA2",
-                        }}
-                      >
-                        {data}
+                    
+                      <Td>
+                        {item.id}
                       </Td>
-                    ))}
+                      <Td>
+                        {item.nombre}
+                      </Td>
+                       <Td>
+                        {item.estado ? "Activo" : "Inactivo"}
+                      </Td>
+                       <Td>
+                        {item.fecha_inicio.toString().replace("T00:00:00.000Z","")}
+                      </Td>
+                      <Td>
+                        {item.fecha_fin.toString().replace("T00:00:00.000Z","")}
+                      </Td>
+                         <Td>{
+                        <Button variant={"unstyled"} as={Link} to={`/editarConvocatoria/${item.id}`}>
+                        <Icon w={"20px"} h={"20px"} as={RiEdit2Fill}/>
+                        </Button>
+                        }</Td>
+
                   </Tr>
                 ))}
               </Tbody>
@@ -152,7 +182,6 @@ export default function TablaConvocatoria({ columns, items, path, msg, showButto
                 key={index}
                 onClick={() => {
                   handlePageChange(index);
-                  console.log(index);
                 }}
                 bgColor={currentPage === index ? "white" : "principal.100"}
                 textColor={currentPage === index ? "black" : "white"}

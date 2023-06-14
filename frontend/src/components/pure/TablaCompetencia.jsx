@@ -67,7 +67,6 @@ export default function TablaCompetencia({ columns, items, path, msg, showButton
   const paginacionAdelante = () => {
     setIndexI(indexI + 5);
     setIndexF(indexF + 5);
-    console.log("se ejecuto paginación");
   };
 
   const paginacionAtras = () => {
@@ -144,7 +143,6 @@ export default function TablaCompetencia({ columns, items, path, msg, showButton
                       <Td>{
                        
                       item.categorias && item.categorias.map((item,index)=>{
-                        console.log(item)
                         return(
                           <p>{item.nombre}</p>
                         )
@@ -190,7 +188,6 @@ export default function TablaCompetencia({ columns, items, path, msg, showButton
                 key={index}
                 onClick={() => {
                   handlePageChange(index);
-                  console.log(index);
                 }}
                 bgColor={currentPage === index ? "white" : "principal.100"}
                 textColor={currentPage === index ? "black" : "white"}

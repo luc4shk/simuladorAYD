@@ -57,7 +57,6 @@ export default function FormularioCategoria() {
   }, []);
 
   const elementosActivos = competencia.filter(item => item.estado === true);
-  console.log(elementosActivos);
 
   const competencias = ["Competencia 1", "Competencia 2", "Competencia 3"];
 
@@ -73,9 +72,6 @@ export default function FormularioCategoria() {
     competencia: Yup.string().required("La competencia es requerida"),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
 
   return (
     <Box position="fixed">
@@ -91,7 +87,6 @@ export default function FormularioCategoria() {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={({nombre, descripcion,competencia})=>{
-              console.log(nombre, descripcion, competencia)
               agregarCategoria(nombre,descripcion,competencia)
             }}
           >
